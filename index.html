@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Datos Personales</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --primary-color: #3498db;
@@ -133,7 +134,30 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
-
+        
+        .update-btn {
+            background-color: var(--success-color);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .update-btn:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
         .row {
             display: flex;
             gap: 20px;
@@ -226,12 +250,114 @@
             font-style: italic;
             padding: 40px;
         }
+
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 700px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .modal-content h2 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .modal-content h3 {
+            color: var(--primary-color);
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        .modal-content p {
+            margin-bottom: 8px;
+        }
+
+        .action-buttons button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: var(--transition);
+        }
+
+        .action-buttons button:hover {
+            background-color: #2980b9;
+        }
+        
+        .edit-btn {
+            background-color: #f39c12 !important;
+        }
+        
+        .edit-btn:hover {
+            background-color: #e67e22 !important;
+        }
+
+        /* Estilo de impresión para el informe */
+        @media print {
+            body > *:not(.modal) { display: none; }
+            .modal {
+                display: block !important;
+                position: static;
+                background-color: white;
+                padding-top: 0;
+            }
+            .modal-content {
+                box-shadow: none;
+                border: none;
+                width: auto;
+                max-width: none;
+                margin: 0;
+            }
+            .close-btn, #imprimirInformeBtn, #cerrarModalBtn, #registroForm, #buscarContainer, .action-buttons { display: none; }
+            .container {
+                box-shadow: none;
+                border: none;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Registro de Datos Personales</h1>
+        <a href="https://defensoria6.github.io/sistemacausas/" class="submit-btn" style="background-color: var(--dark-color); margin-bottom: 20px;">
+            <i class="fas fa-arrow-left"></i> Regresar al Sistema de Causas
+        </a>
         <form id="registroForm">
+            <input type="hidden" id="registroId" name="registroId">
             <div class="form-section">
                 <h2>Información Básica</h2>
                 <div class="form-group">
@@ -458,55 +584,91 @@
                 </div>
             </div>
             
-            <button type="submit" class="submit-btn">Guardar Registro</button>
+            <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Guardar Registro</button>
         </form>
     </div>
 
-    <!-- Sección de Registros Guardados -->
     <div class="container" id="registrosContainer" style="margin-top: 30px;">
         <h1>Registros Guardados</h1>
         <div class="form-section">
             <h2>Lista de Personas Registradas</h2>
+            <div class="form-group" id="buscarContainer">
+                <label for="buscar"><i class="fas fa-search"></i> Buscar por Nombre o DNI:</label>
+                <input type="text" id="buscar" name="buscar" placeholder="Escriba aquí para buscar..." style="width: 100%;">
+            </div>
             <div id="listaRegistros">
                 <p style="text-align: center; color: #666;">Cargando registros...</p>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <div id="expedienteModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="modalCloseBtnTop">&times;</span>
+            <h2>Expediente Completo</h2>
+            <div id="expedienteDetalle">
+            </div>
+            <button id="imprimirInformeBtn" class="submit-btn" style="background-color: var(--success-color);"><i class="fas fa-print"></i> Generar Informe</button>
+            <button id="cerrarModalBtn" class="submit-btn" style="background-color: var(--accent-color); margin-top: 10px;"><i class="fas fa-times-circle"></i> Cerrar</button>
+        </div>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     
     <script>
         // Configuración de Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
-            authDomain: "datos-partes.firebaseapp.com",
-            projectId: "datos-partes",
-            storageBucket: "datos-partes.appspot.com",
-            messagingSenderId: "277413385546",
-            appId: "1:277413385546:web:9863aaa081727a84479db3"
+       apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
+       authDomain: "datos-partes.firebaseapp.com",
+       projectId: "datos-partes",
+       storageBucket: "datos-partes.firebasestorage.app",
+       messagingSenderId: "277413385546",
+       appId: "1:277413385546:web:9863aaa081727a84479db3"
+
         };
 
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        let allRegistrosData = {}; // Para almacenar todos los registros y facilitar la búsqueda
+        
+        let registroForm = document.getElementById('registroForm');
+        let submitBtn = document.querySelector('.submit-btn');
+        let registroIdInput = document.getElementById('registroId');
+        
+        const pad = (n) => n < 10 ? '0' + n : n;
+        
+        function formatDate(date) {
+            if (!date) return '';
+            const d = new Date(date);
+            return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+        }
+        
+        function parseDate(dateStr) {
+            if (!dateStr) return null;
+            const parts = dateStr.split('/');
+            if (parts.length === 3) {
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
+            return new Date(dateStr);
+        }
 
         // Manejar el envío del formulario
-        document.getElementById('registroForm').addEventListener('submit', function(e) {
+        registroForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Mostrar animación de carga
-            const submitBtn = document.querySelector('.submit-btn');
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
             submitBtn.disabled = true;
             
-            // Obtener valores del formulario
+            const now = new Date();
+            const formattedNow = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
+            
             const formData = {
                 nombre: document.getElementById('nombre').value,
                 dni: document.getElementById('dni').value,
                 edad: document.getElementById('edad').value,
-                fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                fechaNacimiento: formatDate(document.getElementById('fechaNacimiento').value),
                 estadoCivil: document.getElementById('estadoCivil').value,
                 domicilioActual: document.getElementById('domicilioActual').value,
                 ultimoDomicilio: document.getElementById('ultimoDomicilio').value,
@@ -518,32 +680,41 @@
                 condicionJudicial: document.getElementById('condicionJudicial').value,
                 causasReferencia: document.getElementById('causasReferencia').value,
                 observaciones: document.getElementById('observaciones').value,
-                fechaRegistro: new Date().toISOString()
             };
             
-            // Guardar en Firebase
-            const newRegistroRef = database.ref('registros').push();
-            newRegistroRef.set(formData)
+            const registroId = registroIdInput.value;
+            let ref;
+            
+            if (registroId) {
+                // Actualizar registro existente
+                formData.fechaUltimaActualizacion = formattedNow;
+                ref = database.ref('registros').child(registroId);
+            } else {
+                // Crear nuevo registro
+                formData.fechaRegistro = formattedNow;
+                formData.fechaUltimaActualizacion = formattedNow;
+                ref = database.ref('registros').push();
+            }
+            
+            ref.set(formData)
                 .then(() => {
                     submitBtn.innerHTML = '<i class="fas fa-check"></i> Registro Guardado';
                     setTimeout(() => {
-                        submitBtn.innerHTML = 'Guardar Registro';
+                        submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Registro';
                         submitBtn.disabled = false;
                     }, 2000);
                     
-                    // Mostrar notificación de éxito
                     alert('Registro guardado exitosamente!');
-                    document.getElementById('registroForm').reset();
+                    registroForm.reset();
+                    registroIdInput.value = '';
                     
-                    // Recargar la lista de registros
                     cargarRegistros();
                 })
                 .catch((error) => {
                     console.error('Error al guardar:', error);
-                    submitBtn.innerHTML = 'Error al Guardar - Intente Nuevamente';
+                    submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al Guardar';
                     submitBtn.disabled = false;
                     
-                    // Mostrar notificación de error
                     alert('Hubo un error al guardar el registro. Por favor intente nuevamente.');
                 });
         });
@@ -554,73 +725,194 @@
             
             database.ref('registros').once('value')
                 .then((snapshot) => {
-                    const registros = snapshot.val();
+                    allRegistrosData = snapshot.val();
                     
-                    if (!registros) {
+                    if (!allRegistrosData) {
                         listaRegistros.innerHTML = '<div class="no-registros">No hay registros guardados aún.</div>';
                         return;
                     }
                     
-                    let tablaHTML = `
-                        <table class="registros-table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre y Apellido</th>
-                                    <th>DNI</th>
-                                    <th>Edad</th>
-                                    <th>Ciudad</th>
-                                    <th>Provincia</th>
-                                    <th>Fecha Registro</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    `;
-                    
-                    Object.keys(registros).forEach(key => {
-                        const registro = registros[key];
-                        const fechaRegistro = new Date(registro.fechaRegistro).toLocaleDateString('es-AR');
-                        
-                        tablaHTML += `
-                            <tr>
-                                <td>
-                                    <a href="#" class="nombre-link" onclick="abrirExpediente('${registro.nombre}', '${registro.dni}')">
-                                        ${registro.nombre}
-                                    </a>
-                                </td>
-                                <td>${registro.dni}</td>
-                                <td>${registro.edad}</td>
-                                <td>${registro.ciudad}</td>
-                                <td>${registro.provincia}</td>
-                                <td>${fechaRegistro}</td>
-                            </tr>
-                        `;
-                    });
-                    
-                    tablaHTML += `
-                            </tbody>
-                        </table>
-                    `;
-                    
-                    listaRegistros.innerHTML = tablaHTML;
+                    renderizarTabla(allRegistrosData);
                 })
                 .catch((error) => {
                     console.error('Error al cargar registros:', error);
                     listaRegistros.innerHTML = '<div class="no-registros">Error al cargar los registros.</div>';
                 });
         }
-
-        // Función para abrir expediente en 1_corregido(2).html
-        function abrirExpediente(nombre, dni) {
-            // Crear parámetros para pasar al sistema de expedientes
-            const params = new URLSearchParams({
-                nombre: nombre,
-                dni: dni,
-                buscar: 'true'
+        
+        // Función para renderizar la tabla con los registros filtrados
+        function renderizarTabla(registrosParaMostrar) {
+            const listaRegistros = document.getElementById('listaRegistros');
+            let tablaHTML = `
+                <table class="registros-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre y Apellido</th>
+                            <th>DNI</th>
+                            <th>Edad</th>
+                            <th>Ciudad</th>
+                            <th>Fecha Registro</th>
+                            <th>Última Actualización</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            Object.keys(registrosParaMostrar).forEach(key => {
+                const registro = registrosParaMostrar[key];
+                
+                tablaHTML += `
+                    <tr>
+                        <td>
+                            <a href="#" class="nombre-link" onclick="abrirExpediente('${key}')">
+                                ${registro.nombre}
+                            </a>
+                        </td>
+                        <td>${registro.dni}</td>
+                        <td>${registro.edad}</td>
+                        <td>${registro.ciudad}</td>
+                        <td>${registro.fechaRegistro || 'N/A'}</td>
+                        <td>${registro.fechaUltimaActualizacion || 'N/A'}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" onclick="editarRegistro('${key}')"><i class="fas fa-edit"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
             });
             
-            // Abrir en nueva ventana/pestaña
-            window.open(`1_corregido(2).html?${params.toString()}`, '_blank');
+            tablaHTML += `
+                    </tbody>
+                </table>
+            `;
+            
+            listaRegistros.innerHTML = tablaHTML;
         }
+
+        // Función para filtrar registros
+        document.getElementById('buscar').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const registrosFiltrados = {};
+
+            if (allRegistrosData) {
+                Object.keys(allRegistrosData).forEach(key => {
+                    const registro = allRegistrosData[key];
+                    if (registro.nombre.toLowerCase().includes(searchTerm) || registro.dni.toLowerCase().includes(searchTerm)) {
+                        registrosFiltrados[key] = registro;
+                    }
+                });
+            }
+
+            if (Object.keys(registrosFiltrados).length > 0) {
+                renderizarTabla(registrosFiltrados);
+            } else {
+                document.getElementById('listaRegistros').innerHTML = '<div class="no-registros">No se encontraron registros.</div>';
+            }
+        });
+
+        // Función para abrir el expediente en un modal
+        function abrirExpediente(registroId) {
+            const expedienteModal = document.getElementById('expedienteModal');
+            const expedienteDetalle = document.getElementById('expedienteDetalle');
+            
+            const registro = allRegistrosData[registroId];
+            
+            if (registro) {
+                let htmlDetalle = `
+                    <h3>Información Básica</h3>
+                    <p><strong>Nombre y Apellido:</strong> ${registro.nombre || ''}</p>
+                    <p><strong>DNI:</strong> ${registro.dni || ''}</p>
+                    <p><strong>Edad:</strong> ${registro.edad || ''}</p>
+                    <p><strong>Fecha de Nacimiento:</strong> ${registro.fechaNacimiento || ''}</p>
+                    <p><strong>Estado Civil:</strong> ${registro.estadoCivil || ''}</p>
+                    
+                    <h3>Domicilio</h3>
+                    <p><strong>Domicilio Actual:</strong> ${registro.domicilioActual || ''}</p>
+                    <p><strong>Último Domicilio:</strong> ${registro.ultimoDomicilio || ''}</p>
+                    <p><strong>Ciudad:</strong> ${registro.ciudad || ''}</p>
+                    <p><strong>Provincia:</strong> ${registro.provincia || ''}</p>
+                    <p><strong>País:</strong> ${registro.pais || ''}</p>
+
+                    <h3>Condiciones</h3>
+                    <p><strong>Condición de Salud:</strong> ${registro.condicionSalud || 'No especificado'}</p>
+                    <p><strong>Condición Laboral:</strong> ${registro.condicionLaboral || 'No especificado'}</p>
+                    <p><strong>Condición Judicial:</strong> ${registro.condicionJudicial || 'No especificado'}</p>
+                    <p><strong>Causas de Referencia:</strong> ${registro.causasReferencia || 'No especificado'}</p>
+                    <p><strong>Observaciones:</strong> ${registro.observaciones || 'No especificado'}</p>
+                    
+                    <hr style="margin-top: 20px; border-color: #eee;">
+                    <p style="font-size: 0.9em; color: #888;"><strong>Fecha de Registro:</strong> ${registro.fechaRegistro || 'N/A'}</p>
+                    <p style="font-size: 0.9em; color: #888;"><strong>Última Actualización:</strong> ${registro.fechaUltimaActualizacion || 'N/A'}</p>
+                `;
+                expedienteDetalle.innerHTML = htmlDetalle;
+                expedienteModal.style.display = 'block';
+            }
+        }
+        
+        // Función para editar un registro
+        function editarRegistro(registroId) {
+            const registro = allRegistrosData[registroId];
+            if (registro) {
+                document.getElementById('nombre').value = registro.nombre;
+                document.getElementById('dni').value = registro.dni;
+                document.getElementById('edad').value = registro.edad;
+                
+                // Convert DD/MM/AAAA back to YYYY-MM-DD for the input type="date"
+                const parts = registro.fechaNacimiento.split('/');
+                const formattedDateForInput = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                document.getElementById('fechaNacimiento').value = formattedDateForInput;
+                
+                document.getElementById('estadoCivil').value = registro.estadoCivil;
+                document.getElementById('domicilioActual').value = registro.domicilioActual;
+                document.getElementById('ultimoDomicilio').value = registro.ultimoDomicilio;
+                document.getElementById('ciudad').value = registro.ciudad;
+                document.getElementById('provincia').value = registro.provincia;
+                document.getElementById('pais').value = registro.pais;
+                document.getElementById('condicionSalud').value = registro.condicionSalud;
+                document.getElementById('condicionLaboral').value = registro.condicionLaboral;
+                document.getElementById('condicionJudicial').value = registro.condicionJudicial;
+                document.getElementById('causasReferencia').value = registro.causasReferencia;
+                document.getElementById('observaciones').value = registro.observaciones;
+                
+                // Store the ID in a hidden field
+                registroIdInput.value = registroId;
+                
+                submitBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Actualizar Registro';
+                submitBtn.classList.add('update-btn');
+                submitBtn.classList.remove('submit-btn');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Eventos para el modal
+        document.getElementById('modalCloseBtnTop').addEventListener('click', () => {
+            document.getElementById('expedienteModal').style.display = 'none';
+        });
+        
+        document.getElementById('cerrarModalBtn').addEventListener('click', () => {
+            document.getElementById('expedienteModal').style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == document.getElementById('expedienteModal')) {
+                document.getElementById('expedienteModal').style.display = 'none';
+            }
+        });
+        
+        document.getElementById('imprimirInformeBtn').addEventListener('click', () => {
+            window.print();
+        });
+        
+        // Reset button style and functionality when form is reset
+        registroForm.addEventListener('reset', () => {
+            registroIdInput.value = '';
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Registro';
+            submitBtn.classList.remove('update-btn');
+            submitBtn.classList.add('submit-btn');
+        });
 
         // Cargar registros al cargar la página
         window.addEventListener('load', function() {
