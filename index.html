@@ -176,6 +176,56 @@
         .form-section:nth-child(1) { animation-delay: 0.1s; }
         .form-section:nth-child(2) { animation-delay: 0.2s; }
         .form-section:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Estilos para la tabla de registros */
+        .registros-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        .registros-table th,
+        .registros-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .registros-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .registros-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .nombre-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .nombre-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        .no-registros {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
     </style>
 </head>
 <body>
@@ -412,6 +462,17 @@
         </form>
     </div>
 
+    <!-- Sección de Registros Guardados -->
+    <div class="container" id="registrosContainer" style="margin-top: 30px;">
+        <h1>Registros Guardados</h1>
+        <div class="form-section">
+            <h2>Lista de Personas Registradas</h2>
+            <div id="listaRegistros">
+                <p style="text-align: center; color: #666;">Cargando registros...</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -473,6 +534,9 @@
                     // Mostrar notificación de éxito
                     alert('Registro guardado exitosamente!');
                     document.getElementById('registroForm').reset();
+                    
+                    // Recargar la lista de registros
+                    cargarRegistros();
                 })
                 .catch((error) => {
                     console.error('Error al guardar:', error);
@@ -482,6 +546,85 @@
                     // Mostrar notificación de error
                     alert('Hubo un error al guardar el registro. Por favor intente nuevamente.');
                 });
+        });
+
+        // Función para cargar y mostrar registros
+        function cargarRegistros() {
+            const listaRegistros = document.getElementById('listaRegistros');
+            
+            database.ref('registros').once('value')
+                .then((snapshot) => {
+                    const registros = snapshot.val();
+                    
+                    if (!registros) {
+                        listaRegistros.innerHTML = '<div class="no-registros">No hay registros guardados aún.</div>';
+                        return;
+                    }
+                    
+                    let tablaHTML = `
+                        <table class="registros-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre y Apellido</th>
+                                    <th>DNI</th>
+                                    <th>Edad</th>
+                                    <th>Ciudad</th>
+                                    <th>Provincia</th>
+                                    <th>Fecha Registro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    
+                    Object.keys(registros).forEach(key => {
+                        const registro = registros[key];
+                        const fechaRegistro = new Date(registro.fechaRegistro).toLocaleDateString('es-AR');
+                        
+                        tablaHTML += `
+                            <tr>
+                                <td>
+                                    <a href="#" class="nombre-link" onclick="abrirExpediente('${registro.nombre}', '${registro.dni}')">
+                                        ${registro.nombre}
+                                    </a>
+                                </td>
+                                <td>${registro.dni}</td>
+                                <td>${registro.edad}</td>
+                                <td>${registro.ciudad}</td>
+                                <td>${registro.provincia}</td>
+                                <td>${fechaRegistro}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tablaHTML += `
+                            </tbody>
+                        </table>
+                    `;
+                    
+                    listaRegistros.innerHTML = tablaHTML;
+                })
+                .catch((error) => {
+                    console.error('Error al cargar registros:', error);
+                    listaRegistros.innerHTML = '<div class="no-registros">Error al cargar los registros.</div>';
+                });
+        }
+
+        // Función para abrir expediente en 1_corregido(2).html
+        function abrirExpediente(nombre, dni) {
+            // Crear parámetros para pasar al sistema de expedientes
+            const params = new URLSearchParams({
+                nombre: nombre,
+                dni: dni,
+                buscar: 'true'
+            });
+            
+            // Abrir en nueva ventana/pestaña
+            window.open(`1_corregido(2).html?${params.toString()}`, '_blank');
+        }
+
+        // Cargar registros al cargar la página
+        window.addEventListener('load', function() {
+            cargarRegistros();
         });
 
         // Si se selecciona "Otro país" en provincia, seleccionar automáticamente el campo país
@@ -508,7 +651,7 @@
         // Actualizar fecha de nacimiento cuando se cambia la edad manualmente
         document.getElementById('edad').addEventListener('change', function() {
             const edad = parseInt(this.value);
-            if (!isNaN(edad) {
+            if (!isNaN(edad)) {
                 const hoy = new Date();
                 const añoNacimiento = hoy.getFullYear() - edad;
                 document.getElementById('fechaNacimiento').value = `${añoNacimiento}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
