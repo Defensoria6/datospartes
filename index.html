@@ -12,7 +12,8 @@
             --accent-color: #e74c3c;
             --light-color: #ecf0f1;
             --dark-color: #2c3e50;
-            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --new-success-color: #228B22;
             --border-radius: 8px;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
@@ -112,52 +113,51 @@
             resize: vertical;
         }
 
-        .submit-btn {
+        .submit-btn, .update-btn, .action-btn, .cancel-btn {
             background-color: var(--primary-color);
             color: white;
-            padding: 14px 25px;
+            padding: 10px 15px;
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             transition: var(--transition);
             display: block;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px;
+            text-decoration: none;
+            text-align: center;
         }
-
-        .submit-btn:hover {
+        
+        .submit-btn:hover, .update-btn:hover, .action-btn:hover, .cancel-btn:hover {
             background-color: var(--secondary-color);
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .submit-btn i, .update-btn i, .action-btn i, .cancel-btn i {
+            margin-right: 5px;
+        }
+
         .update-btn {
-            background-color: var(--success-color);
-            color: white;
-            padding: 14px 25px;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: var(--transition);
-            display: block;
-            width: 100%;
-            margin-top: 20px;
+            background-color: var(--new-success-color);
         }
-        
+
         .update-btn:hover {
-            background-color: #27ae60;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background-color: #1a6e1a;
         }
         
+        .cancel-btn {
+            background-color: #95a5a6;
+        }
+
+        .cancel-btn:hover {
+            background-color: #7f8c8d;
+        }
+
         .row {
             display: flex;
             gap: 20px;
@@ -177,17 +177,14 @@
                 flex-direction: column;
                 gap: 15px;
             }
-            
             .container {
                 padding: 20px;
             }
-            
             .edad-input {
                 width: 100%;
             }
         }
-
-        /* Animaciones */
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -200,8 +197,7 @@
         .form-section:nth-child(1) { animation-delay: 0.1s; }
         .form-section:nth-child(2) { animation-delay: 0.2s; }
         .form-section:nth-child(3) { animation-delay: 0.3s; }
-
-        /* Estilos para la tabla de registros */
+        
         .registros-table {
             width: 100%;
             border-collapse: collapse;
@@ -251,7 +247,6 @@
             padding: 40px;
         }
 
-        /* Estilos para el modal */
         .modal {
             display: none;
             position: fixed;
@@ -288,7 +283,7 @@
             text-decoration: none;
             cursor: pointer;
         }
-        
+
         .modal-content h2 {
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 10px;
@@ -304,7 +299,7 @@
         }
 
         .action-buttons button {
-            background-color: #3498db;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 8px 12px;
@@ -315,20 +310,67 @@
         }
 
         .action-buttons button:hover {
-            background-color: #2980b9;
+            background-color: var(--secondary-color);
         }
-        
+
         .edit-btn {
-            background-color: #f39c12 !important;
+            background-color: var(--warning-color) !important;
         }
-        
+
         .edit-btn:hover {
             background-color: #e67e22 !important;
         }
 
-        /* Estilo de impresión para el informe */
+        .print-btn {
+            background-color: var(--primary-color);
+        }
+        
+        .print-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .button-group button, .button-group a {
+            flex-grow: 1;
+            flex-basis: 0;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            margin-top: 0;
+        }
+
+        .content-area {
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Ocultar botones de acción en el PDF para que no se vean en el informe */
+        .action-buttons-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-buttons-form button {
+            flex: 1;
+        }
+
+        /* Estilo de impresión */
         @media print {
-            body > *:not(.modal) { display: none; }
+            body > *:not(.modal):not(#registrosContainer) { display: none !important; }
+            #registrosContainer {
+                display: block !important;
+                box-shadow: none;
+                border: none;
+            }
             .modal {
                 display: block !important;
                 position: static;
@@ -342,10 +384,16 @@
                 max-width: none;
                 margin: 0;
             }
-            .close-btn, #imprimirInformeBtn, #cerrarModalBtn, #registroForm, #buscarContainer, .action-buttons { display: none; }
+            .close-btn, #imprimirInformeBtn, #cerrarModalBtn, #registroForm, #buscarContainer, .action-buttons, .button-group, h1, h2 { display: none !important; }
             .container {
                 box-shadow: none;
                 border: none;
+            }
+            h2 {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                font-size: 1.5em;
             }
         }
     </style>
@@ -353,292 +401,293 @@
 <body>
     <div class="container">
         <h1>Registro de Datos Personales</h1>
-        <a href="https://defensoria6.github.io/sistemacausas/" class="submit-btn" style="background-color: var(--dark-color); margin-bottom: 20px;">
-            <i class="fas fa-arrow-left"></i> Regresar al Sistema de Causas
-        </a>
-        <form id="registroForm">
-            <input type="hidden" id="registroId" name="registroId">
-            <div class="form-section">
-                <h2>Información Básica</h2>
-                <div class="form-group">
-                    <label for="nombre">Nombre y Apellido:</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="dni">DNI:</label>
-                    <input type="text" id="dni" name="dni" required>
-                </div>
-                
-                <div class="row">
-                    <div class="col">
+        <div class="button-group">
+            <a href="https://defensoria6.github.io/sistemacausas/" class="action-btn" style="background-color: var(--dark-color);"><i class="fas fa-arrow-left"></i> Regresar</a>
+            <button id="nuevoRegistroBtn" class="action-btn" style="background-color: var(--new-success-color);"><i class="fas fa-plus"></i> Nuevo</button>
+            <button id="verRegistrosBtn" class="action-btn" style="background-color: var(--warning-color);"><i class="fas fa-list"></i> Guardados</button>
+            <button id="generarInformeBtn" class="action-btn"><i class="fas fa-file-pdf"></i> Informe PDF</button>
+            <button id="generarPdfExpedienteBtn" class="action-btn" style="background-color: var(--dark-color);"><i class="fas fa-file-pdf"></i> PDF Registro</button>
+            <button id="cerrarBtn" class="action-btn" style="background-color: var(--accent-color);"><i class="fas fa-times-circle"></i> Cerrar</button>
+        </div>
+
+        <div id="contentArea">
+            <div id="registroFormContainer" class="content-area">
+                <form id="registroForm">
+                    <input type="hidden" id="registroId" name="registroId">
+                    <div class="form-section">
+                        <h2>Información Básica</h2>
                         <div class="form-group">
-                            <label for="edad">Edad:</label>
-                            <input type="number" id="edad" name="edad" min="1" max="120" class="edad-input" required>
+                            <label for="nombre">Nombre y Apellido:</label>
+                            <input type="text" id="nombre" name="nombre" required>
                         </div>
-                    </div>
-                    <div class="col">
                         <div class="form-group">
-                            <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                            <label for="dni">DNI:</label>
+                            <input type="text" id="dni" name="dni" required>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="estadoCivil">Estado Civil:</label>
-                    <select id="estadoCivil" name="estadoCivil" required>
-                        <option value="">Seleccione...</option>
-                        <option value="Soltero/a">Soltero/a</option>
-                        <option value="Casado/a">Casado/a</option>
-                        <option value="Divorciado/a">Divorciado/a</option>
-                        <option value="Viudo/a">Viudo/a</option>
-                        <option value="Separado/a">Separado/a</option>
-                        <option value="Concubinato">Concubinato</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="form-section">
-                <h2>Domicilio</h2>
-                <div class="form-group">
-                    <label for="domicilioActual">Domicilio Actual:</label>
-                    <input type="text" id="domicilioActual" name="domicilioActual" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="ultimoDomicilio">Último Domicilio Conocido:</label>
-                    <input type="text" id="ultimoDomicilio" name="ultimoDomicilio">
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="ciudad">Ciudad:</label>
-                            <input type="text" id="ciudad" name="ciudad" required>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="edad">Edad:</label>
+                                    <input type="number" id="edad" name="edad" min="1" max="120" class="edad-input" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
                         <div class="form-group">
-                            <label for="provincia">Provincia:</label>
-                            <select id="provincia" name="provincia" required>
-                                <option value="">Seleccione una provincia...</option>
-                                <option value="Buenos Aires">Buenos Aires</option>
-                                <option value="Capital Federal">Capital Federal</option>
-                                <option value="Catamarca">Catamarca</option>
-                                <option value="Chaco">Chaco</option>
-                                <option value="Chubut">Chubut</option>
-                                <option value="Córdoba">Córdoba</option>
-                                <option value="Corrientes">Corrientes</option>
-                                <option value="Entre Ríos">Entre Ríos</option>
-                                <option value="Formosa">Formosa</option>
-                                <option value="Jujuy">Jujuy</option>
-                                <option value="La Pampa">La Pampa</option>
-                                <option value="La Rioja">La Rioja</option>
-                                <option value="Mendoza">Mendoza</option>
-                                <option value="Misiones">Misiones</option>
-                                <option value="Neuquén">Neuquén</option>
-                                <option value="Río Negro">Río Negro</option>
-                                <option value="Salta">Salta</option>
-                                <option value="San Juan">San Juan</option>
-                                <option value="San Luis">San Luis</option>
-                                <option value="Santa Cruz">Santa Cruz</option>
-                                <option value="Santa Fe">Santa Fe</option>
-                                <option value="Santiago del Estero">Santiago del Estero</option>
-                                <option value="Tierra del Fuego">Tierra del Fuego</option>
-                                <option value="Tucumán">Tucumán</option>
-                                <option value="Islas Malvinas">Islas Malvinas</option>
-                                <option value="Otro país">Otro país</option>
+                            <label for="estadoCivil">Estado Civil:</label>
+                            <select id="estadoCivil" name="estadoCivil" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Soltero/a">Soltero/a</option>
+                                <option value="Casado/a">Casado/a</option>
+                                <option value="Divorciado/a">Divorciado/a</option>
+                                <option value="Viudo/a">Viudo/a</option>
+                                <option value="Separado/a">Separado/a</option>
+                                <option value="Concubinato">Concubinato</option>
                             </select>
                         </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="pais">País:</label>
-                    <select id="pais" name="pais" required>
-                        <option value="">Seleccione un país...</option>
-                        <optgroup label="América">
-                            <option value="Argentina">Argentina</option>
-                            <option value="Bolivia">Bolivia</option>
-                            <option value="Brasil">Brasil</option>
-                            <option value="Canadá">Canadá</option>
-                            <option value="Chile">Chile</option>
-                            <option value="Colombia">Colombia</option>
-                            <option value="Costa Rica">Costa Rica</option>
-                            <option value="Cuba">Cuba</option>
-                            <option value="Ecuador">Ecuador</option>
-                            <option value="El Salvador">El Salvador</option>
-                            <option value="Estados Unidos">Estados Unidos</option>
-                            <option value="Guatemala">Guatemala</option>
-                            <option value="Haití">Haití</option>
-                            <option value="Honduras">Honduras</option>
-                            <option value="México">México</option>
-                            <option value="Nicaragua">Nicaragua</option>
-                            <option value="Panamá">Panamá</option>
-                            <option value="Paraguay">Paraguay</option>
-                            <option value="Perú">Perú</option>
-                            <option value="República Dominicana">República Dominicana</option>
-                            <option value="Uruguay">Uruguay</option>
-                            <option value="Venezuela">Venezuela</option>
-                        </optgroup>
-                        <optgroup label="Europa">
-                            <option value="Alemania">Alemania</option>
-                            <option value="Austria">Austria</option>
-                            <option value="Bélgica">Bélgica</option>
-                            <option value="Bulgaria">Bulgaria</option>
-                            <option value="Croacia">Croacia</option>
-                            <option value="Dinamarca">Dinamarca</option>
-                            <option value="España">España</option>
-                            <option value="Finlandia">Finlandia</option>
-                            <option value="Francia">Francia</option>
-                            <option value="Grecia">Grecia</option>
-                            <option value="Hungría">Hungría</option>
-                            <option value="Irlanda">Irlanda</option>
-                            <option value="Italia">Italia</option>
-                            <option value="Noruega">Noruega</option>
-                            <option value="Países Bajos">Países Bajos</option>
-                            <option value="Polonia">Polonia</option>
-                            <option value="Portugal">Portugal</option>
-                            <option value="Reino Unido">Reino Unido</option>
-                            <option value="Rumanía">Rumanía</option>
-                            <option value="Rusia">Rusia</option>
-                            <option value="Suecia">Suecia</option>
-                            <option value="Suiza">Suiza</option>
-                        </optgroup>
-                        <optgroup label="Asia">
-                            <option value="Afganistán">Afganistán</option>
-                            <option value="Arabia Saudita">Arabia Saudita</option>
-                            <option value="China">China</option>
-                            <option value="Corea del Norte">Corea del Norte</option>
-                            <option value="Corea del Sur">Corea del Sur</option>
-                            <option value="Emiratos Árabes Unidos">Emiratos Árabes Unidos</option>
-                            <option value="India">India</option>
-                            <option value="Indonesia">Indonesia</option>
-                            <option value="Irán">Irán</option>
-                            <option value="Iraq">Iraq</option>
-                            <option value="Israel">Israel</option>
-                            <option value="Japón">Japón</option>
-                            <option value="Jordania">Jordania</option>
-                            <option value="Kazajistán">Kazajistán</option>
-                            <option value="Malasia">Malasia</option>
-                            <option value="Pakistán">Pakistán</option>
-                            <option value="Qatar">Qatar</option>
-                            <option value="Singapur">Singapur</option>
-                            <option value="Siria">Siria</option>
-                            <option value="Tailandia">Tailandia</option>
-                            <option value="Turquía">Turquía</option>
-                        </optgroup>
-                        <optgroup label="África">
-                            <option value="Argelia">Argelia</option>
-                            <option value="Angola">Angola</option>
-                            <option value="Egipto">Egipto</option>
-                            <option value="Etiopía">Etiopía</option>
-                            <option value="Ghana">Ghana</option>
-                            <option value="Kenia">Kenia</option>
-                            <option value="Libia">Libia</option>
-                            <option value="Marruecos">Marruecos</option>
-                            <option value="Nigeria">Nigeria</option>
-                            <option value="República Democrática del Congo">República Democrática del Congo</option>
-                            <option value="Sudáfrica">Sudáfrica</option>
-                            <option value="Sudán">Sudán</option>
-                            <option value="Tanzania">Tanzania</option>
-                            <option value="Túnez">Túnez</option>
-                        </optgroup>
-                        <optgroup label="Oceanía">
-                            <option value="Australia">Australia</option>
-                            <option value="Fiyi">Fiyi</option>
-                            <option value="Nueva Zelanda">Nueva Zelanda</option>
-                            <option value="Papúa Nueva Guinea">Papúa Nueva Guinea</option>
-                            <option value="Samoa">Samoa</option>
-                        </optgroup>
-                    </select>
-                </div>
+                    <div class="form-section">
+                        <h2>Domicilio</h2>
+                        <div class="form-group">
+                            <label for="domicilioActual">Domicilio Actual:</label>
+                            <input type="text" id="domicilioActual" name="domicilioActual" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ultimoDomicilio">Último Domicilio Conocido:</label>
+                            <input type="text" id="ultimoDomicilio" name="ultimoDomicilio">
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="ciudad">Ciudad:</label>
+                                    <input type="text" id="ciudad" name="ciudad" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="provincia">Provincia:</label>
+                                    <select id="provincia" name="provincia" required>
+                                        <option value="">Seleccione una provincia...</option>
+                                        <option value="Buenos Aires">Buenos Aires</option>
+                                        <option value="Capital Federal">Capital Federal</option>
+                                        <option value="Catamarca">Catamarca</option>
+                                        <option value="Chaco">Chaco</option>
+                                        <option value="Chubut">Chubut</option>
+                                        <option value="Córdoba">Córdoba</option>
+                                        <option value="Corrientes">Corrientes</option>
+                                        <option value="Entre Ríos">Entre Ríos</option>
+                                        <option value="Formosa">Formosa</option>
+                                        <option value="Jujuy">Jujuy</option>
+                                        <option value="La Pampa">La Pampa</option>
+                                        <option value="La Rioja">La Rioja</option>
+                                        <option value="Mendoza">Mendoza</option>
+                                        <option value="Misiones">Misiones</option>
+                                        <option value="Neuquén">Neuquén</option>
+                                        <option value="Río Negro">Río Negro</option>
+                                        <option value="Salta">Salta</option>
+                                        <option value="San Juan">San Juan</option>
+                                        <option value="San Luis">San Luis</option>
+                                        <option value="Santa Cruz">Santa Cruz</option>
+                                        <option value="Santa Fe">Santa Fe</option>
+                                        <option value="Santiago del Estero">Santiago del Estero</option>
+                                        <option value="Tierra del Fuego">Tierra del Fuego</option>
+                                        <option value="Tucumán">Tucumán</option>
+                                        <option value="Islas Malvinas">Islas Malvinas</option>
+                                        <option value="Otro país">Otro país</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pais">País:</label>
+                            <select id="pais" name="pais" required>
+                                <option value="">Seleccione un país...</option>
+                                <optgroup label="América">
+                                    <option value="Argentina">Argentina</option>
+                                    <option value="Bolivia">Bolivia</option>
+                                    <option value="Brasil">Brasil</option>
+                                    <option value="Canadá">Canadá</option>
+                                    <option value="Chile">Chile</option>
+                                    <option value="Colombia">Colombia</option>
+                                    <option value="Costa Rica">Costa Rica</option>
+                                    <option value="Cuba">Cuba</option>
+                                    <option value="Ecuador">Ecuador</option>
+                                    <option value="El Salvador">El Salvador</option>
+                                    <option value="Estados Unidos">Estados Unidos</option>
+                                    <option value="Guatemala">Guatemala</option>
+                                    <option value="Haití">Haití</option>
+                                    <option value="Honduras">Honduras</option>
+                                    <option value="México">México</option>
+                                    <option value="Nicaragua">Nicaragua</option>
+                                    <option value="Panamá">Panamá</option>
+                                    <option value="Paraguay">Paraguay</option>
+                                    <option value="Perú">Perú</option>
+                                    <option value="República Dominicana">República Dominicana</option>
+                                    <option value="Uruguay">Uruguay</option>
+                                    <option value="Venezuela">Venezuela</option>
+                                </optgroup>
+                                <optgroup label="Europa">
+                                    <option value="Alemania">Alemania</option>
+                                    <option value="Austria">Austria</option>
+                                    <option value="Bélgica">Bélgica</option>
+                                    <option value="Bulgaria">Bulgaria</option>
+                                    <option value="Croacia">Croacia</option>
+                                    <option value="Dinamarca">Dinamarca</option>
+                                    <option value="España">España</option>
+                                    <option value="Finlandia">Finlandia</option>
+                                    <option value="Francia">Francia</option>
+                                    <option value="Grecia">Grecia</option>
+                                    <option value="Hungría">Hungría</option>
+                                    <option value="Irlanda">Irlanda</option>
+                                    <option value="Italia">Italia</option>
+                                    <option value="Noruega">Noruega</option>
+                                    <option value="Países Bajos">Países Bajos</option>
+                                    <option value="Polonia">Polonia</option>
+                                    <option value="Portugal">Portugal</option>
+                                    <option value="Reino Unido">Reino Unido</option>
+                                    <option value="Rumanía">Rumanía</option>
+                                    <option value="Rusia">Rusia</option>
+                                    <option value="Suecia">Suecia</option>
+                                    <option value="Suiza">Suiza</option>
+                                </optgroup>
+                                <optgroup label="Asia">
+                                    <option value="Afganistán">Afganistán</option>
+                                    <option value="Arabia Saudita">Arabia Saudita</option>
+                                    <option value="China">China</option>
+                                    <option value="Corea del Norte">Corea del Norte</option>
+                                    <option value="Corea del Sur">Corea del Sur</option>
+                                    <option value="Emiratos Árabes Unidos">Emiratos Árabes Unidos</option>
+                                    <option value="India">India</option>
+                                    <option value="Indonesia">Indonesia</option>
+                                    <option value="Irán">Irán</option>
+                                    <option value="Iraq">Iraq</option>
+                                    <option value="Israel">Israel</option>
+                                    <option value="Japón">Japón</option>
+                                    <option value="Jordania">Jordania</option>
+                                    <option value="Kazajistán">Kazajistán</option>
+                                    <option value="Malasia">Malasia</option>
+                                    <option value="Pakistán">Pakistán</option>
+                                    <option value="Qatar">Qatar</option>
+                                    <option value="Singapur">Singapur</option>
+                                    <option value="Siria">Siria</option>
+                                    <option value="Tailandia">Tailandia</option>
+                                    <option value="Turquía">Turquía</option>
+                                </optgroup>
+                                <optgroup label="África">
+                                    <option value="Argelia">Argelia</option>
+                                    <option value="Angola">Angola</option>
+                                    <option value="Egipto">Egipto</option>
+                                    <option value="Etiopía">Etiopía</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Kenia">Kenia</option>
+                                    <option value="Libia">Libia</option>
+                                    <option value="Marruecos">Marruecos</option>
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="República Democrática del Congo">República Democrática del Congo</option>
+                                    <option value="Sudáfrica">Sudáfrica</option>
+                                    <option value="Sudán">Sudán</option>
+                                    <option value="Tanzania">Tanzania</option>
+                                    <option value="Túnez">Túnez</option>
+                                </optgroup>
+                                <optgroup label="Oceanía">
+                                    <option value="Australia">Australia</option>
+                                    <option value="Fiyi">Fiyi</option>
+                                    <option value="Nueva Zelanda">Nueva Zelanda</option>
+                                    <option value="Papúa Nueva Guinea">Papúa Nueva Guinea</option>
+                                    <option value="Samoa">Samoa</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h2>Condiciones</h2>
+                        <div class="form-group">
+                            <label for="condicionSalud">Condición de Salud:</label>
+                            <textarea id="condicionSalud" name="condicionSalud"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="condicionLaboral">Condición Laboral:</label>
+                            <textarea id="condicionLaboral" name="condicionLaboral"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="condicionJudicial">Condición Judicial:</label>
+                            <textarea id="condicionJudicial" name="condicionJudicial"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="causasReferencia">Causas de Referencia:</label>
+                            <textarea id="causasReferencia" name="causasReferencia"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="observaciones">Observaciones:</label>
+                            <textarea id="observaciones" name="observaciones"></textarea>
+                        </div>
+                    </div>
+                    <div class="action-buttons-form">
+                        <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Guardar/Actualizar</button>
+                        <button type="button" id="cancelarBtn" class="cancel-btn"><i class="fas fa-times"></i> Cancelar</button>
+                    </div>
+                </form>
             </div>
             
-            <div class="form-section">
-                <h2>Condiciones</h2>
-                <div class="form-group">
-                    <label for="condicionSalud">Condición de Salud:</label>
-                    <textarea id="condicionSalud" name="condicionSalud"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="condicionLaboral">Condición Laboral:</label>
-                    <textarea id="condicionLaboral" name="condicionLaboral"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="condicionJudicial">Condición Judicial:</label>
-                    <textarea id="condicionJudicial" name="condicionJudicial"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="causasReferencia">Causas de Referencia:</label>
-                    <textarea id="causasReferencia" name="causasReferencia"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="observaciones">Observaciones:</label>
-                    <textarea id="observaciones" name="observaciones"></textarea>
+            <div id="registrosContainer" class="content-area hidden" style="margin-top: 30px;">
+                <div class="form-section" id="informeContent">
+                    <h2>Lista de Personas Registradas</h2>
+                    <div class="form-group" id="buscarContainer">
+                        <label for="buscar"><i class="fas fa-search"></i> Buscar por Nombre o DNI:</label>
+                        <input type="text" id="buscar" name="buscar" placeholder="Escriba aquí para buscar..." style="width: 100%;">
+                    </div>
+                    <div id="listaRegistros">
+                        <p style="text-align: center; color: #666;">Cargando registros...</p>
+                    </div>
                 </div>
             </div>
-            
-            <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Guardar Registro</button>
-        </form>
-    </div>
+        </div>
 
-    <div class="container" id="registrosContainer" style="margin-top: 30px;">
-        <h1>Registros Guardados</h1>
-        <div class="form-section">
-            <h2>Lista de Personas Registradas</h2>
-            <div class="form-group" id="buscarContainer">
-                <label for="buscar"><i class="fas fa-search"></i> Buscar por Nombre o DNI:</label>
-                <input type="text" id="buscar" name="buscar" placeholder="Escriba aquí para buscar..." style="width: 100%;">
-            </div>
-            <div id="listaRegistros">
-                <p style="text-align: center; color: #666;">Cargando registros...</p>
+        <div id="expedienteModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="modalCloseBtnTop">&times;</span>
+                <h2>Expediente Completo</h2>
+                <div id="expedienteDetalle">
+                </div>
+                <button id="imprimirInformeBtn" class="submit-btn"><i class="fas fa-print"></i> Generar Informe</button>
+                <button id="cerrarModalBtn" class="submit-btn" style="background-color: var(--accent-color); margin-top: 10px;"><i class="fas fa-times-circle"></i> Cerrar</button>
             </div>
         </div>
     </div>
-
-    <div id="expedienteModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="modalCloseBtnTop">&times;</span>
-            <h2>Expediente Completo</h2>
-            <div id="expedienteDetalle">
-            </div>
-            <button id="imprimirInformeBtn" class="submit-btn" style="background-color: var(--success-color);"><i class="fas fa-print"></i> Generar Informe</button>
-            <button id="cerrarModalBtn" class="submit-btn" style="background-color: var(--accent-color); margin-top: 10px;"><i class="fas fa-times-circle"></i> Cerrar</button>
-        </div>
-    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
+
     <script>
-        // Configuración de Firebase
         const firebaseConfig = {
-       apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
-       authDomain: "datos-partes.firebaseapp.com",
-       projectId: "datos-partes",
-       storageBucket: "datos-partes.firebasestorage.app",
-       messagingSenderId: "277413385546",
-       appId: "1:277413385546:web:9863aaa081727a84479db3"
-
+            apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
+            authDomain: "datos-partes.firebaseapp.com",
+            projectId: "datos-partes",
+            storageBucket: "datos-partes.firebasestorage.app",
+            messagingSenderId: "277413385546",
+            appId: "1:277413385546:web:9863aaa081727a84479db3"
         };
-
-        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        let allRegistrosData = {}; // Para almacenar todos los registros y facilitar la búsqueda
-        
+        let allRegistrosData = {};
+
         let registroForm = document.getElementById('registroForm');
+        let registroFormContainer = document.getElementById('registroFormContainer');
+        let registrosContainer = document.getElementById('registrosContainer');
         let submitBtn = document.querySelector('.submit-btn');
         let registroIdInput = document.getElementById('registroId');
+        let generarPdfExpedienteBtn = document.getElementById('generarPdfExpedienteBtn');
         
         const pad = (n) => n < 10 ? '0' + n : n;
-        
+
         function formatDate(date) {
             if (!date) return '';
             const d = new Date(date);
@@ -657,13 +706,13 @@
         // Manejar el envío del formulario
         registroForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
             submitBtn.disabled = true;
-            
+
             const now = new Date();
             const formattedNow = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
-            
+
             const formData = {
                 nombre: document.getElementById('nombre').value,
                 dni: document.getElementById('dni').value,
@@ -681,57 +730,53 @@
                 causasReferencia: document.getElementById('causasReferencia').value,
                 observaciones: document.getElementById('observaciones').value,
             };
-            
+
             const registroId = registroIdInput.value;
             let ref;
-            
+
             if (registroId) {
-                // Actualizar registro existente
                 formData.fechaUltimaActualizacion = formattedNow;
                 ref = database.ref('registros').child(registroId);
             } else {
-                // Crear nuevo registro
                 formData.fechaRegistro = formattedNow;
                 formData.fechaUltimaActualizacion = formattedNow;
                 ref = database.ref('registros').push();
             }
-            
+
             ref.set(formData)
                 .then(() => {
                     submitBtn.innerHTML = '<i class="fas fa-check"></i> Registro Guardado';
                     setTimeout(() => {
-                        submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Registro';
+                        submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar/Actualizar';
                         submitBtn.disabled = false;
                     }, 2000);
-                    
+
                     alert('Registro guardado exitosamente!');
                     registroForm.reset();
                     registroIdInput.value = '';
-                    
+
                     cargarRegistros();
                 })
                 .catch((error) => {
                     console.error('Error al guardar:', error);
                     submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al Guardar';
                     submitBtn.disabled = false;
-                    
                     alert('Hubo un error al guardar el registro. Por favor intente nuevamente.');
                 });
         });
 
-        // Función para cargar y mostrar registros
+        // Cargar y mostrar registros
         function cargarRegistros() {
             const listaRegistros = document.getElementById('listaRegistros');
-            
-            database.ref('registros').once('value')
+            listaRegistros.innerHTML = '<p style="text-align: center; color: #666;">Cargando registros...</p>';
+
+            return database.ref('registros').once('value')
                 .then((snapshot) => {
                     allRegistrosData = snapshot.val();
-                    
                     if (!allRegistrosData) {
                         listaRegistros.innerHTML = '<div class="no-registros">No hay registros guardados aún.</div>';
                         return;
                     }
-                    
                     renderizarTabla(allRegistrosData);
                 })
                 .catch((error) => {
@@ -740,7 +785,7 @@
                 });
         }
         
-        // Función para renderizar la tabla con los registros filtrados
+        // Renderizar tabla con registros
         function renderizarTabla(registrosParaMostrar) {
             const listaRegistros = document.getElementById('listaRegistros');
             let tablaHTML = `
@@ -758,10 +803,8 @@
                     </thead>
                     <tbody>
             `;
-            
             Object.keys(registrosParaMostrar).forEach(key => {
                 const registro = registrosParaMostrar[key];
-                
                 tablaHTML += `
                     <tr>
                         <td>
@@ -782,12 +825,10 @@
                     </tr>
                 `;
             });
-            
             tablaHTML += `
                     </tbody>
                 </table>
             `;
-            
             listaRegistros.innerHTML = tablaHTML;
         }
 
@@ -795,7 +836,6 @@
         document.getElementById('buscar').addEventListener('keyup', function() {
             const searchTerm = this.value.toLowerCase();
             const registrosFiltrados = {};
-
             if (allRegistrosData) {
                 Object.keys(allRegistrosData).forEach(key => {
                     const registro = allRegistrosData[key];
@@ -804,7 +844,6 @@
                     }
                 });
             }
-
             if (Object.keys(registrosFiltrados).length > 0) {
                 renderizarTabla(registrosFiltrados);
             } else {
@@ -812,13 +851,11 @@
             }
         });
 
-        // Función para abrir el expediente en un modal
+        // Abrir expediente en modal
         function abrirExpediente(registroId) {
             const expedienteModal = document.getElementById('expedienteModal');
             const expedienteDetalle = document.getElementById('expedienteDetalle');
-            
             const registro = allRegistrosData[registroId];
-            
             if (registro) {
                 let htmlDetalle = `
                     <h3>Información Básica</h3>
@@ -827,21 +864,18 @@
                     <p><strong>Edad:</strong> ${registro.edad || ''}</p>
                     <p><strong>Fecha de Nacimiento:</strong> ${registro.fechaNacimiento || ''}</p>
                     <p><strong>Estado Civil:</strong> ${registro.estadoCivil || ''}</p>
-                    
                     <h3>Domicilio</h3>
                     <p><strong>Domicilio Actual:</strong> ${registro.domicilioActual || ''}</p>
                     <p><strong>Último Domicilio:</strong> ${registro.ultimoDomicilio || ''}</p>
                     <p><strong>Ciudad:</strong> ${registro.ciudad || ''}</p>
                     <p><strong>Provincia:</strong> ${registro.provincia || ''}</p>
                     <p><strong>País:</strong> ${registro.pais || ''}</p>
-
                     <h3>Condiciones</h3>
                     <p><strong>Condición de Salud:</strong> ${registro.condicionSalud || 'No especificado'}</p>
                     <p><strong>Condición Laboral:</strong> ${registro.condicionLaboral || 'No especificado'}</p>
                     <p><strong>Condición Judicial:</strong> ${registro.condicionJudicial || 'No especificado'}</p>
                     <p><strong>Causas de Referencia:</strong> ${registro.causasReferencia || 'No especificado'}</p>
                     <p><strong>Observaciones:</strong> ${registro.observaciones || 'No especificado'}</p>
-                    
                     <hr style="margin-top: 20px; border-color: #eee;">
                     <p style="font-size: 0.9em; color: #888;"><strong>Fecha de Registro:</strong> ${registro.fechaRegistro || 'N/A'}</p>
                     <p style="font-size: 0.9em; color: #888;"><strong>Última Actualización:</strong> ${registro.fechaUltimaActualizacion || 'N/A'}</p>
@@ -851,19 +885,18 @@
             }
         }
         
-        // Función para editar un registro
+        // Editar registro
         function editarRegistro(registroId) {
             const registro = allRegistrosData[registroId];
             if (registro) {
                 document.getElementById('nombre').value = registro.nombre;
                 document.getElementById('dni').value = registro.dni;
                 document.getElementById('edad').value = registro.edad;
-                
-                // Convert DD/MM/AAAA back to YYYY-MM-DD for the input type="date"
+
                 const parts = registro.fechaNacimiento.split('/');
                 const formattedDateForInput = `${parts[2]}-${parts[1]}-${parts[0]}`;
                 document.getElementById('fechaNacimiento').value = formattedDateForInput;
-                
+
                 document.getElementById('estadoCivil').value = registro.estadoCivil;
                 document.getElementById('domicilioActual').value = registro.domicilioActual;
                 document.getElementById('ultimoDomicilio').value = registro.ultimoDomicilio;
@@ -875,72 +908,148 @@
                 document.getElementById('condicionJudicial').value = registro.condicionJudicial;
                 document.getElementById('causasReferencia').value = registro.causasReferencia;
                 document.getElementById('observaciones').value = registro.observaciones;
-                
-                // Store the ID in a hidden field
                 registroIdInput.value = registroId;
-                
-                submitBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Actualizar Registro';
+
+                submitBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Guardar/Actualizar';
                 submitBtn.classList.add('update-btn');
                 submitBtn.classList.remove('submit-btn');
                 
+                showForm();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
-        // Eventos para el modal
+        // Eventos del modal
         document.getElementById('modalCloseBtnTop').addEventListener('click', () => {
             document.getElementById('expedienteModal').style.display = 'none';
         });
-        
         document.getElementById('cerrarModalBtn').addEventListener('click', () => {
             document.getElementById('expedienteModal').style.display = 'none';
         });
-
         window.addEventListener('click', (event) => {
             if (event.target == document.getElementById('expedienteModal')) {
                 document.getElementById('expedienteModal').style.display = 'none';
             }
         });
-        
         document.getElementById('imprimirInformeBtn').addEventListener('click', () => {
             window.print();
         });
-        
-        // Reset button style and functionality when form is reset
-        registroForm.addEventListener('reset', () => {
+
+        // Lógica para mostrar/ocultar secciones
+        function showForm() {
+            registroFormContainer.classList.remove('hidden');
+            registrosContainer.classList.add('hidden');
+        }
+        function showRecords() {
+            registroFormContainer.classList.add('hidden');
+            registrosContainer.classList.remove('hidden');
+        }
+        function hideAll() {
+            registroFormContainer.classList.add('hidden');
+            registrosContainer.classList.add('hidden');
+        }
+
+        // Eventos de los botones de navegación
+        document.getElementById('nuevoRegistroBtn').addEventListener('click', () => {
+            showForm();
+            registroForm.reset();
             registroIdInput.value = '';
-            submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Registro';
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar/Actualizar';
             submitBtn.classList.remove('update-btn');
             submitBtn.classList.add('submit-btn');
         });
+        document.getElementById('verRegistrosBtn').addEventListener('click', () => {
+            showRecords();
+            cargarRegistros(); // Cargar registros al mostrar la vista de listado
+        });
+        
+        document.getElementById('generarInformeBtn').addEventListener('click', () => {
+            showRecords();
+            cargarRegistros().then(() => {
+                const element = document.getElementById('informeContent');
+                const { jsPDF } = window.jspdf;
 
-        // Cargar registros al cargar la página
-        window.addEventListener('load', function() {
-            cargarRegistros();
+                html2canvas(element).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgWidth = 210; 
+                    const pageHeight = 295;
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    let heightLeft = imgHeight;
+                    let position = 0;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    pdf.save('informe.pdf');
+                });
+            });
         });
 
-        // Si se selecciona "Otro país" en provincia, seleccionar automáticamente el campo país
+        // Nueva función para generar PDF del formulario
+        generarPdfExpedienteBtn.addEventListener('click', () => {
+            // Ocultar botones para que no aparezcan en el PDF
+            const actionButtonsForm = document.querySelector('.action-buttons-form');
+            actionButtonsForm.style.display = 'none';
+
+            const formElement = document.getElementById('registroForm');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const a4Width = 210;
+            const a4Height = 297;
+
+            html2canvas(formElement, { scale: 2 }).then(canvas => {
+                const imgWidth = a4Width;
+                const imgHeight = (canvas.height * a4Width) / canvas.width;
+                const imgData = canvas.toDataURL('image/png');
+
+                let yPosition = 10; // Margen superior
+                const pageContent = document.createElement('div');
+                pageContent.style.width = `${a4Width}mm`;
+                pageContent.appendChild(canvas);
+
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                const nombre = document.getElementById('nombre').value || 'expediente';
+                pdf.save(`${nombre}.pdf`);
+                
+                // Volver a mostrar los botones
+                actionButtonsForm.style.display = 'flex';
+            });
+        });
+
+        document.getElementById('cerrarBtn').addEventListener('click', () => {
+            hideAll();
+        });
+
+        document.getElementById('cancelarBtn').addEventListener('click', () => {
+            registroForm.reset();
+            registroIdInput.value = '';
+            showRecords();
+        });
+
+        // Funciones de cálculo automático de fecha y edad
         document.getElementById('provincia').addEventListener('change', function() {
             if (this.value === 'Otro país') {
                 document.getElementById('pais').focus();
             }
         });
-
-        // Calcular edad automáticamente cuando se selecciona fecha de nacimiento
         document.getElementById('fechaNacimiento').addEventListener('change', function() {
             const fechaNacimiento = new Date(this.value);
             const hoy = new Date();
             let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
             const mes = hoy.getMonth() - fechaNacimiento.getMonth();
-            
             if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
                 edad--;
             }
-            
             document.getElementById('edad').value = edad;
         });
-
-        // Actualizar fecha de nacimiento cuando se cambia la edad manualmente
         document.getElementById('edad').addEventListener('change', function() {
             const edad = parseInt(this.value);
             if (!isNaN(edad)) {
