@@ -3,1060 +3,1112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Datos Personales</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Registro de Datos Personales - Defensoría Civil y Comercial 6</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --warning-color: #f39c12;
-            --success-color: #228B22;
-            --border-radius: 8px;
-            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --primary-color: #2563eb; /* Azul oscuro y profesional */
+            --primary-light: #eff6ff; /* Azul muy claro para fondos */
+            --text-color: #1f2937; /* Gris muy oscuro para el texto principal */
+            --border-color: #e5e7eb; /* Gris claro para bordes */
+            --bg-color: #f9fafb; /* Gris muy claro para el fondo */
+            --white: #ffffff;
+            --danger-color: #ef4444; /* Rojo para acciones peligrosas */
+            --success-color: #10b981; /* Verde para acciones de éxito */
+            --warning-color: #f59e0b; /* Amarillo para advertencias */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background-color: #f5f7fa;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
             padding: 20px;
+            box-sizing: border-box;
         }
 
-        .container {
+        .main-container {
             max-width: 900px;
-            margin: 0 auto;
-            background-color: white;
+            width: 100%;
+        }
+        
+        .container {
+            background: var(--white);
             padding: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            transition: var(--transition);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        h1 {
+        .header {
             text-align: center;
-            color: var(--primary-color);
             margin-bottom: 25px;
-            font-size: 2.2rem;
-            font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.9em;
         }
 
         .form-section {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            transition: var(--transition);
-        }
-
-        .form-section:last-child {
-            border-bottom: none;
-        }
-
-        .form-section h2 {
-            color: var(--primary-color);
-            font-size: 1.4rem;
+            background: var(--white);
+            padding: 20px 25px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             margin-bottom: 20px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--primary-color);
-            display: inline-block;
+        }
+        
+        .form-section:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        .form-section h2 {
+            font-size: 1.4em;
+            color: var(--text-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-section h2 i {
+            color: var(--primary-color);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
         .form-group {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
+        .form-group label {
             font-weight: 500;
-            color: var(--dark-color);
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-size: 0.9em;
+        }
+        
+        .required {
+            color: var(--danger-color);
         }
 
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        select,
-        textarea {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: var(--transition);
-            background-color: #f9f9f9;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            box-sizing: border-box;
         }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        input[type="date"]:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            background-color: white;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        textarea {
-            min-height: 120px;
+        
+        .form-group textarea {
+            min-height: 100px;
             resize: vertical;
         }
 
-        .action-btn, .form-btn {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 8px 12px;
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--primary-light);
+            background-color: var(--white);
+        }
+
+        /* Estilos para los botones de acción */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end; /* Alinear a la derecha */
+            gap: 15px;
+            margin-top: 25px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: var(--transition);
+            transition: all 0.3s ease;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 5px;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-        
-        .action-btn:hover, .form-btn:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            gap: 8px;
         }
 
-        .action-btn i, .form-btn i {
-            margin: 0;
-        }
-
-        .form-btn {
-            width: 100%;
-            padding: 10px 15px;
-        }
-
-        .submit-btn {
-            background-color: var(--success-color);
-        }
-
-        .submit-btn:hover {
-            background-color: #1a6e1a;
-        }
-
-        .cancel-btn {
-            background-color: #95a5a6;
-        }
-
-        .cancel-btn:hover {
-            background-color: #7f8c8d;
-        }
-
-        .row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .col {
-            flex: 1;
-        }
-
-        .edad-input {
-            width: 100px;
-        }
-
-        @media (max-width: 768px) {
-            .row {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .container {
-                padding: 20px;
-            }
-            .edad-input {
-                width: 100%;
-            }
-            .button-group .action-btn {
-                width: 100%;
-            }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-section {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .form-section:nth-child(1) { animation-delay: 0.1s; }
-        .form-section:nth-child(2) { animation-delay: 0.2s; }
-        .form-section:nth-child(3) { animation-delay: 0.3s; }
-        
-        .registros-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-        }
-
-        .registros-table th,
-        .registros-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .registros-table th {
+        .btn-primary {
             background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: var(--white);
         }
 
-        .registros-table tr:hover {
-            background-color: #f8f9fa;
+        .btn-primary:hover {
+            background-color: #1e40af;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+            transform: translateY(-1px);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: var(--white);
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: var(--white);
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
         }
 
-        .nombre-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            cursor: pointer;
+        /* Estilos para los checkboxes y radio buttons */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-
-        .nombre-link:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-
-        .no-registros {
-            text-align: center;
-            color: #666;
-            font-style: italic;
-            padding: 40px;
-        }
-
+        
+        /* Modal */
         .modal {
-            display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-            animation: fadeIn 0.3s ease-out;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 700px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            position: relative;
-        }
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close-btn:hover,
-        .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal-content h2 {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .modal-content h3 {
-            color: var(--primary-color);
-            margin-top: 25px;
-            margin-bottom: 10px;
-        }
-        .modal-content p {
-            margin-bottom: 8px;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .action-buttons button {
-            padding: 6px 10px;
-            font-size: 0.8rem;
-            flex-grow: 1;
-        }
-
-        .edit-btn {
-            background-color: var(--warning-color);
-        }
-
-        .edit-btn:hover {
-            background-color: #e67e22;
-        }
-
-        .delete-btn {
-            background-color: var(--accent-color);
-        }
-
-        .delete-btn:hover {
-            background-color: #c0392b;
-        }
-
-        .print-btn {
-            background-color: var(--primary-color);
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
         
-        .print-btn:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .button-group {
+        .modal.show {
             display: flex;
-            gap: 10px;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
         }
 
-        .button-group button, .button-group a {
-            flex: 1 1 auto;
-            min-width: 120px;
+        .modal-title {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: 600;
         }
 
-        .content-area {
-            display: block;
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: var(--text-color);
         }
 
+        /* Clases de utilidad */
         .hidden {
             display: none;
         }
 
-        .action-buttons-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .action-buttons-form button {
-            flex: 1;
-        }
-
-        @media print {
-            body > *:not(.modal):not(#registrosContainer) { display: none !important; }
-            #registrosContainer {
-                display: block !important;
-                box-shadow: none;
-                border: none;
-            }
-            .modal {
-                display: block !important;
-                position: static;
-                background-color: white;
-                padding-top: 0;
-            }
-            .modal-content {
-                box-shadow: none;
-                border: none;
-                width: auto;
-                max-width: none;
-                margin: 0;
-            }
-            .close-btn, #imprimirInformeBtn, #cerrarModalBtn, #registroForm, #buscarContainer, .action-buttons, .button-group, h1, h2 { display: none !important; }
+        /* Responsividad */
+        @media (max-width: 768px) {
             .container {
-                box-shadow: none;
-                border: none;
+                padding: 20px;
             }
-            h2 {
-                display: block !important;
-                text-align: center;
-                margin-bottom: 20px;
-                font-size: 1.5em;
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            .table th, .table td {
+                font-size: 0.9em;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Registro de Datos Personales</h1>
-        <div class="button-group">
-            <a href="https://defensoria6.github.io/sistemacausas/" class="action-btn" style="background-color: var(--dark-color);"><i class="fas fa-arrow-left"></i> Regresar</a>
-            <button id="nuevoRegistroBtn" class="action-btn" style="background-color: var(--success-color);"><i class="fas fa-plus"></i> Nuevo</button>
-            <button id="verRegistrosBtn" class="action-btn" style="background-color: var(--warning-color);"><i class="fas fa-list"></i> Guardados</button>
-            <button id="generarInformeBtn" class="action-btn"><i class="fas fa-file-pdf"></i> Informe PDF</button>
-            <button id="generarPdfExpedienteBtn" class="action-btn" style="background-color: var(--dark-color);"><i class="fas fa-file-pdf"></i> PDF Registro</button>
-            <button id="cerrarBtn" class="action-btn" style="background-color: var(--accent-color);"><i class="fas fa-times-circle"></i> Cerrar</button>
-        </div>
+    <div class="main-container">
+        <header class="header">
+            <h1>Registro de Datos Personales</h1>
+            <p>Administración de Causas Defensoría Civil y Comercial 6</p>
+        </header>
 
-        <div id="contentArea">
-            <div id="registroFormContainer" class="content-area">
+        <main class="content">
+            <div id="alertContainer"></div>
+
+            <div class="form-actions" style="justify-content: center; margin-bottom: 20px;">
+                <a href="https://defensoria6.github.io/sistemacausas/" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Regresar al Sistema de Gestión
+                </a>
+                <button id="nuevoRegistroBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nuevo Registro
+                </button>
+                <button id="verRegistrosBtn" class="btn btn-secondary">
+                    <i class="fas fa-list"></i> Ver Registros
+                </button>
+                <button id="imprimirBtn" class="btn btn-secondary">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <button id="exportarBtn" class="btn btn-secondary">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+            </div>
+
+            <div id="registroFormContainer" class="form-container">
                 <form id="registroForm">
                     <input type="hidden" id="registroId" name="registroId">
-                    <div class="form-section">
-                        <h2>Información Básica</h2>
-                        <div class="form-group">
-                            <label for="nombre">Nombre y Apellido:</label>
-                            <input type="text" id="nombre" name="nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dni">DNI:</label>
-                            <input type="text" id="dni" name="dni" required>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="edad">Edad:</label>
-                                    <input type="number" id="edad" name="edad" min="1" max="120" class="edad-input" required>
-                                </div>
+
+                    <div class="form-section fade-in">
+                        <h2><i class="fas fa-user"></i> Información Personal</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="apellido"><i class="fas fa-user"></i> Apellido <span class="required">*</span></label>
+                                <input type="text" id="apellido" name="apellido" class="form-control" required>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-                                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="nombre"><i class="fas fa-user"></i> Nombre <span class="required">*</span></label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dni"><i class="fas fa-id-card"></i> DNI <span class="required">*</span></label>
+                                <input type="text" id="dni" name="dni" class="form-control" required pattern="[0-9]{7,8}" placeholder="12345678">
+                            </div>
+                            <div class="form-group">
+                                <label for="nacionalidad"><i class="fas fa-flag"></i> Nacionalidad <span class="required">*</span></label>
+                                <input type="text" id="nacionalidad" name="nacionalidad" class="form-control" required value="Argentina">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaNacimiento"><i class="fas fa-calendar-alt"></i> Fecha de Nacimiento <span class="required">*</span></label>
+                                <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edad"><i class="fas fa-birthday-cake"></i> Edad</label>
+                                <input type="number" id="edad" name="edad" class="form-control" min="0" max="120" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="estadoCivil"><i class="fas fa-heart"></i> Estado Civil</label>
+                                <select id="estadoCivil" name="estadoCivil" class="form-control">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Soltero/a">Soltero/a</option>
+                                    <option value="Casado/a">Casado/a</option>
+                                    <option value="Divorciado/a">Divorciado/a</option>
+                                    <option value="Viudo/a">Viudo/a</option>
+                                    <option value="Unión Convivencial">Unión Convivencial</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ocupacionPersonal"><i class="fas fa-briefcase"></i> Ocupación</label>
+                                <input type="text" id="ocupacionPersonal" name="ocupacionPersonal" class="form-control">
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form-section fade-in">
+                        <h2><i class="fas fa-address-book"></i> Información de Contacto</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="telefono"><i class="fas fa-phone"></i> Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" class="form-control" placeholder="+54 9 376 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="ejemplo@correo.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion"><i class="fas fa-map-marker-alt"></i> Dirección</label>
+                                <input type="text" id="direccion" name="direccion" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="localidad"><i class="fas fa-city"></i> Localidad</label>
+                                <input type="text" id="localidad" name="localidad" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="provincia"><i class="fas fa-map"></i> Provincia</label>
+                                <select id="provincia" name="provincia" class="form-control">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Misiones" selected>Misiones</option>
+                                    <option value="Buenos Aires">Buenos Aires</option>
+                                    <option value="Catamarca">Catamarca</option>
+                                    <option value="Chaco">Chaco</option>
+                                    <option value="Chubut">Chubut</option>
+                                    <option value="Córdoba">Córdoba</option>
+                                    <option value="Corrientes">Corrientes</option>
+                                    <option value="Entre Ríos">Entre Ríos</option>
+                                    <option value="Formosa">Formosa</option>
+                                    <option value="Jujuy">Jujuy</option>
+                                    <option value="La Pampa">La Pampa</option>
+                                    <option value="La Rioja">La Rioja</option>
+                                    <option value="Mendoza">Mendoza</option>
+                                    <option value="Neuquén">Neuquén</option>
+                                    <option value="Río Negro">Río Negro</option>
+                                    <option value="Salta">Salta</option>
+                                    <option value="San Juan">San Juan</option>
+                                    <option value="San Luis">San Luis</option>
+                                    <option value="Santa Cruz">Santa Cruz</option>
+                                    <option value="Santa Fe">Santa Fe</option>
+                                    <option value="Santiago del Estero">Santiago del Estero</option>
+                                    <option value="Tierra del Fuego">Tierra del Fuego</option>
+                                    <option value="Tucumán">Tucumán</option>
+                                    <option value="CABA">Ciudad Autónoma de Buenos Aires</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="codigoPostal"><i class="fas fa-mail-bulk"></i> Código Postal</label>
+                                <input type="text" id="codigoPostal" name="codigoPostal" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section fade-in">
+                        <h2><i class="fas fa-balance-scale"></i> Información Legal</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="numeroCausa"><i class="fas fa-gavel"></i> Número de Causa</label>
+                                <input type="text" id="numeroCausa" name="numeroCausa" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="juzgado"><i class="fas fa-university"></i> Juzgado</label>
+                                <input type="text" id="juzgado" name="juzgado" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="secretaria"><i class="fas fa-user-tie"></i> Secretaría</label>
+                                <input type="text" id="secretaria" name="secretaria" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="parte"><i class="fas fa-users"></i> Parte</label>
+                                <select id="parte" name="parte" class="form-control">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Actor/Demandante">Actor/Demandante</option>
+                                    <option value="Demandado">Demandado</option>
+                                    <option value="Tercero">Tercero</option>
+                                    <option value="Otro/a">Otro/a</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="abogadoInterviniente"><i class="fas fa-user-shield"></i> Abogado interviniente</label>
+                                <select id="abogadoInterviniente" name="abogadoInterviniente" class="form-control">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Defensor Oficial">Defensor Oficial</option>
+                                    <option value="Abogado Patrocinante">Abogado Patrocinante</option>
+                                    <option value="Abogado Apoderado">Abogado Apoderado</option>
+                                    <option value="No tiene">No tiene</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="domicilioConstituido"><i class="fas fa-home"></i> Domicilio constituido</label>
+                                <input type="text" id="domicilioConstituido" name="domicilioConstituido" class="form-control">
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
-                            <label for="estadoCivil">Estado Civil:</label>
-                            <select id="estadoCivil" name="estadoCivil" required>
-                                <option value="">Seleccione...</option>
-                                <option value="Soltero/a">Soltero/a</option>
-                                <option value="Casado/a">Casado/a</option>
-                                <option value="Divorciado/a">Divorciado/a</option>
-                                <option value="Viudo/a">Viudo/a</option>
-                                <option value="Separado/a">Separado/a</option>
-                                <option value="Concubinato">Concubinato</option>
+                            <label for="datosAbogado"><i class="fas fa-user-tie"></i> Datos del abogado</label>
+                            <textarea id="datosAbogado" name="datosAbogado" class="form-control" placeholder="Nombre completo, matrícula, etc."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contacto"><i class="fas fa-phone-square-alt"></i> Contacto</label>
+                            <input type="text" id="contacto" name="contacto" class="form-control" placeholder="Teléfono, email, etc.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="observaciones"><i class="fas fa-sticky-note"></i> Observaciones</label>
+                            <textarea id="observaciones" name="observaciones" class="form-control" placeholder="Observaciones adicionales..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section fade-in">
+                        <h2><i class="fas fa-briefcase"></i> Situación Laboral actual</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="ocupacionLaboral"><i class="fas fa-user-tag"></i> Ocupación</label>
+                                <select id="ocupacionLaboral" name="ocupacionLaboral" class="form-control">
+                                    <option value="No tiene">No tiene</option>
+                                    <option value="Administración y Secretariado">Administración y Secretariado</option>
+                                    <option value="Agricultura, Silvicultura y Pesca">Agricultura, Silvicultura y Pesca</option>
+                                    <option value="Atención al Cliente">Atención al Cliente</option>
+                                    <option value="Atención Sanitaria y Servicios Personales">Atención Sanitaria y Servicios Personales</option>
+                                    <option value="Banca y Finanzas">Banca y Finanzas</option>
+                                    <option value="Construcción">Construcción</option>
+                                    <option value="Contabilidad y Auditoría">Contabilidad y Auditoría</option>
+                                    <option value="Diseño y Artes Gráficas">Diseño y Artes Gráficas</option>
+                                    <option value="Docencia y Educación">Docencia y Educación</option>
+                                    <option value="Fabricación y Producción">Fabricación y Producción</option>
+                                    <option value="Gastronomía y Turismo">Gastronomía y Turismo</option>
+                                    <option value="Ingeniería">Ingeniería</option>
+                                    <option value="Logística y Abastecimiento">Logística y Abastecimiento</option>
+                                    <option value="Marketing y Publicidad">Marketing y Publicidad</option>
+                                    <option value="Mantenimiento y Reparación">Mantenimiento y Reparación</option>
+                                    <option value="Minería y Siderurgia">Minería y Siderurgia</option>
+                                    <option value="Oficios y Otros">Oficios y Otros</option>
+                                    <option value="Tecnología Informática y Sistemas">Tecnología Informática y Sistemas</option>
+                                    <option value="Ventas">Ventas</option>
+                                    <option value="Otro/a">Otro/a</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="empleador"><i class="fas fa-building"></i> Empleador</label>
+                                <input type="text" id="empleador" name="empleador" class="form-control" placeholder="Insertar texto">
+                            </div>
+                            <div class="form-group">
+                                <label for="direccionLaboral"><i class="fas fa-map-marked-alt"></i> Dirección laboral</label>
+                                <input type="text" id="direccionLaboral" name="direccionLaboral" class="form-control" placeholder="sin datos">
+                            </div>
+                            <div class="form-group">
+                                <label for="salarioMensual"><i class="fas fa-money-bill-wave"></i> Monto Mensual de Salario</label>
+                                <input type="text" id="salarioMensual" name="salarioMensual" class="form-control" placeholder="no tiene (cifra en pesos argentinos)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section form-section-medical fade-in">
+                        <h2><i class="fas fa-heartbeat medical-icon"></i> Situación Actual de Salud</h2>
+                        
+                        <div class="form-group">
+                            <label for="estadoSaludGeneral"><i class="fas fa-stethoscope"></i> Estado General de Salud</label>
+                            <select id="estadoSaludGeneral" name="estadoSaludGeneral" class="form-control">
+                                <option value="">Seleccionar...</option>
+                                <option value="Excelente">Excelente</option>
+                                <option value="Muy Bueno">Muy Bueno</option>
+                                <option value="Bueno">Bueno</option>
+                                <option value="Regular">Regular</option>
+                                <option value="Malo">Malo</option>
+                                <option value="Crítico">Crítico</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-section">
-                        <h2>Domicilio</h2>
+
                         <div class="form-group">
-                            <label for="domicilioActual">Domicilio Actual:</label>
-                            <input type="text" id="domicilioActual" name="domicilioActual" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="ultimoDomicilio">Último Domicilio Conocido:</label>
-                            <input type="text" id="ultimoDomicilio" name="ultimoDomicilio">
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="ciudad">Ciudad:</label>
-                                    <input type="text" id="ciudad" name="ciudad" required>
+                            <label><i class="fas fa-virus"></i> Enfermedades Conocidas</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="hipertension" name="enfermedades" value="Hipertensión">
+                                    <label for="hipertension">Hipertensión</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="diabetes" name="enfermedades" value="Diabetes">
+                                    <label for="diabetes">Diabetes</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="asma" name="enfermedades" value="Asma">
+                                    <label for="asma">Asma</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="artritis" name="enfermedades" value="Artritis">
+                                    <label for="artritis">Artritis</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="migranas" name="enfermedades" value="Migrañas">
+                                    <label for="migranas">Migrañas</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="gastritis" name="enfermedades" value="Gastritis">
+                                    <label for="gastritis">Gastritis</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ansiedad" name="enfermedades" value="Ansiedad">
+                                    <label for="ansiedad">Ansiedad</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="depresion" name="enfermedades" value="Depresión">
+                                    <label for="depresion">Depresión</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="colesterol" name="enfermedades" value="Colesterol Alto">
+                                    <label for="colesterol">Colesterol Alto</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tiroides" name="enfermedades" value="Problemas de Tiroides">
+                                    <label for="tiroides">Problemas de Tiroides</label>
+                                </div>
+                                
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cancer" name="enfermedades" value="Cáncer">
+                                    <label for="cancer">Cáncer</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cardiopatia" name="enfermedades" value="Cardiopatía">
+                                    <label for="cardiopatia">Cardiopatía</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="avc" name="enfermedades" value="ACV">
+                                    <label for="avc">ACV (Accidente Cerebrovascular)</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="insuficienciaRenal" name="enfermedades" value="Insuficiencia Renal">
+                                    <label for="insuficienciaRenal">Insuficiencia Renal</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="hepatitis" name="enfermedades" value="Hepatitis">
+                                    <label for="hepatitis">Hepatitis</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="epilepsia" name="enfermedades" value="Epilepsia">
+                                    <label for="epilepsia">Epilepsia</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="esclerosisMultiple" name="enfermedades" value="Esclerosis Múltiple">
+                                    <label for="esclerosisMultiple">Esclerosis Múltiple</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="parkinson" name="enfermedades" value="Parkinson">
+                                    <label for="parkinson">Parkinson</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="alzheimer" name="enfermedades" value="Alzheimer">
+                                    <label for="alzheimer">Alzheimer</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="vih" name="enfermedades" value="VIH/SIDA">
+                                    <label for="vih">VIH/SIDA</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tuberculosis" name="enfermedades" value="Tuberculosis">
+                                    <label for="tuberculosis">Tuberculosis</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="fibrosisPulmonar" name="enfermedades" value="Fibrosis Pulmonar">
+                                    <label for="fibrosisPulmonar">Fibrosis Pulmonar</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ninguna" name="enfermedades" value="Ninguna">
+                                    <label for="ninguna">Ninguna</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="otras" name="enfermedades" value="Otras">
+                                    <label for="otras">Otras</label>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="provincia">Provincia:</label>
-                                    <select id="provincia" name="provincia" required>
-                                        <option value="">Seleccione una provincia...</option>
-                                        <option value="Buenos Aires">Buenos Aires</option>
-                                        <option value="Capital Federal">Capital Federal</option>
-                                        <option value="Catamarca">Catamarca</option>
-                                        <option value="Chaco">Chaco</option>
-                                        <option value="Chubut">Chubut</option>
-                                        <option value="Córdoba">Córdoba</option>
-                                        <option value="Corrientes">Corrientes</option>
-                                        <option value="Entre Ríos">Entre Ríos</option>
-                                        <option value="Formosa">Formosa</option>
-                                        <option value="Jujuy">Jujuy</option>
-                                        <option value="La Pampa">La Pampa</option>
-                                        <option value="La Rioja">La Rioja</option>
-                                        <option value="Mendoza">Mendoza</option>
-                                        <option value="Misiones">Misiones</option>
-                                        <option value="Neuquén">Neuquén</option>
-                                        <option value="Río Negro">Río Negro</option>
-                                        <option value="Salta">Salta</option>
-                                        <option value="San Juan">San Juan</option>
-                                        <option value="San Luis">San Luis</option>
-                                        <option value="Santa Cruz">Santa Cruz</option>
-                                        <option value="Santa Fe">Santa Fe</option>
-                                        <option value="Santiago del Estero">Santiago del Estero</option>
-                                        <option value="Tierra del Fuego">Tierra del Fuego</option>
-                                        <option value="Tucumán">Tucumán</option>
-                                        <option value="Islas Malvinas">Islas Malvinas</option>
-                                        <option value="Otro país">Otro país</option>
-                                    </select>
-                                </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label for="otrasEnfermedades"><i class="fas fa-notes-medical"></i> Especificar Otras Enfermedades</label>
+                            <textarea id="otrasEnfermedades" name="otrasEnfermedades" class="form-control" placeholder="Describir otras enfermedades no listadas..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="medicamentos"><i class="fas fa-pills"></i> Medicamentos Actuales</label>
+                            <textarea id="medicamentos" name="medicamentos" class="form-control" placeholder="Listar medicamentos que toma actualmente..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alergias"><i class="fas fa-exclamation-triangle"></i> Alergias</label>
+                            <textarea id="alergias" name="alergias" class="form-control" placeholder="Describir alergias conocidas..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section form-section-medical fade-in">
+                        <h2><i class="fas fa-hospital medical-icon"></i> Información de Internación</h2>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="lugarInternacion"><i class="fas fa-hospital-alt"></i> Lugar de Internación</label>
+                                <select id="lugarInternacion" name="lugarInternacion" class="form-control">
+                                    <option value="">Seleccionar...</option>
+                                    <optgroup label="Hospitales de Misiones">
+                                        <option value="Hospital Escuela de Agudos Dr. Ramón Madariaga - Posadas">Hospital Escuela de Agudos Dr. Ramón Madariaga - Posadas</option>
+                                        <option value="Hospital de Pediatría Dr. Fernando Barreyro - Posadas">Hospital de Pediatría Dr. Fernando Barreyro - Posadas</option>
+                                        <option value="Hospital Materno Neonatal - Posadas">Hospital Materno Neonatal - Posadas</option>
+                                        <option value="Hospital SAMIC Oberá">Hospital SAMIC Oberá</option>
+                                        <option value="Hospital SAMIC Eldorado">Hospital SAMIC Eldorado</option>
+                                        <option value="Hospital SAMIC Puerto Iguazú">Hospital SAMIC Puerto Iguazú</option>
+                                        <option value="Hospital de Área Apóstoles">Hospital de Área Apóstoles</option>
+                                        <option value="Hospital de Área Leandro N. Alem">Hospital de Área Leandro N. Alem</option>
+                                        <option value="Hospital de Área Montecarlo">Hospital de Área Montecarlo</option>
+                                        <option value="Hospital de Área San Vicente">Hospital de Área San Vicente</option>
+                                    </optgroup>
+                                    <optgroup label="Sanatorios y Clínicas de Misiones">
+                                        <option value="Sanatorio Boratti - Posadas">Sanatorio Boratti - Posadas</option>
+                                        <option value="Instituto de Cardiología de Misiones - Posadas">Instituto de Cardiología de Misiones - Posadas</option>
+                                        <option value="Clínica Privada Posadas">Clínica Privada Posadas</option>
+                                        <option value="Sanatorio Adventista del Plata - Libertador San Martín">Sanatorio Adventista del Plata - Libertador San Martín</option>
+                                        <option value="Clínica San José - Oberá">Clínica San José - Oberá</option>
+                                        <option value="Sanatorio Güemes - Oberá">Sanatorio Güemes - Oberá</option>
+                                        <option value="Clínica Eldorado">Clínica Eldorado</option>
+                                    </optgroup>
+                                    <optgroup label="Hospitales Nacionales">
+                                        <option value="Hospital Italiano de Buenos Aires">Hospital Italiano de Buenos Aires</option>
+                                        <option value="Hospital Alemán - Buenos Aires">Hospital Alemán - Buenos Aires</option>
+                                        <option value="Hospital de Clínicas José de San Martín - Buenos Aires">Hospital de Clínicas José de San Martín - Buenos Aires</option>
+                                        <option value="Hospital Rivadavia - Buenos Aires">Hospital Rivadavia - Buenos Aires</option>
+                                        <option value="Hospital Ramos Mejía - Buenos Aires">Hospital Ramos Mejía - Buenos Aires</option>
+                                        <option value="Hospital Fernández - Buenos Aires">Hospital Fernández - Buenos Aires</option>
+                                        <option value="Hospital Garrahan - Buenos Aires">Hospital Garrahan - Buenos Aires</option>
+                                        <option value="Hospital Nacional de Pediatría Dr. Juan P. Garrahan">Hospital Nacional de Pediatría Dr. Juan P. Garrahan</option>
+                                        <option value="Instituto Nacional del Cáncer - Buenos Aires">Instituto Nacional del Cáncer - Buenos Aires</option>
+                                        <option value="Hospital Británico - Buenos Aires">Hospital Británico - Buenos Aires</option>
+                                        <option value="Sanatorio Otamendi - Buenos Aires">Sanatorio Otamendi - Buenos Aires</option>
+                                        <option value="Sanatorio de la Trinidad - Buenos Aires">Sanatorio de la Trinidad - Buenos Aires</option>
+                                        <option value="Hospital Universitario Austral - Buenos Aires">Hospital Universitario Austral - Buenos Aires</option>
+                                        <option value="Clínica Bazterrica - Buenos Aires">Clínica Bazterrica - Buenos Aires</option>
+                                        <option value="Sanatorio Mater Dei - Buenos Aires">Sanatorio Mater Dei - Buenos Aires</option>
+                                        <option value="Hospital Español - Buenos Aires">Hospital Español - Buenos Aires</option>
+                                        <option value="Instituto Cardiovascular de Buenos Aires (ICBA)">Instituto Cardiovascular de Buenos Aires (ICBA)</option>
+                                        <option value="Fundación Favaloro - Buenos Aires">Fundación Favaloro - Buenos Aires</option>
+                                    </optgroup>
+                                    <option value="Otro">Otro (especificar)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="otroLugarInternacion"><i class="fas fa-hospital-user"></i> Especificar Otro Lugar</label>
+                                <input type="text" id="otroLugarInternacion" name="otroLugarInternacion" class="form-control" placeholder="Especificar otro lugar de internación...">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fechaInternacion"><i class="fas fa-calendar-plus"></i> Fecha de Internación</label>
+                                <input type="date" id="fechaInternacion" name="fechaInternacion" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fechaAlta"><i class="fas fa-calendar-check"></i> Fecha de Alta</label>
+                                <input type="date" id="fechaAlta" name="fechaAlta" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="motivoInternacion"><i class="fas fa-clipboard-list"></i> Motivo de Internación</label>
+                                <textarea id="motivoInternacion" name="motivoInternacion" class="form-control" placeholder="Describir el motivo de la internación..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="medicoTratante"><i class="fas fa-user-md"></i> Médico Tratante</label>
+                                <input type="text" id="medicoTratante" name="medicoTratante" class="form-control" placeholder="Nombre del médico tratante...">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="pais">País:</label>
-                            <select id="pais" name="pais" required>
-                                <option value="">Seleccione un país...</option>
-                                <optgroup label="América">
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Bolivia">Bolivia</option>
-                                    <option value="Brasil">Brasil</option>
-                                    <option value="Canadá">Canadá</option>
-                                    <option value="Chile">Chile</option>
-                                    <option value="Colombia">Colombia</option>
-                                    <option value="Costa Rica">Costa Rica</option>
-                                    <option value="Cuba">Cuba</option>
-                                    <option value="Ecuador">Ecuador</option>
-                                    <option value="El Salvador">El Salvador</option>
-                                    <option value="Estados Unidos">Estados Unidos</option>
-                                    <option value="Guatemala">Guatemala</option>
-                                    <option value="Haití">Haití</option>
-                                    <option value="Honduras">Honduras</option>
-                                    <option value="México">México</option>
-                                    <option value="Nicaragua">Nicaragua</option>
-                                    <option value="Panamá">Panamá</option>
-                                    <option value="Paraguay">Paraguay</option>
-                                    <option value="Perú">Perú</option>
-                                    <option value="República Dominicana">República Dominicana</option>
-                                    <option value="Uruguay">Uruguay</option>
-                                    <option value="Venezuela">Venezuela</option>
-                                </optgroup>
-                                <optgroup label="Europa">
-                                    <option value="Alemania">Alemania</option>
-                                    <option value="Austria">Austria</option>
-                                    <option value="Bélgica">Bélgica</option>
-                                    <option value="Bulgaria">Bulgaria</option>
-                                    <option value="Croacia">Croacia</option>
-                                    <option value="Dinamarca">Dinamarca</option>
-                                    <option value="España">España</option>
-                                    <option value="Finlandia">Finlandia</option>
-                                    <option value="Francia">Francia</option>
-                                    <option value="Grecia">Grecia</option>
-                                    <option value="Hungría">Hungría</option>
-                                    <option value="Irlanda">Irlanda</option>
-                                    <option value="Italia">Italia</option>
-                                    <option value="Noruega">Noruega</option>
-                                    <option value="Países Bajos">Países Bajos</option>
-                                    <option value="Polonia">Polonia</option>
-                                    <option value="Portugal">Portugal</option>
-                                    <option value="Reino Unido">Reino Unido</option>
-                                    <option value="Rumanía">Rumanía</option>
-                                    <option value="Rusia">Rusia</option>
-                                    <option value="Suecia">Suecia</option>
-                                    <option value="Suiza">Suiza</option>
-                                </optgroup>
-                                <optgroup label="Asia">
-                                    <option value="Afganistán">Afganistán</option>
-                                    <option value="Arabia Saudita">Arabia Saudita</option>
-                                    <option value="China">China</option>
-                                    <option value="Corea del Norte">Corea del Norte</option>
-                                    <option value="Corea del Sur">Corea del Sur</option>
-                                    <option value="Emiratos Árabes Unidos">Emiratos Árabes Unidos</option>
-                                    <option value="India">India</option>
-                                    <option value="Indonesia">Indonesia</option>
-                                    <option value="Irán">Irán</option>
-                                    <option value="Iraq">Iraq</option>
-                                    <option value="Israel">Israel</option>
-                                    <option value="Japón">Japón</option>
-                                    <option value="Jordania">Jordania</option>
-                                    <option value="Kazajistán">Kazajistán</option>
-                                    <option value="Malasia">Malasia</option>
-                                    <option value="Pakistán">Pakistán</option>
-                                    <option value="Qatar">Qatar</option>
-                                    <option value="Singapur">Singapur</option>
-                                    <option value="Siria">Siria</option>
-                                    <option value="Tailandia">Tailandia</option>
-                                    <option value="Turquía">Turquía</option>
-                                </optgroup>
-                                <optgroup label="África">
-                                    <option value="Argelia">Argelia</option>
-                                    <option value="Angola">Angola</option>
-                                    <option value="Egipto">Egipto</option>
-                                    <option value="Etiopía">Etiopía</option>
-                                    <option value="Ghana">Ghana</option>
-                                    <option value="Kenia">Kenia</option>
-                                    <option value="Libia">Libia</option>
-                                    <option value="Marruecos">Marruecos</option>
-                                    <option value="Nigeria">Nigeria</option>
-                                    <option value="República Democrática del Congo">República Democrática del Congo</option>
-                                    <option value="Sudáfrica">Sudáfrica</option>
-                                    <option value="Sudán">Sudán</option>
-                                    <option value="Tanzania">Tanzania</option>
-                                    <option value="Túnez">Túnez</option>
-                                </optgroup>
-                                <optgroup label="Oceanía">
-                                    <option value="Australia">Australia</option>
-                                    <option value="Fiyi">Fiyi</option>
-                                    <option value="Nueva Zelanda">Nueva Zelanda</option>
-                                    <option value="Papúa Nueva Guinea">Papúa Nueva Guinea</option>
-                                    <option value="Samoa">Samoa</option>
-                                </optgroup>
-                            </select>
-                        </div>
                     </div>
-                    <div class="form-section">
-                        <h2>Condiciones</h2>
-                        <div class="form-group">
-                            <label for="condicionSalud">Condición de Salud:</label>
-                            <textarea id="condicionSalud" name="condicionSalud"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="condicionLaboral">Condición Laboral:</label>
-                            <textarea id="condicionLaboral" name="condicionLaboral"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="condicionJudicial">Condición Judicial:</label>
-                            <textarea id="condicionJudicial" name="condicionJudicial"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="causasReferencia">Causas de Referencia:</label>
-                            <textarea id="causasReferencia" name="causasReferencia"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="observaciones">Observaciones:</label>
-                            <textarea id="observaciones" name="observaciones"></textarea>
-                        </div>
-                    </div>
-                    <div class="action-buttons-form">
-                        <button type="submit" class="form-btn submit-btn"><i class="fas fa-save"></i> Guardar/Actualizar</button>
-                        <button type="button" id="cancelarBtn" class="form-btn cancel-btn"><i class="fas fa-times"></i> Cancelar</button>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Guardar Registro
+                        </button>
+                        <button type="button" id="limpiarBtn" class="btn btn-secondary">
+                            <i class="fas fa-eraser"></i> Limpiar Formulario
+                        </button>
+                        <button type="button" id="cancelarBtn" class="btn btn-danger">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
                     </div>
                 </form>
             </div>
-            
-            <div id="registrosContainer" class="content-area hidden" style="margin-top: 30px;">
-                <div class="form-section" id="informeContent">
-                    <h2>Lista de Personas Registradas</h2>
-                    <div class="form-group" id="buscarContainer">
-                        <label for="buscar"><i class="fas fa-search"></i> Buscar por Nombre o DNI:</label>
-                        <input type="text" id="buscar" name="buscar" placeholder="Escriba aquí para buscar..." style="width: 100%;">
-                    </div>
-                    <div id="listaRegistros">
-                        <p style="text-align: center; color: #666;">Cargando registros...</p>
-                    </div>
+
+            <div id="tablaRegistrosContainer" class="hidden">
+                <div class="table-container">
+                    <table class="table" id="tablaRegistros">
+                        <thead>
+                            <tr>
+                                <th>Apellido y Nombre</th>
+                                <th>DNI</th>
+                                <th>Fecha Nacimiento</th>
+                                <th>Teléfono</th>
+                                <th>Estado de Salud</th>
+                                <th>Lugar Internación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+        </main>
+    </div>
 
-        <div id="expedienteModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" id="modalCloseBtnTop">&times;</span>
-                <h2>Expediente Completo</h2>
-                <div id="expedienteDetalle">
-                </div>
-                <button id="imprimirInformeBtn" class="form-btn submit-btn"><i class="fas fa-print"></i> Generar Informe</button>
-                <button id="cerrarModalBtn" class="form-btn cancel-btn" style="background-color: var(--accent-color); margin-top: 10px;"><i class="fas fa-times-circle"></i> Cerrar</button>
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmar Acción</h3>
+                <button class="close-btn" onclick="cerrarModal()">&times;</button>
+            </div>
+            <div id="modalBody">
+                <p>¿Está seguro de que desea realizar esta acción?</p>
+            </div>
+            <div class="form-actions" style="justify-content: center;">
+                <button id="confirmarBtn" class="btn btn-primary">Confirmar</button>
+                <button onclick="cerrarModal()" class="btn btn-secondary">Cancelar</button>
             </div>
         </div>
     </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
-            authDomain: "datos-partes.firebaseapp.com",
-            projectId: "datos-partes",
-            storageBucket: "datos-partes.firebasestorage.app",
-            messagingSenderId: "277413385546",
-            appId: "1:277413385546:web:9863aaa081727a84479db3"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        let allRegistrosData = {};
+        // Variables globales
+        let registros = JSON.parse(localStorage.getItem('registrosPersonales')) || [];
+        let registroEditando = null;
 
-        let registroForm = document.getElementById('registroForm');
-        let registroFormContainer = document.getElementById('registroFormContainer');
-        let registrosContainer = document.getElementById('registrosContainer');
-        let submitBtn = document.querySelector('.submit-btn');
-        let registroIdInput = document.getElementById('registroId');
-        let generarPdfExpedienteBtn = document.getElementById('generarPdfExpedienteBtn');
-        
-        const pad = (n) => n < 10 ? '0' + n : n;
-
-        function formatDate(date) {
-            if (!date) return '';
-            const d = new Date(date);
-            return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
-        }
-        
-        function parseDate(dateStr) {
-            if (!dateStr) return null;
-            const parts = dateStr.split('/');
-            if (parts.length === 3) {
-                return new Date(parts[2], parts[1] - 1, parts[0]);
-            }
-            return new Date(dateStr);
-        }
-
-        registroForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
-            submitBtn.disabled = true;
-
-            const now = new Date();
-            const formattedNow = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
-
-            const formData = {
-                nombre: document.getElementById('nombre').value,
-                dni: document.getElementById('dni').value,
-                edad: document.getElementById('edad').value,
-                fechaNacimiento: formatDate(document.getElementById('fechaNacimiento').value),
-                estadoCivil: document.getElementById('estadoCivil').value,
-                domicilioActual: document.getElementById('domicilioActual').value,
-                ultimoDomicilio: document.getElementById('ultimoDomicilio').value,
-                ciudad: document.getElementById('ciudad').value,
-                provincia: document.getElementById('provincia').value,
-                pais: document.getElementById('pais').value,
-                condicionSalud: document.getElementById('condicionSalud').value,
-                condicionLaboral: document.getElementById('condicionLaboral').value,
-                condicionJudicial: document.getElementById('condicionJudicial').value,
-                causasReferencia: document.getElementById('causasReferencia').value,
-                observaciones: document.getElementById('observaciones').value,
-            };
-
-            const registroId = registroIdInput.value;
-            let ref;
-
-            if (registroId) {
-                formData.fechaUltimaActualizacion = formattedNow;
-                ref = database.ref('registros').child(registroId);
-            } else {
-                formData.fechaRegistro = formattedNow;
-                formData.fechaUltimaActualizacion = formattedNow;
-                ref = database.ref('registros').push();
-            }
-
-            ref.set(formData)
-                .then(() => {
-                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Registro Guardado';
-                    setTimeout(() => {
-                        submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar/Actualizar';
-                        submitBtn.disabled = false;
-                    }, 2000);
-
-                    alert('Registro guardado exitosamente!');
-                    registroForm.reset();
-                    registroIdInput.value = '';
-
-                    cargarRegistros();
-                    showRecords();
-                })
-                .catch((error) => {
-                    console.error('Error al guardar:', error);
-                    submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al Guardar';
-                    submitBtn.disabled = false;
-                    alert('Hubo un error al guardar el registro. Por favor intente nuevamente.');
-                });
-        });
-
-        function cargarRegistros() {
-            const listaRegistros = document.getElementById('listaRegistros');
-            listaRegistros.innerHTML = '<p style="text-align: center; color: #666;">Cargando registros...</p>';
-
-            return database.ref('registros').once('value')
-                .then((snapshot) => {
-                    allRegistrosData = snapshot.val();
-                    if (!allRegistrosData) {
-                        listaRegistros.innerHTML = '<div class="no-registros">No hay registros guardados aún.</div>';
-                        return;
-                    }
-                    renderizarTabla(allRegistrosData);
-                })
-                .catch((error) => {
-                    console.error('Error al cargar registros:', error);
-                    listaRegistros.innerHTML = '<div class="no-registros">Error al cargar los registros.</div>';
-                });
-        }
-        
-        function renderizarTabla(registrosParaMostrar) {
-            const listaRegistros = document.getElementById('listaRegistros');
-            let tablaHTML = `
-                <table class="registros-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre y Apellido</th>
-                            <th>DNI</th>
-                            <th>Edad</th>
-                            <th>Ciudad</th>
-                            <th>Fecha Registro</th>
-                            <th>Última Actualización</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            Object.keys(registrosParaMostrar).forEach(key => {
-                const registro = registrosParaMostrar[key];
-                tablaHTML += `
-                    <tr>
-                        <td>
-                            <a href="#" class="nombre-link" onclick="abrirExpediente('${key}')">
-                                ${registro.nombre}
-                            </a>
-                        </td>
-                        <td>${registro.dni}</td>
-                        <td>${registro.edad}</td>
-                        <td>${registro.ciudad}</td>
-                        <td>${registro.fechaRegistro || 'N/A'}</td>
-                        <td>${registro.fechaUltimaActualizacion || 'N/A'}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn edit-btn" onclick="editarRegistro('${key}')"><i class="fas fa-edit"></i> Editar</button>
-                                <button class="action-btn delete-btn" onclick="eliminarRegistro('${key}')"><i class="fas fa-trash-alt"></i> Eliminar</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            tablaHTML += `
-                    </tbody>
-                </table>
-            `;
-            listaRegistros.innerHTML = tablaHTML;
-        }
-
-        document.getElementById('buscar').addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            const registrosFiltrados = {};
-            if (allRegistrosData) {
-                Object.keys(allRegistrosData).forEach(key => {
-                    const registro = allRegistrosData[key];
-                    if (registro.nombre.toLowerCase().includes(searchTerm) || (registro.dni && registro.dni.toLowerCase().includes(searchTerm))) {
-                        registrosFiltrados[key] = registro;
-                    }
-                });
-            }
-            if (Object.keys(registrosFiltrados).length > 0) {
-                renderizarTabla(registrosFiltrados);
-            } else {
-                document.getElementById('listaRegistros').innerHTML = '<div class="no-registros">No se encontraron registros.</div>';
-            }
-        });
-
-        function abrirExpediente(registroId) {
-            const expedienteModal = document.getElementById('expedienteModal');
-            const expedienteDetalle = document.getElementById('expedienteDetalle');
-            const registro = allRegistrosData[registroId];
-            if (registro) {
-                let htmlDetalle = `
-                    <h3>Información Básica</h3>
-                    <p><strong>Nombre y Apellido:</strong> ${registro.nombre || ''}</p>
-                    <p><strong>DNI:</strong> ${registro.dni || ''}</p>
-                    <p><strong>Edad:</strong> ${registro.edad || ''}</p>
-                    <p><strong>Fecha de Nacimiento:</strong> ${registro.fechaNacimiento || ''}</p>
-                    <p><strong>Estado Civil:</strong> ${registro.estadoCivil || ''}</p>
-                    <h3>Domicilio</h3>
-                    <p><strong>Domicilio Actual:</strong> ${registro.domicilioActual || ''}</p>
-                    <p><strong>Último Domicilio:</strong> ${registro.ultimoDomicilio || ''}</p>
-                    <p><strong>Ciudad:</strong> ${registro.ciudad || ''}</p>
-                    <p><strong>Provincia:</strong> ${registro.provincia || ''}</p>
-                    <p><strong>País:</strong> ${registro.pais || ''}</p>
-                    <h3>Condiciones</h3>
-                    <p><strong>Condición de Salud:</strong> ${registro.condicionSalud || 'No especificado'}</p>
-                    <p><strong>Condición Laboral:</strong> ${registro.condicionLaboral || 'No especificado'}</p>
-                    <p><strong>Condición Judicial:</strong> ${registro.condicionJudicial || 'No especificado'}</p>
-                    <p><strong>Causas de Referencia:</strong> ${registro.causasReferencia || 'No especificado'}</p>
-                    <p><strong>Observaciones:</strong> ${registro.observaciones || 'No especificado'}</p>
-                    <hr style="margin-top: 20px; border-color: #eee;">
-                    <p style="font-size: 0.9em; color: #888;"><strong>Fecha de Registro:</strong> ${registro.fechaRegistro || 'N/A'}</p>
-                    <p style="font-size: 0.9em; color: #888;"><strong>Última Actualización:</strong> ${registro.fechaUltimaActualizacion || 'N/A'}</p>
-                `;
-                expedienteDetalle.innerHTML = htmlDetalle;
-                expedienteModal.style.display = 'block';
-            }
-        }
-        
-        function editarRegistro(registroId) {
-            const registro = allRegistrosData[registroId];
-            if (registro) {
-                document.getElementById('nombre').value = registro.nombre;
-                document.getElementById('dni').value = registro.dni;
-                document.getElementById('edad').value = registro.edad;
-
-                const parts = registro.fechaNacimiento.split('/');
-                const formattedDateForInput = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                document.getElementById('fechaNacimiento').value = formattedDateForInput;
-
-                document.getElementById('estadoCivil').value = registro.estadoCivil;
-                document.getElementById('domicilioActual').value = registro.domicilioActual;
-                document.getElementById('ultimoDomicilio').value = registro.ultimoDomicilio;
-                document.getElementById('ciudad').value = registro.ciudad;
-                document.getElementById('provincia').value = registro.provincia;
-                document.getElementById('pais').value = registro.pais;
-                document.getElementById('condicionSalud').value = registro.condicionSalud;
-                document.getElementById('condicionLaboral').value = registro.condicionLaboral;
-                document.getElementById('condicionJudicial').value = registro.condicionJudicial;
-                document.getElementById('causasReferencia').value = registro.causasReferencia;
-                document.getElementById('observaciones').value = registro.observaciones;
-                registroIdInput.value = registroId;
-                
-                showForm();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function eliminarRegistro(registroId) {
-            if (confirm('¿Está seguro de que desea eliminar este registro? Esta acción no se puede deshacer.')) {
-                database.ref('registros').child(registroId).remove()
-                    .then(() => {
-                        alert('Registro eliminado exitosamente.');
-                        cargarRegistros();
-                    })
-                    .catch((error) => {
-                        console.error('Error al eliminar el registro:', error);
-                        alert('Hubo un error al intentar eliminar el registro.');
-                    });
-            }
-        }
-
-        document.getElementById('modalCloseBtnTop').addEventListener('click', () => {
-            document.getElementById('expedienteModal').style.display = 'none';
-        });
-        document.getElementById('cerrarModalBtn').addEventListener('click', () => {
-            document.getElementById('expedienteModal').style.display = 'none';
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target == document.getElementById('expedienteModal')) {
-                document.getElementById('expedienteModal').style.display = 'none';
-            }
-        });
-        document.getElementById('imprimirInformeBtn').addEventListener('click', () => {
-            window.print();
-        });
-
-        function showForm() {
-            registroFormContainer.classList.remove('hidden');
-            registrosContainer.classList.add('hidden');
-        }
-        function showRecords() {
-            registroFormContainer.classList.add('hidden');
-            registrosContainer.classList.remove('hidden');
-        }
-        function hideAll() {
-            registroFormContainer.classList.add('hidden');
-            registrosContainer.classList.add('hidden');
-        }
-
-        document.getElementById('nuevoRegistroBtn').addEventListener('click', () => {
-            showForm();
-            registroForm.reset();
-            registroIdInput.value = '';
-        });
-        document.getElementById('verRegistrosBtn').addEventListener('click', () => {
-            showRecords();
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            inicializarEventos();
             cargarRegistros();
-        });
-        
-        document.getElementById('generarInformeBtn').addEventListener('click', () => {
-            showRecords();
-            cargarRegistros().then(() => {
-                const element = document.getElementById('informeContent');
-                const { jsPDF } = window.jspdf;
-
-                html2canvas(element).then(canvas => {
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    const imgWidth = 210; 
-                    const pageHeight = 295;
-                    const imgHeight = canvas.height * imgWidth / canvas.width;
-                    let heightLeft = imgHeight;
-                    let position = 0;
-
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-
-                    while (heightLeft >= 0) {
-                        position = heightLeft - imgHeight;
-                        pdf.addPage();
-                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                        heightLeft -= pageHeight;
+            
+            // Calcular edad automáticamente
+            document.getElementById('fechaNacimiento').addEventListener('change', calcularEdad);
+            
+            // Mostrar/ocultar campo de otro lugar de internación
+            document.getElementById('lugarInternacion').addEventListener('change', function() {
+                const otroLugar = document.getElementById('otroLugarInternacion').closest('.form-group');
+                if (this.value === 'Otro') {
+                    otroLugar.style.display = 'flex';
+                } else {
+                    otroLugar.style.display = 'none';
+                    document.getElementById('otroLugarInternacion').value = '';
+                }
+            });
+            
+            // Mostrar/ocultar campo de otras enfermedades
+            document.getElementById('otras').addEventListener('change', function() {
+                const otrasEnf = document.getElementById('otrasEnfermedades').closest('.form-group');
+                if (this.checked) {
+                    otrasEnf.style.display = 'flex';
+                } else {
+                    otrasEnf.style.display = 'none';
+                    document.getElementById('otrasEnfermedades').value = '';
+                }
+            });
+            
+            // Manejar checkbox "Ninguna"
+            document.getElementById('ninguna').addEventListener('change', function() {
+                if (this.checked) {
+                    const checkboxes = document.querySelectorAll('input[name="enfermedades"]:not(#ninguna)');
+                    checkboxes.forEach(cb => cb.checked = false);
+                }
+            });
+            
+            // Desmarcar "Ninguna" si se selecciona otra enfermedad
+            document.querySelectorAll('input[name="enfermedades"]:not(#ninguna)').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    if (this.checked) {
+                        document.getElementById('ninguna').checked = false;
                     }
-                    pdf.save('informe.pdf');
                 });
             });
         });
 
-        generarPdfExpedienteBtn.addEventListener('click', () => {
-            const actionButtonsForm = document.querySelector('.action-buttons-form');
-            actionButtonsForm.style.display = 'none';
+        function inicializarEventos() {
+            document.getElementById('nuevoRegistroBtn').addEventListener('click', nuevoRegistro);
+            document.getElementById('verRegistrosBtn').addEventListener('click', verRegistros);
+            document.getElementById('exportarBtn').addEventListener('click', exportarDatos);
+            document.getElementById('imprimirBtn').addEventListener('click', imprimir);
+            document.getElementById('limpiarBtn').addEventListener('click', limpiarFormulario);
+            document.getElementById('cancelarBtn').addEventListener('click', cancelar);
+            document.getElementById('registroForm').addEventListener('submit', guardarRegistro);
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const [year, month, day] = dateString.split('-');
+            return `${day}/${month}/${year}`;
+        }
 
-            const formElement = document.getElementById('registroForm');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const a4Width = 210;
-            const a4Height = 297;
-
-            html2canvas(formElement, { scale: 2 }).then(canvas => {
-                const imgWidth = a4Width;
-                const imgHeight = (canvas.height * a4Width) / canvas.width;
-                const imgData = canvas.toDataURL('image/png');
-
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                
-                const nombre = document.getElementById('nombre').value || 'expediente';
-                pdf.save(`${nombre}.pdf`);
-                
-                actionButtonsForm.style.display = 'flex';
-            });
-        });
-
-        document.getElementById('cerrarBtn').addEventListener('click', () => {
-            hideAll();
-        });
-
-        document.getElementById('cancelarBtn').addEventListener('click', () => {
-            registroForm.reset();
-            registroIdInput.value = '';
-            showRecords();
-        });
-
-        document.getElementById('provincia').addEventListener('change', function() {
-            if (this.value === 'Otro país') {
-                document.getElementById('pais').focus();
-            }
-        });
-        document.getElementById('fechaNacimiento').addEventListener('change', function() {
-            const fechaNacimiento = new Date(this.value);
+        function calcularEdad() {
+            const fechaNac = new Date(this.value);
             const hoy = new Date();
-            let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-            const mes = hoy.getMonth() - fechaNacimiento.getMonth();
-            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+            let edad = hoy.getFullYear() - fechaNac.getFullYear();
+            const mes = hoy.getMonth() - fechaNac.getMonth();
+            
+            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
                 edad--;
             }
-            document.getElementById('edad').value = edad;
-        });
-        document.getElementById('edad').addEventListener('change', function() {
-            const edad = parseInt(this.value);
-            if (!isNaN(edad)) {
-                const hoy = new Date();
-                const añoNacimiento = hoy.getFullYear() - edad;
-                document.getElementById('fechaNacimiento').value = `${añoNacimiento}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
+            
+            document.getElementById('edad').value = edad >= 0 ? edad : '';
+        }
+
+        function nuevoRegistro() {
+            registroEditando = null;
+            limpiarFormulario();
+            mostrarFormulario();
+            mostrarAlerta('Nuevo registro iniciado', 'info');
+        }
+
+        function verRegistros() {
+            if (registros.length === 0) {
+                mostrarAlerta('No hay registros guardados', 'info');
+                return;
+            }
+            
+            mostrarTabla();
+            cargarTablaRegistros();
+        }
+
+        function mostrarFormulario() {
+            document.getElementById('registroFormContainer').classList.remove('hidden');
+            document.getElementById('tablaRegistrosContainer').classList.add('hidden');
+        }
+
+        function mostrarTabla() {
+            document.getElementById('registroFormContainer').classList.add('hidden');
+            document.getElementById('tablaRegistrosContainer').classList.remove('hidden');
+        }
+
+        function limpiarFormulario() {
+            document.getElementById('registroForm').reset();
+            document.getElementById('registroId').value = '';
+            document.getElementById('nacionalidad').value = 'Argentina';
+            document.getElementById('provincia').value = 'Misiones';
+            document.getElementById('edad').value = '';
+            
+            // Limpiar checkboxes
+            document.querySelectorAll('input[name="enfermedades"]').forEach(cb => cb.checked = false);
+            
+            // Ocultar campos condicionales
+            const otroLugar = document.getElementById('otroLugarInternacion').closest('.form-group');
+            otroLugar.style.display = 'none';
+            const otrasEnf = document.getElementById('otrasEnfermedades').closest('.form-group');
+            otrasEnf.style.display = 'none';
+        }
+
+        function guardarRegistro(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const registro = {};
+            
+            // Obtener datos básicos
+            for (let [key, value] of formData.entries()) {
+                if (key !== 'enfermedades') {
+                    registro[key] = value;
+                }
+            }
+            
+            // Obtener enfermedades seleccionadas
+            const enfermedadesSeleccionadas = [];
+            document.querySelectorAll('input[name="enfermedades"]:checked').forEach(cb => {
+                enfermedadesSeleccionadas.push(cb.value);
+            });
+            registro.enfermedades = enfermedadesSeleccionadas;
+            
+            // Agregar timestamp
+            registro.fechaCreacion = new Date().toISOString();
+            
+            if (registroEditando !== null) {
+                registros[registroEditando] = registro;
+                mostrarAlerta('Registro actualizado correctamente', 'success');
+            } else {
+                registro.id = Date.now().toString();
+                registros.push(registro);
+                mostrarAlerta('Registro guardado correctamente', 'success');
+            }
+            
+            localStorage.setItem('registrosPersonales', JSON.stringify(registros));
+            limpiarFormulario();
+            registroEditando = null;
+        }
+
+        function cargarTablaRegistros() {
+            const tbody = document.querySelector('#tablaRegistros tbody');
+            tbody.innerHTML = '';
+            
+            registros.forEach((registro, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${registro.apellido}, ${registro.nombre}</td>
+                    <td>${registro.dni}</td>
+                    <td>${formatDate(registro.fechaNacimiento) || '-'}</td>
+                    <td>${registro.telefono || '-'}</td>
+                    <td>${registro.estadoSaludGeneral || '-'}</td>
+                    <td>${registro.lugarInternacion || registro.otroLugarInternacion || '-'}</td>
+                    <td>
+                        <button onclick="editarRegistro(${index})" class="btn btn-primary" style="margin-right: 0.5rem;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="eliminarRegistro(${index})" class="btn btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editarRegistro(index) {
+            registroEditando = index;
+            const registro = registros[index];
+            
+            // Cargar datos básicos
+            Object.keys(registro).forEach(key => {
+                const campo = document.getElementById(key);
+                if (campo && key !== 'enfermedades') {
+                    campo.value = registro[key] || '';
+                }
+            });
+            
+            // Cargar enfermedades
+            if (registro.enfermedades) {
+                registro.enfermedades.forEach(enfermedad => {
+                    const checkbox = document.querySelector(`input[name="enfermedades"][value="${enfermedad}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+            
+            // Mostrar campos condicionales si es necesario
+            if (registro.lugarInternacion === 'Otro') {
+                document.getElementById('otroLugarInternacion').closest('.form-group').style.display = 'flex';
+            }
+            
+            if (registro.enfermedades && registro.enfermedades.includes('Otras')) {
+                document.getElementById('otrasEnfermedades').closest('.form-group').style.display = 'flex';
+            }
+            
+            mostrarFormulario();
+            mostrarAlerta('Registro cargado para edición', 'info');
+        }
+
+        function eliminarRegistro(index) {
+            mostrarModal(
+                'Confirmar Eliminación',
+                '¿Está seguro de que desea eliminar este registro? Esta acción no se puede deshacer.',
+                () => {
+                    registros.splice(index, 1);
+                    localStorage.setItem('registrosPersonales', JSON.stringify(registros));
+                    cargarTablaRegistros();
+                    mostrarAlerta('Registro eliminado correctamente', 'success');
+                    cerrarModal();
+                }
+            );
+        }
+
+        function exportarDatos() {
+            if (registros.length === 0) {
+                mostrarAlerta('No hay registros para exportar', 'info');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(registros, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `registros_personales_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            mostrarAlerta('Datos exportados correctamente', 'success');
+        }
+
+        function imprimir() {
+            window.print();
+        }
+
+        function cancelar() {
+            limpiarFormulario();
+            registroEditando = null;
+            mostrarAlerta('Operación cancelada', 'info');
+        }
+
+        function mostrarAlerta(mensaje, tipo) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${tipo === 'success' ? 'success' : tipo === 'error' ? 'error' : 'info'}`;
+            alert.innerHTML = `
+                <i class="fas fa-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                ${mensaje}
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function mostrarModal(titulo, mensaje, callback) {
+            document.querySelector('.modal-title').textContent = titulo;
+            document.getElementById('modalBody').innerHTML = `<p>${mensaje}</p>`;
+            document.getElementById('confirmarBtn').onclick = callback;
+            document.getElementById('modalConfirmacion').classList.add('show');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalConfirmacion').classList.remove('show');
+        }
+
+        function cargarRegistros() {
+            // Esta función se puede usar para cargar registros desde una fuente externa
+            console.log(`${registros.length} registros cargados desde localStorage`);
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        document.getElementById('modalConfirmacion').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModal();
             }
         });
     </script>
