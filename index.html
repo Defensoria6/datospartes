@@ -11,7 +11,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getDatabase, ref, push, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
         
         const firebaseConfig = {
             apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
@@ -38,7 +38,7 @@
         window.firebaseOnValue = onValue;
         window.firebaseStorage = storage;
         window.firebaseStorageRef = storageRef;
-        window.firebaseUploadBytes = uploadBytes;
+        window.firebaseUploadBytesResumable = uploadBytesResumable;
         window.firebaseGetDownloadURL = getDownloadURL;
         window.firebaseDeleteObject = deleteObject;
     </script>
@@ -546,8 +546,8 @@
         }
 
         .file-drop-zone.uploading {
-            border-color: var(--warning-color);
-            background-color: #fef3c7;
+            border-color: var(--success-color);
+            background-color: #d1fae5;
         }
 
         .file-drop-zone i {
@@ -576,25 +576,26 @@
 
         .upload-progress {
             margin-top: 15px;
-            padding: 10px;
-            background-color: var(--primary-light);
+            padding: 15px;
+            background-color: var(--success-color);
             border-radius: 6px;
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--success-color);
+            color: white;
         }
 
         .progress-bar {
             width: 100%;
-            height: 8px;
-            background-color: var(--border-color);
-            border-radius: 4px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
             overflow: hidden;
-            margin-top: 10px;
+            margin: 10px 0;
         }
 
         .progress-fill {
             height: 100%;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
+            background-color: white;
+            transition: width 0.1s ease;
             width: 0%;
         }
 
@@ -606,6 +607,16 @@
             border-radius: 6px;
             color: #991b1b;
             font-size: 0.9em;
+        }
+
+        .upload-success {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--success-color);
+            border-radius: 6px;
+            color: white;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
         }
 
         @media (max-width: 768px) {
@@ -940,11 +951,16 @@
                         </div>
 
                         <div id="uploadProgress" class="upload-progress hidden">
-                            <p><strong>Subiendo archivo...</strong></p>
+                            <p><strong><i class="fas fa-upload"></i> Subiendo archivo...</strong></p>
                             <div class="progress-bar">
                                 <div id="progressFill" class="progress-fill"></div>
                             </div>
-                            <p id="uploadStatus">Preparando subida...</p>
+                            <p id="uploadStatus">Iniciando subida...</p>
+                        </div>
+
+                        <div id="uploadSuccess" class="upload-success hidden">
+                            <p><strong><i class="fas fa-check-circle"></i> ¡Archivo subido exitosamente!</strong></p>
+                            <p>El documento ha sido agregado al registro.</p>
                         </div>
                     </div>
                     
@@ -1417,12 +1433,7 @@
                 document.getElementById('nacionalidad').value = 'Argentina';
                 this.currentEditingId = null;
                 document.getElementById('documentosImportadosSection').classList.add('hidden');
-                document.getElementById('fileInfo').classList.add('hidden');
-                document.getElementById('fileValidationError').classList.add('hidden');
-                document.getElementById('uploadProgress').classList.add('hidden');
-                document.getElementById('documentFile').value = '';
-                document.getElementById('documentDescription').value = '';
-                document.getElementById('uploadDocumentBtn').disabled = false;
+                this.limpiarFormularioDocumento();
             }
 
             llenarFormulario(registro) {
@@ -1577,13 +1588,13 @@
                 document.getElementById('fileInfo').classList.add('hidden');
                 document.getElementById('fileValidationError').classList.add('hidden');
                 document.getElementById('uploadProgress').classList.add('hidden');
+                document.getElementById('uploadSuccess').classList.add('hidden');
                 document.getElementById('uploadDocumentBtn').disabled = false;
+                document.getElementById('fileDropZone').classList.remove('uploading');
             }
 
             cancelarSubida() {
                 this.uploadInProgress = false;
-                document.getElementById('uploadProgress').classList.add('hidden');
-                document.getElementById('uploadDocumentBtn').disabled = false;
                 this.limpiarFormularioDocumento();
                 this.showAlert('Subida cancelada', 'info');
             }
@@ -1678,52 +1689,83 @@
 
                 this.uploadInProgress = true;
                 const uploadProgress = document.getElementById('uploadProgress');
+                const uploadSuccess = document.getElementById('uploadSuccess');
                 const uploadBtn = document.getElementById('uploadDocumentBtn');
                 const dropZone = document.getElementById('fileDropZone');
                 
                 uploadProgress.classList.remove('hidden');
+                uploadSuccess.classList.add('hidden');
                 uploadBtn.disabled = true;
                 dropZone.classList.add('uploading');
 
                 try {
-                    this.updateUploadProgress(10, 'Preparando archivo...');
-                    
                     const timestamp = Date.now();
                     const fileName = `${timestamp}_${file.name}`;
                     const storageRef = window.firebaseStorageRef(window.firebaseStorage, `documentos/${this.currentEditingId}/${fileName}`);
                     
-                    this.updateUploadProgress(30, 'Subiendo archivo...');
-                    
-                    const snapshot = await window.firebaseUploadBytes(storageRef, file);
-                    
-                    this.updateUploadProgress(70, 'Obteniendo URL de descarga...');
-                    
-                    const downloadURL = await window.firebaseGetDownloadURL(snapshot.ref);
+                    // Usar uploadBytesResumable para progreso en tiempo real
+                    const uploadTask = window.firebaseUploadBytesResumable(storageRef, file);
 
-                    this.updateUploadProgress(90, 'Guardando información del documento...');
+                    uploadTask.on('state_changed', 
+                        (snapshot) => {
+                            // Progreso en tiempo real
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            this.updateUploadProgress(progress, `Subiendo... ${Math.round(progress)}%`);
+                        }, 
+                        (error) => {
+                            console.error('Error uploading document:', error);
+                            this.showAlert('Error al subir el documento: ' + error.message, 'error');
+                            this.uploadInProgress = false;
+                            uploadProgress.classList.add('hidden');
+                            uploadBtn.disabled = false;
+                            dropZone.classList.remove('uploading');
+                        }, 
+                        async () => {
+                            // Subida completada
+                            try {
+                                const downloadURL = await window.firebaseGetDownloadURL(uploadTask.snapshot.ref);
 
-                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${this.currentEditingId}/documentos`);
-                    const newDocRef = window.firebasePush(documentosRef);
-                    await window.firebaseSet(newDocRef, {
-                        name: file.name,
-                        originalName: file.name,
-                        storageName: fileName,
-                        description: description,
-                        url: downloadURL,
-                        size: file.size,
-                        type: this.getFileType(file),
-                        mimeType: file.type,
-                        uploadedAt: new Date().toISOString()
-                    });
+                                // Guardar información del documento en la base de datos
+                                const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${this.currentEditingId}/documentos`);
+                                const newDocRef = window.firebasePush(documentosRef);
+                                await window.firebaseSet(newDocRef, {
+                                    name: file.name,
+                                    originalName: file.name,
+                                    storageName: fileName,
+                                    description: description,
+                                    url: downloadURL,
+                                    size: file.size,
+                                    type: this.getFileType(file),
+                                    mimeType: file.type,
+                                    uploadedAt: new Date().toISOString()
+                                });
 
-                    this.updateUploadProgress(100, 'Documento subido exitosamente');
+                                // Mostrar éxito
+                                uploadProgress.classList.add('hidden');
+                                uploadSuccess.classList.remove('hidden');
+                                dropZone.classList.remove('uploading');
+                                
+                                this.showAlert('Documento subido exitosamente', 'success');
+                                
+                                // Limpiar formulario después de un breve delay
+                                setTimeout(() => {
+                                    this.limpiarFormularioDocumento();
+                                }, 2000);
 
-                    setTimeout(() => {
-                        this.showAlert('Documento subido exitosamente', 'success');
-                        this.limpiarFormularioDocumento();
-                        this.loadImportedDocuments(this.currentEditingId);
-                        dropZone.classList.remove('uploading');
-                    }, 1000);
+                                // Recargar la lista de documentos inmediatamente
+                                this.loadImportedDocuments(this.currentEditingId);
+
+                            } catch (error) {
+                                console.error('Error saving document info:', error);
+                                this.showAlert('Error al guardar información del documento: ' + error.message, 'error');
+                                uploadProgress.classList.add('hidden');
+                                uploadBtn.disabled = false;
+                                dropZone.classList.remove('uploading');
+                            } finally {
+                                this.uploadInProgress = false;
+                            }
+                        }
+                    );
 
                 } catch (error) {
                     console.error('Error uploading document:', error);
@@ -1731,7 +1773,6 @@
                     uploadProgress.classList.add('hidden');
                     uploadBtn.disabled = false;
                     dropZone.classList.remove('uploading');
-                } finally {
                     this.uploadInProgress = false;
                 }
             }
@@ -1756,6 +1797,9 @@
                             tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No hay documentos importados.</td></tr>';
                             return;
                         }
+
+                        // Ordenar por fecha de subida (más recientes primero)
+                        documentos.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
 
                         documentos.forEach(doc => {
                             const row = document.createElement('tr');
