@@ -615,26 +615,42 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
             .container {
-                padding: 20px;
+                padding: 15px;
             }
 
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.6em;
+            }
+
+            .header p {
+                font-size: 0.8em;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
             }
 
             .form-actions {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
             }
 
             .btn {
-                width: 100%;
-                max-width: 300px;
+                padding: 10px 15px;
+                font-size: 0.9em;
+                min-width: auto;
+            }
+
+            .btn-secondary {
+                padding: 8px 12px;
             }
 
             .table-container {
@@ -649,6 +665,39 @@
             .modal-content {
                 width: 95%;
                 max-width: none;
+                padding: 20px;
+            }
+
+            .form-section {
+                padding: 15px 20px;
+            }
+
+            .form-section h2 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .form-section {
+                padding: 12px 15px;
+            }
+
+            .container {
+                padding: 10px;
             }
         }
     </style>
@@ -671,10 +720,10 @@
 
             <div class="form-actions">
                 <a href="https://defensoria6.github.io/sistemacausas/" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Regresar al Sistema de Gestión
+                    <i class="fas fa-arrow-left"></i>
                 </a>
                 <button id="nuevoRegistroBtn" class="btn btn-primary" onclick="registroManager.nuevoRegistro()">
-                    <i class="fas fa-plus"></i> Nuevo Registro
+                    <i class="fas fa-plus"></i>
                 </button>
                 <button id="verRegistrosBtn" class="btn btn-secondary" onclick="registroManager.verRegistros()">
                     <i class="fas fa-list"></i> Ver Registros
@@ -721,6 +770,34 @@
                                 <input type="number" id="edad" name="edad" readonly>
                             </div>
                             <div class="form-group">
+                                <label for="estadoCivil">Estado Civil</label>
+                                <select id="estadoCivil" name="estadoCivil">
+                                    <option value="">Desconocido</option>
+                                    <option value="Soltero/a">Soltero/a</option>
+                                    <option value="Casado/a">Casado/a</option>
+                                    <option value="Divorciado/a">Divorciado/a</option>
+                                    <option value="Viudo/a">Viudo/a</option>
+                                    <option value="Unión Convivencial">Unión Convivencial</option>
+                                    <option value="Separado/a de hecho">Separado/a de hecho</option>
+                                    <option value="Separado/a judicialmente">Separado/a judicialmente</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="genero">Género</label>
+                                <select id="genero" name="genero">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="No binario">No binario</option>
+                                    <option value="Travesti">Travesti</option>
+                                    <option value="Transgénero">Transgénero</option>
+                                    <option value="Transexual">Transexual</option>
+                                    <option value="Intersex">Intersex</option>
+                                    <option value="Otro">Otro</option>
+                                    <option value="Prefiero no decir">Prefiero no decir</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="nacionalidad">Nacionalidad</label>
                                 <select id="nacionalidad" name="nacionalidad">
                                     <option value="Argentina">Argentina</option>
@@ -758,23 +835,150 @@
                     </div>
 
                     <div class="form-section">
-                        <h2><i class="fas fa-briefcase"></i> Información Adicional</h2>
+                        <h2><i class="fas fa-gavel"></i> Información Judicial</h2>
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="ocupacion">Ocupación</label>
-                                <input type="text" id="ocupacion" name="ocupacion">
+                                <label for="expte">Expte</label>
+                                <input type="text" id="expte" name="expte">
                             </div>
                             <div class="form-group">
-                                <label for="estadoCivil">Estado Civil</label>
-                                <select id="estadoCivil" name="estadoCivil">
+                                <label for="caratula">Carátula</label>
+                                <input type="text" id="caratula" name="caratula">
+                            </div>
+                            <div class="form-group">
+                                <label for="juzgado">Juzgado</label>
+                                <input type="text" id="juzgado" name="juzgado">
+                            </div>
+                            <div class="form-group">
+                                <label for="secretaria">Secretaría</label>
+                                <input type="text" id="secretaria" name="secretaria">
+                            </div>
+                            <div class="form-group">
+                                <label for="poderJudicial">Poder Judicial</label>
+                                <select id="poderJudicial" name="poderJudicial">
                                     <option value="">Seleccionar...</option>
-                                    <option value="Soltero/a">Soltero/a</option>
-                                    <option value="Casado/a">Casado/a</option>
-                                    <option value="Divorciado/a">Divorciado/a</option>
-                                    <option value="Viudo/a">Viudo/a</option>
-                                    <option value="Unión Convivencial">Unión Convivencial</option>
+                                    <option value="Buenos Aires">Buenos Aires</option>
+                                    <option value="Catamarca">Catamarca</option>
+                                    <option value="Chaco">Chaco</option>
+                                    <option value="Chubut">Chubut</option>
+                                    <option value="Córdoba">Córdoba</option>
+                                    <option value="Corrientes">Corrientes</option>
+                                    <option value="Entre Ríos">Entre Ríos</option>
+                                    <option value="Formosa">Formosa</option>
+                                    <option value="Jujuy">Jujuy</option>
+                                    <option value="La Pampa">La Pampa</option>
+                                    <option value="La Rioja">La Rioja</option>
+                                    <option value="Mendoza">Mendoza</option>
+                                    <option value="Misiones">Misiones</option>
+                                    <option value="Neuquén">Neuquén</option>
+                                    <option value="Río Negro">Río Negro</option>
+                                    <option value="Salta">Salta</option>
+                                    <option value="San Juan">San Juan</option>
+                                    <option value="San Luis">San Luis</option>
+                                    <option value="Santa Cruz">Santa Cruz</option>
+                                    <option value="Santa Fe">Santa Fe</option>
+                                    <option value="Santiago del Estero">Santiago del Estero</option>
+                                    <option value="Tierra del Fuego">Tierra del Fuego</option>
+                                    <option value="Tucumán">Tucumán</option>
+                                    <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="fechaInicio">Fecha de Inicio</label>
+                                <input type="date" id="fechaInicio" name="fechaInicio">
+                            </div>
+                            <div class="form-group">
+                                <label for="estadoActual">Estado Actual</label>
+                                <select id="estadoActual" name="estadoActual">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="En trámite">En trámite</option>
+                                    <option value="Archivado">Archivado</option>
+                                    <option value="Finalizado">Finalizado</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="condicionParte">Condición de Parte</label>
+                                <select id="condicionParte" name="condicionParte">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Actor/a">Actor/a</option>
+                                    <option value="Demandado/a">Demandado/a</option>
+                                    <option value="Imputado/a">Imputado/a</option>
+                                    <option value="Querellante">Querellante</option>
+                                    <option value="Tercero">Tercero</option>
+                                    <option value="Testigo">Testigo</option>
+                                    <option value="Perito">Perito</option>
+                                    <option value="Víctima">Víctima</option>
+                                    <option value="Denunciante">Denunciante</option>
+                                    <option value="Denunciado/a">Denunciado/a</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="observacionesJudiciales">Observaciones</label>
+                                <textarea id="observacionesJudiciales" name="observacionesJudiciales" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2><i class="fas fa-user-md"></i> Información Médica</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="enfermedades">Enfermedades</label>
+                                <textarea id="enfermedades" name="enfermedades" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="medicoTratante">Médico Tratante</label>
+                                <input type="text" id="medicoTratante" name="medicoTratante">
+                            </div>
+                            <div class="form-group">
+                                <label for="lugarInternacion">Lugar de Internación</label>
+                                <input type="text" id="lugarInternacion" name="lugarInternacion">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaIngreso">Fecha Ingreso</label>
+                                <input type="date" id="fechaIngreso" name="fechaIngreso">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaAlta">Fecha Alta</label>
+                                <input type="date" id="fechaAlta" name="fechaAlta">
+                            </div>
+                            <div class="form-group">
+                                <label for="observacionesMedicas">Observaciones</label>
+                                <textarea id="observacionesMedicas" name="observacionesMedicas" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2><i class="fas fa-briefcase"></i> Información Laboral</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="empleo">Empleo</label>
+                                <input type="text" id="empleo" name="empleo">
+                            </div>
+                            <div class="form-group">
+                                <label for="empleador">Empleador</label>
+                                <input type="text" id="empleador" name="empleador">
+                            </div>
+                            <div class="form-group">
+                                <label for="domicilioLaboral">Domicilio Laboral</label>
+                                <textarea id="domicilioLaboral" name="domicilioLaboral" rows="2"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="montoSalario">Monto Salario</label>
+                                <input type="number" id="montoSalario" name="montoSalario" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="observacionesLaborales">Observaciones</label>
+                                <textarea id="observacionesLaborales" name="observacionesLaborales" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2><i class="fas fa-info-circle"></i> Información Adicional</h2>
+                        <div class="form-grid">
                             <div class="form-group">
                                 <label for="observaciones">Observaciones</label>
                                 <textarea id="observaciones" name="observaciones" rows="4"></textarea>
@@ -819,7 +1023,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2><i class="fas fa-list"></i> Lista de Registros</h2>
                     <button class="btn btn-primary" onclick="registroManager.volverFormulario()">
-                        <i class="fas fa-plus"></i> Nuevo Registro
+                        <i class="fas fa-plus"></i>
                     </button>
                 </div>
                 <div class="table-container">
@@ -999,6 +1203,329 @@
                 document.getElementById("closeSearchModalBtn").addEventListener("click", () => {
                     this.cerrarSearchModal();
                 });
+            }
+
+            checkConnectionStatus() {
+                this.updateConnectionStatus();
+                
+                // Verificar conexión con Firebase
+                if (window.firebaseDB) {
+                    const connectedRef = window.firebaseRef(window.firebaseDB, '.info/connected');
+                    window.firebaseOnValue(connectedRef, (snapshot) => {
+                        if (snapshot.val() === true) {
+                            this.isOnline = true;
+                        } else {
+                            this.isOnline = false;
+                        }
+                        this.updateConnectionStatus();
+                    });
+                }
+            }
+
+            updateConnectionStatus() {
+                const statusElement = document.getElementById('connectionStatus');
+                if (this.isOnline && navigator.onLine) {
+                    statusElement.className = 'connection-status online';
+                    statusElement.innerHTML = '<i class="fas fa-wifi"></i> Conectado';
+                } else {
+                    statusElement.className = 'connection-status offline';
+                    statusElement.innerHTML = '<i class="fas fa-wifi"></i> Sin conexión';
+                }
+            }
+
+            async loadRegistros() {
+                if (!this.isOnline) {
+                    this.loadFromLocalStorage();
+                    return;
+                }
+
+                try {
+                    const registrosRef = window.firebaseRef(window.firebaseDB, 'registros');
+                    const snapshot = await window.firebaseGet(registrosRef);
+                    
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        this.registrosCache = Object.keys(data).map(key => ({
+                            id: key,
+                            ...data[key]
+                        }));
+                        
+                        // Guardar en localStorage como respaldo
+                        localStorage.setItem('registrosCache', JSON.stringify(this.registrosCache));
+                    } else {
+                        this.registrosCache = [];
+                    }
+                } catch (error) {
+                    console.error('Error loading registros:', error);
+                    this.loadFromLocalStorage();
+                    this.showAlert('Error al cargar registros. Usando datos locales.', 'error');
+                }
+            }
+
+            loadFromLocalStorage() {
+                const cached = localStorage.getItem('registrosCache');
+                if (cached) {
+                    this.registrosCache = JSON.parse(cached);
+                } else {
+                    this.registrosCache = [];
+                }
+            }
+
+            async guardarRegistro() {
+                const formData = new FormData(document.getElementById('registroForm'));
+                const registro = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key !== 'registroId') {
+                        registro[key] = value;
+                    }
+                }
+
+                const registroId = document.getElementById('registroId').value;
+
+                try {
+                    if (registroId) {
+                        // Actualizar registro existente
+                        if (this.isOnline) {
+                            const registroRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}`);
+                            await window.firebaseSet(registroRef, registro);
+                        }
+                        
+                        // Actualizar en cache local
+                        const index = this.registrosCache.findIndex(r => r.id === registroId);
+                        if (index !== -1) {
+                            this.registrosCache[index] = { id: registroId, ...registro };
+                        }
+                        
+                        this.showAlert('Registro actualizado exitosamente', 'success');
+                    } else {
+                        // Crear nuevo registro
+                        let newId;
+                        if (this.isOnline) {
+                            const registrosRef = window.firebaseRef(window.firebaseDB, 'registros');
+                            const newRegistroRef = window.firebasePush(registrosRef);
+                            await window.firebaseSet(newRegistroRef, registro);
+                            newId = newRegistroRef.key;
+                        } else {
+                            newId = 'local_' + Date.now();
+                        }
+                        
+                        // Agregar al cache local
+                        this.registrosCache.push({ id: newId, ...registro });
+                        this.showAlert('Registro guardado exitosamente', 'success');
+                    }
+
+                    // Guardar en localStorage como respaldo
+                    localStorage.setItem('registrosCache', JSON.stringify(this.registrosCache));
+                    
+                    this.limpiarFormulario();
+                } catch (error) {
+                    console.error('Error saving registro:', error);
+                    this.showAlert('Error al guardar el registro', 'error');
+                }
+            }
+
+            async eliminarRegistro(id) {
+                this.mostrarConfirmacion('¿Está seguro de que desea eliminar este registro?', async () => {
+                    try {
+                        if (this.isOnline) {
+                            const registroRef = window.firebaseRef(window.firebaseDB, `registros/${id}`);
+                            await window.firebaseRemove(registroRef);
+                        }
+                        
+                        // Eliminar del cache local
+                        this.registrosCache = this.registrosCache.filter(r => r.id !== id);
+                        localStorage.setItem('registrosCache', JSON.stringify(this.registrosCache));
+                        
+                        this.showAlert('Registro eliminado exitosamente', 'success');
+                        this.loadRegistrosTable();
+                    } catch (error) {
+                        console.error('Error deleting registro:', error);
+                        this.showAlert('Error al eliminar el registro', 'error');
+                    }
+                });
+            }
+
+            editarRegistro(id) {
+                const registro = this.registrosCache.find(r => r.id === id);
+                if (registro) {
+                    this.llenarFormulario(registro);
+                    this.currentEditingId = id;
+                    this.mostrarFormulario();
+                    this.loadImportedDocuments(id);
+                }
+            }
+
+            async loadImportedDocuments(registroId) {
+                if (!registroId) return;
+
+                try {
+                    if (this.isOnline) {
+                        const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos`);
+                        const snapshot = await window.firebaseGet(documentosRef);
+                        
+                        if (snapshot.exists()) {
+                            const documentos = snapshot.val();
+                            this.displayImportedDocuments(documentos);
+                        } else {
+                            this.displayImportedDocuments({});
+                        }
+                    }
+                    
+                    document.getElementById('documentosImportadosSection').classList.remove('hidden');
+                } catch (error) {
+                    console.error('Error loading documents:', error);
+                }
+            }
+
+            displayImportedDocuments(documentos) {
+                const tbody = document.getElementById('documentosImportadosTableBody');
+                
+                if (!documentos || Object.keys(documentos).length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados para este registro.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = Object.keys(documentos).map(docId => {
+                    const doc = documentos[docId];
+                    const fecha = new Date(doc.uploadedAt).toLocaleDateString();
+                    const tamaño = this.formatFileSize(doc.size);
+                    
+                    return `
+                        <tr>
+                            <td>${doc.name}</td>
+                            <td>${doc.description}</td>
+                            <td>${fecha}</td>
+                            <td>${tamaño}</td>
+                            <td>
+                                <button class="btn btn-info btn-small" onclick="registroManager.descargarDocumento('${docId}', '${this.currentEditingId}')">
+                                    <i class="fas fa-download"></i> Descargar
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="registroManager.eliminarDocumento('${docId}', '${this.currentEditingId}')">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            async eliminarDocumento(docId, registroId) {
+                this.mostrarConfirmacion('¿Está seguro de que desea eliminar este documento?', async () => {
+                    try {
+                        if (this.isOnline) {
+                            const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${docId}`);
+                            await window.firebaseRemove(docRef);
+                        }
+                        
+                        this.showAlert('Documento eliminado exitosamente', 'success');
+                        this.loadImportedDocuments(registroId);
+                    } catch (error) {
+                        console.error('Error deleting document:', error);
+                        this.showAlert('Error al eliminar el documento', 'error');
+                    }
+                });
+            }
+
+            async descargarDocumento(docId, registroId) {
+                try {
+                    if (this.isOnline) {
+                        const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${docId}`);
+                        const snapshot = await window.firebaseGet(docRef);
+                        
+                        if (snapshot.exists()) {
+                            const doc = snapshot.val();
+                            
+                            if (doc.url) {
+                                // Documento de Cloudinary
+                                window.open(doc.url, '_blank');
+                            } else if (doc.data) {
+                                // Documento en base64
+                                const link = document.createElement('a');
+                                link.href = doc.data;
+                                link.download = doc.name;
+                                link.click();
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error downloading document:', error);
+                    this.showAlert('Error al descargar el documento', 'error');
+                }
+            }
+
+            mostrarImportDocumentModal() {
+                if (!this.currentEditingId) {
+                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
+                    return;
+                }
+                
+                document.getElementById('importDocumentModal').classList.add('show');
+                this.loadImportedDocumentsInModal(this.currentEditingId);
+            }
+
+            cerrarImportDocumentModal() {
+                document.getElementById('importDocumentModal').classList.remove('show');
+            }
+
+            async loadImportedDocumentsInModal(registroId) {
+                if (!registroId) return;
+
+                try {
+                    if (this.isOnline) {
+                        const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos`);
+                        const snapshot = await window.firebaseGet(documentosRef);
+                        
+                        if (snapshot.exists()) {
+                            const documentos = snapshot.val();
+                            this.displayImportedDocumentsInModal(documentos);
+                        } else {
+                            this.displayImportedDocumentsInModal({});
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading documents:', error);
+                }
+            }
+
+            displayImportedDocumentsInModal(documentos) {
+                const tbody = document.getElementById('importedDocumentsTableBody');
+                
+                if (!documentos || Object.keys(documentos).length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = Object.keys(documentos).map(docId => {
+                    const doc = documentos[docId];
+                    const fecha = new Date(doc.uploadedAt).toLocaleDateString();
+                    const tamaño = this.formatFileSize(doc.size);
+                    
+                    return `
+                        <tr>
+                            <td>${doc.name}</td>
+                            <td>${doc.description}</td>
+                            <td>${fecha}</td>
+                            <td>${tamaño}</td>
+                            <td>
+                                <button class="btn btn-info btn-small" onclick="registroManager.descargarDocumento('${docId}', '${this.currentEditingId}')">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="registroManager.eliminarDocumento('${docId}', '${this.currentEditingId}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             }
 
             setupFileUpload() {
@@ -1201,301 +1728,14 @@
                         uploadedAt: new Date().toISOString()
                     });
 
-                    this.showAlert('Documento subido y guardado exitosamente', 'success');
+                    this.showAlert(`Archivo ${info.original_filename} subido exitosamente`, 'success');
                     this.loadImportedDocuments(this.currentEditingId);
+                    this.loadImportedDocumentsInModal(this.currentEditingId);
 
                 } catch (error) {
-                    console.error('Error guardando info del documento en la base de datos:', error);
-                    this.showAlert('Error al guardar la información del documento.', 'error');
+                    console.error('Error saving Cloudinary document:', error);
+                    this.showAlert('Error al guardar el documento', 'error');
                 }
-            }
-
-            async loadImportedDocuments(registroId) {
-                if (!registroId) return;
-
-                try {
-                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos`);
-                    const snapshot = await window.firebaseGet(documentosRef);
-                    
-                    const tbody = document.getElementById('importedDocumentsTableBody');
-                    
-                    if (snapshot.exists()) {
-                        const documentos = snapshot.val();
-                        const documentosArray = Object.keys(documentos).map(key => ({
-                            id: key,
-                            ...documentos[key]
-                        }));
-
-                        tbody.innerHTML = documentosArray.map(doc => `
-                            <tr>
-                                <td>
-                                    <div class="document-name">${doc.name}</div>
-                                    <div class="document-type">${doc.type || 'Documento'}</div>
-                                </td>
-                                <td>${doc.description}</td>
-                                <td>${new Date(doc.uploadedAt).toLocaleDateString()}</td>
-                                <td>${this.formatFileSize(doc.size)}</td>
-                                <td>
-                                    ${doc.url ? `<button class="btn btn-info btn-small" onclick="window.open('${doc.url}', '_blank')">
-                                        <i class="fas fa-eye"></i> Ver
-                                    </button>` : `<button class="btn btn-info btn-small" onclick="registroManager.downloadDocument('${registroId}', '${doc.id}')">
-                                        <i class="fas fa-download"></i> Descargar
-                                    </button>`}
-                                    <button class="btn btn-danger btn-small" onclick="registroManager.eliminarDocumento('${registroId}', '${doc.id}')">
-                                        <i class="fas fa-trash"></i> Eliminar
-                                    </button>
-                                </td>
-                            </tr>
-                        `).join('');
-
-                        // Mostrar sección de documentos en el formulario principal
-                        document.getElementById('documentosImportadosSection').classList.remove('hidden');
-                        document.getElementById('documentosImportadosTableBody').innerHTML = tbody.innerHTML;
-                    } else {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados.</td></tr>';
-                        document.getElementById('documentosImportadosTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados para este registro.</td></tr>';
-                    }
-                } catch (error) {
-                    console.error('Error loading documents:', error);
-                    this.showAlert('Error al cargar los documentos', 'error');
-                }
-            }
-
-            async downloadDocument(registroId, documentId) {
-                try {
-                    const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${documentId}`);
-                    const snapshot = await window.firebaseGet(docRef);
-                    
-                    if (snapshot.exists()) {
-                        const doc = snapshot.val();
-                        if (doc.data) {
-                            // Crear enlace de descarga para archivo base64
-                            const link = document.createElement('a');
-                            link.href = doc.data;
-                            link.download = doc.name;
-                            link.click();
-                        } else if (doc.url) {
-                            // Abrir URL externa
-                            window.open(doc.url, '_blank');
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error downloading document:', error);
-                    this.showAlert('Error al descargar el documento', 'error');
-                }
-            }
-
-            async eliminarDocumento(registroId, documentId) {
-                this.mostrarConfirmacion(
-                    '¿Está seguro de que desea eliminar este documento?',
-                    async () => {
-                        try {
-                            const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${documentId}`);
-                            await window.firebaseRemove(docRef);
-                            this.showAlert('Documento eliminado exitosamente', 'success');
-                            this.loadImportedDocuments(registroId);
-                        } catch (error) {
-                            console.error('Error deleting document:', error);
-                            this.showAlert('Error al eliminar el documento', 'error');
-                        }
-                    }
-                );
-            }
-
-            formatFileSize(bytes) {
-                if (!bytes) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-
-            mostrarImportDocumentModal() {
-                if (!this.currentEditingId) {
-                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
-                    return;
-                }
-                
-                document.getElementById('importDocumentModal').classList.add('show');
-                this.loadImportedDocuments(this.currentEditingId);
-                this.resetFileDropZone();
-            }
-
-            cerrarImportDocumentModal() {
-                document.getElementById('importDocumentModal').classList.remove('show');
-            }
-
-            // Función para exportar documentos junto con el registro
-            async exportarRegistroConDocumentos(registroId) {
-                try {
-                    const registroRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}`);
-                    const snapshot = await window.firebaseGet(registroRef);
-                    
-                    if (snapshot.exists()) {
-                        const registro = snapshot.val();
-                        const documentos = registro.documentos || {};
-                        
-                        // Crear ZIP con todos los documentos
-                        // Nota: Para una implementación completa, necesitarías una librería como JSZip
-                        this.showAlert('Funcionalidad de exportación con documentos en desarrollo', 'info');
-                    }
-                } catch (error) {
-                    console.error('Error exporting record with documents:', error);
-                    this.showAlert('Error al exportar el registro con documentos', 'error');
-                }
-            }
-
-            updateConnectionStatus() {
-                this.isOnline = navigator.onLine;
-                this.checkConnectionStatus();
-                if (this.isOnline) {
-                    this.showAlert("Conexión reestablecida", "success");
-                    this.loadRegistros();
-                } else {
-                    this.showAlert("Sin conexión a internet. Algunas funciones pueden no estar disponibles.", "error");
-                }
-            }
-
-            checkConnectionStatus() {
-                const statusElement = document.getElementById("connectionStatus");
-                if (this.isOnline) {
-                    statusElement.innerHTML = '<i class="fas fa-wifi"></i> Online';
-                    statusElement.classList.remove("offline");
-                    statusElement.classList.add("online");
-                } else {
-                    statusElement.innerHTML = '<i class="fas fa-wifi"></i> Offline';
-                    statusElement.classList.remove("online");
-                    statusElement.classList.add("offline");
-                }
-            }
-
-            async loadRegistros() {
-                if (!this.isOnline) return;
-
-                try {
-                    const registrosRef = window.firebaseRef(window.firebaseDB, 'registros');
-                    window.firebaseOnValue(registrosRef, (snapshot) => {
-                        const data = snapshot.val();
-                        this.registrosCache = data ? Object.keys(data).map(key => ({
-                            id: key,
-                            ...data[key]
-                        })) : [];
-                        
-                        if (document.getElementById('registrosContainer').classList.contains('hidden') === false) {
-                            this.loadRegistrosTable();
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error loading records:', error);
-                    this.showAlert('Error al cargar los registros', 'error');
-                }
-            }
-
-            async guardarRegistro() {
-                if (!this.isOnline) {
-                    this.showAlert('Sin conexión a internet. No se puede guardar el registro.', 'error');
-                    return;
-                }
-
-                const formData = new FormData(document.getElementById('registroForm'));
-                const registro = Object.fromEntries(formData.entries());
-                
-                if (!this.validarRegistro(registro)) return;
-
-                try {
-                    const registroId = registro.registroId || null;
-                    delete registro.registroId;
-
-                    if (registroId) {
-                        const registroRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}`);
-                        const snapshot = await window.firebaseGet(registroRef);
-                        const existingData = snapshot.exists() ? snapshot.val() : {};
-                        
-                        // Preservar documentos existentes
-                        const updatedData = { ...registro };
-                        if (existingData.documentos) {
-                            updatedData.documentos = existingData.documentos;
-                        }
-                        
-                        await window.firebaseSet(registroRef, updatedData);
-                        this.showAlert('Registro actualizado exitosamente', 'success');
-                    } else {
-                        const registrosRef = window.firebaseRef(window.firebaseDB, 'registros');
-                        const newRegistroRef = window.firebasePush(registrosRef);
-                        await window.firebaseSet(newRegistroRef, registro);
-                        this.currentEditingId = newRegistroRef.key;
-                        document.getElementById('registroId').value = this.currentEditingId;
-                        this.showAlert('Registro guardado exitosamente', 'success');
-                    }
-                    
-                    this.loadImportedDocuments(this.currentEditingId);
-                } catch (error) {
-                    console.error('Error saving record:', error);
-                    this.showAlert('Error al guardar el registro', 'error');
-                }
-            }
-
-            async editarRegistro(id) {
-                if (!this.isOnline) {
-                    this.showAlert('Sin conexión a internet. No se puede editar el registro.', 'error');
-                    return;
-                }
-
-                try {
-                    const registroRef = window.firebaseRef(window.firebaseDB, `registros/${id}`);
-                    const snapshot = await window.firebaseGet(registroRef);
-                    
-                    if (snapshot.exists()) {
-                        const registro = { id, ...snapshot.val() };
-                        this.llenarFormulario(registro);
-                        this.currentEditingId = id;
-                        this.mostrarFormulario();
-                        this.loadImportedDocuments(id);
-                    }
-                } catch (error) {
-                    console.error('Error loading record:', error);
-                    this.showAlert('Error al cargar el registro', 'error');
-                }
-            }
-
-            async eliminarRegistro(id) {
-                if (!this.isOnline) {
-                    this.showAlert('Sin conexión a internet. No se puede eliminar el registro.', 'error');
-                    return;
-                }
-
-                const registro = this.registrosCache.find(r => r.id === id);
-                
-                if (registro) {
-                    this.mostrarConfirmacion(
-                        `¿Está seguro de que desea eliminar el registro de ${registro.nombre} ${registro.apellido}? Esto también eliminará todos los documentos asociados.`,
-                        async () => {
-                            try {
-                                const registroRef = window.firebaseRef(window.firebaseDB, `registros/${id}`);
-                                await window.firebaseRemove(registroRef);
-                                this.showAlert('Registro eliminado exitosamente', 'success');
-                                this.loadRegistros();
-                            } catch (error) {
-                                console.error('Error deleting record:', error);
-                                this.showAlert('Error al eliminar el registro', 'error');
-                            }
-                        }
-                    );
-                }
-            }
-
-            validarRegistro(registro) {
-                if (!registro.apellido || !registro.nombre || !registro.dni || !registro.fechaNacimiento) {
-                    this.showAlert('Por favor complete todos los campos obligatorios', 'error');
-                    return false;
-                }
-
-                if (registro.dni.length !== 8 || !/^\d+$/.test(registro.dni)) {
-                    this.showAlert('El DNI debe tener exactamente 8 dígitos', 'error');
-                    return false;
-                }
-
-                return true;
             }
 
             validarDNI(e) {
