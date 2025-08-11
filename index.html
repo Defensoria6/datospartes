@@ -7,12 +7,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getDatabase, ref, push, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
         
+        // ==========================================================
+        //  Configuración de Firebase
+        // ==========================================================
         const firebaseConfig = {
             apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
             authDomain: "datos-partes.firebaseapp.com",
@@ -22,13 +23,10 @@
             messagingSenderId: "277413385546",
             appId: "1:277413385546:web:9863aaa081727a84479db3"
         };
-
-        // Inicializar Firebase
+        
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        const storage = getStorage(app);
         
-        // Hacer disponibles las funciones globalmente
         window.firebaseDB = database;
         window.firebaseRef = ref;
         window.firebasePush = push;
@@ -36,13 +34,10 @@
         window.firebaseGet = get;
         window.firebaseRemove = remove;
         window.firebaseOnValue = onValue;
-        window.firebaseStorage = storage;
-        window.firebaseStorageRef = storageRef;
-        window.firebaseUploadBytesResumable = uploadBytesResumable;
-        window.firebaseGetDownloadURL = getDownloadURL;
-        window.firebaseDeleteObject = deleteObject;
     </script>
     
+    <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
+
     <style>
         :root {
             --primary-color: #2563eb;
@@ -537,6 +532,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
+            margin-bottom: 20px;
         }
 
         .file-drop-zone:hover,
@@ -579,7 +575,6 @@
             padding: 15px;
             background-color: var(--success-color);
             border-radius: 6px;
-            border: 1px solid var(--success-color);
             color: white;
         }
 
@@ -698,7 +693,6 @@
                 </button>
             </div>
 
-            <!-- Formulario de registro -->
             <div id="registroFormContainer" class="container">
                 <form id="registroForm">
                     <input type="hidden" id="registroId" name="registroId">
@@ -798,7 +792,6 @@
                     </div>
                 </form>
 
-                <!-- Sección de documentos importados -->
                 <div id="documentosImportadosSection" class="form-section hidden">
                     <h2><i class="fas fa-file-alt"></i> Documentos Importados</h2>
                     <div class="table-container">
@@ -806,16 +799,15 @@
                             <thead>
                                 <tr>
                                     <th>Nombre del Archivo</th>
-                                    <th>Tipo</th>
-                                    <th>Tamaño</th>
                                     <th>Descripción</th>
                                     <th>Fecha de Subida</th>
+                                    <th>Tamaño</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="documentosImportadosTableBody">
                                 <tr>
-                                    <td colspan="6" style="text-align: center; padding: 20px;">No hay documentos importados para este registro.</td>
+                                    <td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados para este registro.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -823,7 +815,6 @@
                 </div>
             </div>
 
-            <!-- Tabla de registros -->
             <div id="registrosContainer" class="container hidden">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2><i class="fas fa-list"></i> Lista de Registros</h2>
@@ -914,71 +905,33 @@
             </div>
         </div>
 
-        <!-- Modal de importación de documentos -->
+        <!-- Modal de importar documentos -->
         <div id="importDocumentModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">Importar Documentos</h3>
-                    <button id="closeImportDocumentModalBtn" class="close-btn">&times;</button>
+                    <button id="closeImportDocumentModalBtn" class="close-btn" onclick="registroManager.cerrarImportDocumentModal()">&times;</button>
                 </div>
                 
-                <form id="importDocumentForm">
-                    <div class="form-group">
-                        <label for="documentFile">Seleccionar Archivo</label>
-                        <div id="fileDropZone" class="file-drop-zone" onclick="document.getElementById('documentFile').click()">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p><strong>Haga clic aquí para seleccionar un archivo</strong></p>
-                            <p>o arrastre y suelte el archivo aquí</p>
-                            <div class="supported-formats">
-                                <strong>Formatos soportados:</strong> PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, RTF, ODT, ODS, ODP, JPG, JPEG, PNG, GIF, BMP, TIFF, ZIP, RAR, 7Z
-                            </div>
-                            <div class="supported-formats">
-                                <strong>Tamaño máximo:</strong> 10 MB por archivo
-                            </div>
-                        </div>
-                        <input type="file" id="documentFile" name="documentFile" style="display: none;" accept="*/*">
-                        
-                        <div id="fileInfo" class="file-info hidden">
-                            <p><strong>Archivo seleccionado:</strong></p>
-                            <p id="fileName"></p>
-                            <p id="fileSize"></p>
-                            <p id="fileType"></p>
-                        </div>
-
-                        <div id="fileValidationError" class="file-validation-error hidden">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <span id="validationErrorMessage"></span>
-                        </div>
-
-                        <div id="uploadProgress" class="upload-progress hidden">
-                            <p><strong><i class="fas fa-upload"></i> Subiendo archivo...</strong></p>
-                            <div class="progress-bar">
-                                <div id="progressFill" class="progress-fill"></div>
-                            </div>
-                            <p id="uploadStatus">Iniciando subida...</p>
-                        </div>
-
-                        <div id="uploadSuccess" class="upload-success hidden">
-                            <p><strong><i class="fas fa-check-circle"></i> ¡Archivo subido exitosamente!</strong></p>
-                            <p>El documento ha sido agregado al registro.</p>
-                        </div>
+                <!-- Zona de arrastrar y soltar archivos -->
+                <div id="fileDropZone" class="file-drop-zone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Arrastra archivos aquí o haz clic para seleccionar</h3>
+                    <p>Formatos soportados: PDF, DOC, DOCX, JPG, PNG, TXT</p>
+                    <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt" style="display: none;">
+                    <div class="supported-formats">
+                        <strong>Tamaño máximo:</strong> 10MB por archivo
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="documentDescription">Descripción del Documento <span class="required">*</span></label>
-                        <textarea id="documentDescription" name="documentDescription" rows="3" placeholder="Ingrese una descripción del documento..." required></textarea>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="submit" id="uploadDocumentBtn" class="btn btn-primary">
-                            <i class="fas fa-upload"></i> Subir Documento
-                        </button>
-                        <button type="button" id="cancelUploadBtn" class="btn btn-secondary" onclick="registroManager.cancelarSubida()">
-                            <i class="fas fa-times"></i> Cancelar
-                        </button>
-                    </div>
-                </form>
+                </div>
 
+                <!-- Botón alternativo de Cloudinary -->
+                <div class="form-actions">
+                    <button id="upload_widget" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Subir con Cloudinary
+                    </button>
+                </div>
+
+                <!-- Lista de documentos del registro -->
                 <div class="documents-list">
                     <h3><i class="fas fa-folder-open"></i> Documentos del Registro</h3>
                     <div class="table-container">
@@ -986,16 +939,15 @@
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>Tipo</th>
-                                    <th>Tamaño</th>
                                     <th>Descripción</th>
                                     <th>Fecha</th>
+                                    <th>Tamaño</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="importedDocumentsTableBody">
                                 <tr>
-                                    <td colspan="6" style="text-align: center; padding: 20px;">No hay documentos importados.</td>
+                                    <td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1011,16 +963,11 @@
                 this.currentEditingId = null;
                 this.registrosCache = [];
                 this.isOnline = navigator.onLine;
-                this.uploadInProgress = false;
-                this.maxFileSize = 10 * 1024 * 1024; // 10 MB
-                this.allowedFileTypes = [
-                    'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf',
-                    'odt', 'ods', 'odp', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff',
-                    'zip', 'rar', '7z'
-                ];
+                this.uploadedFiles = [];
                 this.setupEventListeners();
                 this.loadRegistros();
                 this.checkConnectionStatus();
+                this.setupFileUpload();
 
                 window.addEventListener("online", () => this.updateConnectionStatus());
                 window.addEventListener("offline", () => this.updateConnectionStatus());
@@ -1052,156 +999,350 @@
                 document.getElementById("closeSearchModalBtn").addEventListener("click", () => {
                     this.cerrarSearchModal();
                 });
+            }
 
-                document.getElementById("closeImportDocumentModalBtn").addEventListener("click", () => {
-                    this.cerrarImportDocumentModal();
+            setupFileUpload() {
+                const fileDropZone = document.getElementById('fileDropZone');
+                const fileInput = document.getElementById('fileInput');
+
+                // Configurar zona de arrastrar y soltar
+                fileDropZone.addEventListener('click', () => {
+                    fileInput.click();
                 });
 
-                document.getElementById("importDocumentForm").addEventListener("submit", (e) => {
+                fileDropZone.addEventListener('dragover', (e) => {
                     e.preventDefault();
-                    this.handleDocumentUpload();
+                    fileDropZone.classList.add('dragover');
                 });
 
-                // File input change event
-                document.getElementById("documentFile").addEventListener("change", (e) => {
-                    this.handleFileSelection(e);
+                fileDropZone.addEventListener('dragleave', () => {
+                    fileDropZone.classList.remove('dragover');
                 });
 
-                // Drag and drop events
-                const dropZone = document.getElementById('fileDropZone');
-                dropZone.addEventListener('dragover', (e) => {
+                fileDropZone.addEventListener('drop', (e) => {
                     e.preventDefault();
-                    dropZone.classList.add('dragover');
-                });
-
-                dropZone.addEventListener('dragleave', (e) => {
-                    e.preventDefault();
-                    dropZone.classList.remove('dragover');
-                });
-
-                dropZone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    dropZone.classList.remove('dragover');
+                    fileDropZone.classList.remove('dragover');
                     const files = e.dataTransfer.files;
-                    if (files.length > 0) {
-                        document.getElementById('documentFile').files = files;
-                        this.handleFileSelection({ target: { files: files } });
-                    }
+                    this.handleFileSelection(files);
                 });
 
-                // Prevent default drag behaviors
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    });
+                fileInput.addEventListener('change', (e) => {
+                    this.handleFileSelection(e.target.files);
+                });
+
+                // Configurar widget de Cloudinary
+                this.setupCloudinaryWidget();
+            }
+
+            handleFileSelection(files) {
+                if (!this.currentEditingId) {
+                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
+                    return;
+                }
+
+                Array.from(files).forEach(file => {
+                    if (this.validateFile(file)) {
+                        this.uploadFile(file);
+                    }
                 });
             }
 
             validateFile(file) {
-                const errors = [];
-                
-                // Validar tamaño
-                if (file.size > this.maxFileSize) {
-                    errors.push(`El archivo es demasiado grande. Tamaño máximo: ${this.formatFileSize(this.maxFileSize)}`);
-                }
+                const maxSize = 10 * 1024 * 1024; // 10MB
+                const allowedTypes = [
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'image/jpeg',
+                    'image/png',
+                    'text/plain'
+                ];
 
-                // Validar tipo de archivo
-                const extension = file.name.split('.').pop().toLowerCase();
-                if (!this.allowedFileTypes.includes(extension)) {
-                    errors.push(`Tipo de archivo no permitido: .${extension}`);
-                }
-
-                // Validar nombre de archivo
-                if (file.name.length > 255) {
-                    errors.push('El nombre del archivo es demasiado largo');
-                }
-
-                return errors;
-            }
-
-            showFileValidationError(errors) {
-                const errorDiv = document.getElementById('fileValidationError');
-                const errorMessage = document.getElementById('validationErrorMessage');
-                
-                if (errors.length > 0) {
-                    errorMessage.textContent = errors.join('. ');
-                    errorDiv.classList.remove('hidden');
-                    return true;
-                } else {
-                    errorDiv.classList.add('hidden');
+                if (file.size > maxSize) {
+                    this.showAlert(`El archivo ${file.name} es demasiado grande. Máximo 10MB.`, 'error');
                     return false;
                 }
+
+                if (!allowedTypes.includes(file.type)) {
+                    this.showAlert(`Tipo de archivo no soportado: ${file.name}`, 'error');
+                    return false;
+                }
+
+                return true;
             }
 
-            handleFileSelection(e) {
-                const file = e.target.files[0];
-                const fileInfo = document.getElementById('fileInfo');
-                const fileName = document.getElementById('fileName');
-                const fileSize = document.getElementById('fileSize');
-                const fileType = document.getElementById('fileType');
-                const uploadBtn = document.getElementById('uploadDocumentBtn');
+            async uploadFile(file) {
+                const fileDropZone = document.getElementById('fileDropZone');
+                fileDropZone.classList.add('uploading');
 
-                // Limpiar errores previos
-                this.showFileValidationError([]);
+                // Simular progreso de subida
+                const progressHtml = `
+                    <div class="upload-progress">
+                        <div>Subiendo: ${file.name}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div id="progressText">0%</div>
+                    </div>
+                `;
+                
+                fileDropZone.innerHTML = progressHtml;
 
-                if (file) {
-                    // Validar archivo
-                    const validationErrors = this.validateFile(file);
+                // Simular progreso
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 20;
+                    if (progress > 100) progress = 100;
                     
-                    if (this.showFileValidationError(validationErrors)) {
-                        // Si hay errores, deshabilitar el botón de subida
-                        uploadBtn.disabled = true;
-                        fileInfo.classList.add('hidden');
+                    document.getElementById('progressFill').style.width = progress + '%';
+                    document.getElementById('progressText').textContent = Math.round(progress) + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        this.completeFileUpload(file);
+                    }
+                }, 200);
+            }
+
+            async completeFileUpload(file) {
+                try {
+                    // Convertir archivo a base64 para almacenamiento
+                    const base64 = await this.fileToBase64(file);
+                    
+                    const documentData = {
+                        name: file.name,
+                        description: `Documento subido: ${file.name}`,
+                        size: file.size,
+                        type: file.type,
+                        uploadedAt: new Date().toISOString(),
+                        data: base64
+                    };
+
+                    // Guardar en Firebase
+                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${this.currentEditingId}/documentos`);
+                    const newDocRef = window.firebasePush(documentosRef);
+                    await window.firebaseSet(newDocRef, documentData);
+
+                    this.showAlert(`Archivo ${file.name} subido exitosamente`, 'success');
+                    this.loadImportedDocuments(this.currentEditingId);
+                    this.resetFileDropZone();
+
+                } catch (error) {
+                    console.error('Error uploading file:', error);
+                    this.showAlert('Error al subir el archivo', 'error');
+                    this.resetFileDropZone();
+                }
+            }
+
+            fileToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+            }
+
+            resetFileDropZone() {
+                const fileDropZone = document.getElementById('fileDropZone');
+                fileDropZone.classList.remove('uploading');
+                fileDropZone.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Arrastra archivos aquí o haz clic para seleccionar</h3>
+                    <p>Formatos soportados: PDF, DOC, DOCX, JPG, PNG, TXT</p>
+                    <div class="supported-formats">
+                        <strong>Tamaño máximo:</strong> 10MB por archivo
+                    </div>
+                `;
+            }
+
+            setupCloudinaryWidget() {
+                if (typeof cloudinary === 'undefined') {
+                    console.warn('Cloudinary no está disponible');
+                    return;
+                }
+
+                const myWidget = cloudinary.createUploadWidget({
+                    cloudName: 'dbzucruu4', 
+                    uploadPreset: 'documentos_defensoria'
+                }, (error, result) => {
+                    if (error) {
+                        console.error('Error del widget de Cloudinary:', error);
+                        this.showAlert('Error al abrir el widget de subida.', 'error');
                         return;
                     }
 
-                    // Si no hay errores, mostrar información del archivo
-                    fileName.textContent = file.name;
-                    fileSize.textContent = this.formatFileSize(file.size);
-                    fileType.textContent = this.getFileType(file);
-                    fileInfo.classList.remove('hidden');
-                    uploadBtn.disabled = false;
-                } else {
-                    fileInfo.classList.add('hidden');
-                    uploadBtn.disabled = false;
+                    if (result.event === "success") {
+                        console.log('¡Archivo subido exitosamente!', result.info);
+                        this.guardarDocumentoCloudinary(result.info);
+                    }
+                });
+
+                document.getElementById("upload_widget").addEventListener("click", function(){
+                    myWidget.open();
+                }, false);
+            }
+
+            async guardarDocumentoCloudinary(info) {
+                if (!this.currentEditingId) {
+                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
+                    return;
+                }
+
+                try {
+                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${this.currentEditingId}/documentos`);
+                    const newDocRef = window.firebasePush(documentosRef);
+                    await window.firebaseSet(newDocRef, {
+                        name: info.original_filename + '.' + info.format,
+                        description: 'Documento subido con Cloudinary',
+                        url: info.secure_url,
+                        size: info.bytes,
+                        type: info.resource_type,
+                        uploadedAt: new Date().toISOString()
+                    });
+
+                    this.showAlert('Documento subido y guardado exitosamente', 'success');
+                    this.loadImportedDocuments(this.currentEditingId);
+
+                } catch (error) {
+                    console.error('Error guardando info del documento en la base de datos:', error);
+                    this.showAlert('Error al guardar la información del documento.', 'error');
                 }
             }
 
+            async loadImportedDocuments(registroId) {
+                if (!registroId) return;
+
+                try {
+                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos`);
+                    const snapshot = await window.firebaseGet(documentosRef);
+                    
+                    const tbody = document.getElementById('importedDocumentsTableBody');
+                    
+                    if (snapshot.exists()) {
+                        const documentos = snapshot.val();
+                        const documentosArray = Object.keys(documentos).map(key => ({
+                            id: key,
+                            ...documentos[key]
+                        }));
+
+                        tbody.innerHTML = documentosArray.map(doc => `
+                            <tr>
+                                <td>
+                                    <div class="document-name">${doc.name}</div>
+                                    <div class="document-type">${doc.type || 'Documento'}</div>
+                                </td>
+                                <td>${doc.description}</td>
+                                <td>${new Date(doc.uploadedAt).toLocaleDateString()}</td>
+                                <td>${this.formatFileSize(doc.size)}</td>
+                                <td>
+                                    ${doc.url ? `<button class="btn btn-info btn-small" onclick="window.open('${doc.url}', '_blank')">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </button>` : `<button class="btn btn-info btn-small" onclick="registroManager.downloadDocument('${registroId}', '${doc.id}')">
+                                        <i class="fas fa-download"></i> Descargar
+                                    </button>`}
+                                    <button class="btn btn-danger btn-small" onclick="registroManager.eliminarDocumento('${registroId}', '${doc.id}')">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('');
+
+                        // Mostrar sección de documentos en el formulario principal
+                        document.getElementById('documentosImportadosSection').classList.remove('hidden');
+                        document.getElementById('documentosImportadosTableBody').innerHTML = tbody.innerHTML;
+                    } else {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados.</td></tr>';
+                        document.getElementById('documentosImportadosTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados para este registro.</td></tr>';
+                    }
+                } catch (error) {
+                    console.error('Error loading documents:', error);
+                    this.showAlert('Error al cargar los documentos', 'error');
+                }
+            }
+
+            async downloadDocument(registroId, documentId) {
+                try {
+                    const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${documentId}`);
+                    const snapshot = await window.firebaseGet(docRef);
+                    
+                    if (snapshot.exists()) {
+                        const doc = snapshot.val();
+                        if (doc.data) {
+                            // Crear enlace de descarga para archivo base64
+                            const link = document.createElement('a');
+                            link.href = doc.data;
+                            link.download = doc.name;
+                            link.click();
+                        } else if (doc.url) {
+                            // Abrir URL externa
+                            window.open(doc.url, '_blank');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error downloading document:', error);
+                    this.showAlert('Error al descargar el documento', 'error');
+                }
+            }
+
+            async eliminarDocumento(registroId, documentId) {
+                this.mostrarConfirmacion(
+                    '¿Está seguro de que desea eliminar este documento?',
+                    async () => {
+                        try {
+                            const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${documentId}`);
+                            await window.firebaseRemove(docRef);
+                            this.showAlert('Documento eliminado exitosamente', 'success');
+                            this.loadImportedDocuments(registroId);
+                        } catch (error) {
+                            console.error('Error deleting document:', error);
+                            this.showAlert('Error al eliminar el documento', 'error');
+                        }
+                    }
+                );
+            }
+
             formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
+                if (!bytes) return '0 Bytes';
                 const k = 1024;
                 const sizes = ['Bytes', 'KB', 'MB', 'GB'];
                 const i = Math.floor(Math.log(bytes) / Math.log(k));
                 return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
             }
 
-            getFileType(file) {
-                const extension = file.name.split('.').pop().toLowerCase();
-                const typeMap = {
-                    'pdf': 'Documento PDF',
-                    'doc': 'Documento Word',
-                    'docx': 'Documento Word',
-                    'xls': 'Hoja de Cálculo Excel',
-                    'xlsx': 'Hoja de Cálculo Excel',
-                    'ppt': 'Presentación PowerPoint',
-                    'pptx': 'Presentación PowerPoint',
-                    'txt': 'Archivo de Texto',
-                    'rtf': 'Texto Enriquecido',
-                    'odt': 'Documento OpenDocument',
-                    'ods': 'Hoja de Cálculo OpenDocument',
-                    'odp': 'Presentación OpenDocument',
-                    'jpg': 'Imagen JPEG',
-                    'jpeg': 'Imagen JPEG',
-                    'png': 'Imagen PNG',
-                    'gif': 'Imagen GIF',
-                    'bmp': 'Imagen BMP',
-                    'tiff': 'Imagen TIFF',
-                    'zip': 'Archivo ZIP',
-                    'rar': 'Archivo RAR',
-                    '7z': 'Archivo 7-Zip'
-                };
-                return typeMap[extension] || `Archivo ${extension.toUpperCase()}`;
+            mostrarImportDocumentModal() {
+                if (!this.currentEditingId) {
+                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
+                    return;
+                }
+                
+                document.getElementById('importDocumentModal').classList.add('show');
+                this.loadImportedDocuments(this.currentEditingId);
+                this.resetFileDropZone();
+            }
+
+            cerrarImportDocumentModal() {
+                document.getElementById('importDocumentModal').classList.remove('show');
+            }
+
+            // Función para exportar documentos junto con el registro
+            async exportarRegistroConDocumentos(registroId) {
+                try {
+                    const registroRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}`);
+                    const snapshot = await window.firebaseGet(registroRef);
+                    
+                    if (snapshot.exists()) {
+                        const registro = snapshot.val();
+                        const documentos = registro.documentos || {};
+                        
+                        // Crear ZIP con todos los documentos
+                        // Nota: Para una implementación completa, necesitarías una librería como JSZip
+                        this.showAlert('Funcionalidad de exportación con documentos en desarrollo', 'info');
+                    }
+                } catch (error) {
+                    console.error('Error exporting record with documents:', error);
+                    this.showAlert('Error al exportar el registro con documentos', 'error');
+                }
             }
 
             updateConnectionStatus() {
@@ -1267,7 +1408,16 @@
 
                     if (registroId) {
                         const registroRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}`);
-                        await window.firebaseSet(registroRef, registro);
+                        const snapshot = await window.firebaseGet(registroRef);
+                        const existingData = snapshot.exists() ? snapshot.val() : {};
+                        
+                        // Preservar documentos existentes
+                        const updatedData = { ...registro };
+                        if (existingData.documentos) {
+                            updatedData.documentos = existingData.documentos;
+                        }
+                        
+                        await window.firebaseSet(registroRef, updatedData);
                         this.showAlert('Registro actualizado exitosamente', 'success');
                     } else {
                         const registrosRef = window.firebaseRef(window.firebaseDB, 'registros');
@@ -1278,7 +1428,7 @@
                         this.showAlert('Registro guardado exitosamente', 'success');
                     }
                     
-                    this.loadDocumentosImportados(this.currentEditingId);
+                    this.loadImportedDocuments(this.currentEditingId);
                 } catch (error) {
                     console.error('Error saving record:', error);
                     this.showAlert('Error al guardar el registro', 'error');
@@ -1300,7 +1450,7 @@
                         this.llenarFormulario(registro);
                         this.currentEditingId = id;
                         this.mostrarFormulario();
-                        this.loadDocumentosImportados(id);
+                        this.loadImportedDocuments(id);
                     }
                 } catch (error) {
                     console.error('Error loading record:', error);
@@ -1318,12 +1468,13 @@
                 
                 if (registro) {
                     this.mostrarConfirmacion(
-                        `¿Está seguro de que desea eliminar el registro de ${registro.nombre} ${registro.apellido}?`,
+                        `¿Está seguro de que desea eliminar el registro de ${registro.nombre} ${registro.apellido}? Esto también eliminará todos los documentos asociados.`,
                         async () => {
                             try {
                                 const registroRef = window.firebaseRef(window.firebaseDB, `registros/${id}`);
                                 await window.firebaseRemove(registroRef);
                                 this.showAlert('Registro eliminado exitosamente', 'success');
+                                this.loadRegistros();
                             } catch (error) {
                                 console.error('Error deleting record:', error);
                                 this.showAlert('Error al eliminar el registro', 'error');
@@ -1333,146 +1484,14 @@
                 }
             }
 
-            nuevoRegistro() {
-                this.limpiarFormulario();
-                this.mostrarFormulario();
-            }
-
-            verRegistros() {
-                this.loadRegistrosTable();
-                this.mostrarTabla();
-            }
-
-            mostrarFormulario() {
-                document.getElementById('registroFormContainer').classList.remove('hidden');
-                document.getElementById('registrosContainer').classList.add('hidden');
-                this.cerrarSearchModal();
-                this.cerrarImportDocumentModal();
-            }
-
-            mostrarTabla() {
-                document.getElementById('registroFormContainer').classList.add('hidden');
-                document.getElementById('registrosContainer').classList.remove('hidden');
-                this.cerrarSearchModal();
-                this.cerrarImportDocumentModal();
-            }
-
-            volverFormulario() {
-                this.mostrarFormulario();
-            }
-
-            loadRegistrosTable() {
-                const tbody = document.getElementById('registrosTableBody');
-                tbody.innerHTML = '';
-                
-                if (this.registrosCache.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No hay registros guardados</td></tr>';
-                    return;
-                }
-
-                this.registrosCache.forEach(registro => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${registro.dni}</td>
-                        <td>${registro.apellido}</td>
-                        <td>${registro.nombre}</td>
-                        <td>${this.formatDate(registro.fechaNacimiento)}</td>
-                        <td>${registro.telefono || '-'}</td>
-                        <td>${registro.email || '-'}</td>
-                        <td>
-                            <button class="btn btn-primary btn-small" onclick="registroManager.editarRegistro('${registro.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-danger btn-small" onclick="registroManager.eliminarRegistro('${registro.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            }
-
-            performSearch() {
-                const searchApellido = document.getElementById('searchApellido').value.toLowerCase();
-                const searchNombre = document.getElementById('searchNombre').value.toLowerCase();
-                const searchDNI = document.getElementById('searchDNI').value;
-                const searchResultsTableBody = document.getElementById('searchResultsTableBody');
-                searchResultsTableBody.innerHTML = '';
-
-                const filteredRegistros = this.registrosCache.filter(registro => {
-                    const apellidoMatch = searchApellido ? registro.apellido.toLowerCase().includes(searchApellido) : true;
-                    const nombreMatch = searchNombre ? registro.nombre.toLowerCase().includes(searchNombre) : true;
-                    const dniMatch = searchDNI ? registro.dni.includes(searchDNI) : true;
-                    return apellidoMatch && nombreMatch && dniMatch;
-                });
-
-                if (filteredRegistros.length === 0) {
-                    searchResultsTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No se encontraron registros.</td></tr>';
-                    return;
-                }
-
-                filteredRegistros.forEach(registro => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${registro.dni}</td>
-                        <td>${registro.apellido}</td>
-                        <td>${registro.nombre}</td>
-                        <td>
-                            <button class="btn btn-primary btn-small" onclick="registroManager.editarRegistro('${registro.id}'); registroManager.cerrarSearchModal();">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                        </td>
-                    `;
-                    searchResultsTableBody.appendChild(row);
-                });
-            }
-
-            limpiarFormulario() {
-                document.getElementById('registroForm').reset();
-                document.getElementById('registroId').value = '';
-                document.getElementById('nacionalidad').value = 'Argentina';
-                this.currentEditingId = null;
-                document.getElementById('documentosImportadosSection').classList.add('hidden');
-                this.limpiarFormularioDocumento();
-            }
-
-            llenarFormulario(registro) {
-                Object.keys(registro).forEach(key => {
-                    if (key !== 'id' && key !== 'documentos') {
-                        const element = document.getElementById(key);
-                        if (element) {
-                            element.value = registro[key];
-                        }
-                    }
-                });
-                
-                document.getElementById('registroId').value = registro.id;
-                this.calculateAge();
-            }
-
-            cancelarEdicion() {
-                if (this.currentEditingId) {
-                    this.mostrarConfirmacion(
-                        '¿Está seguro de que desea cancelar la edición? Se perderán los cambios no guardados.',
-                        () => {
-                            this.limpiarFormulario();
-                            this.currentEditingId = null;
-                            this.showAlert('Edición cancelada', 'info');
-                        }
-                    );
-                } else {
-                    this.limpiarFormulario();
-                }
-            }
-
             validarRegistro(registro) {
                 if (!registro.apellido || !registro.nombre || !registro.dni || !registro.fechaNacimiento) {
                     this.showAlert('Por favor complete todos los campos obligatorios', 'error');
                     return false;
                 }
 
-                if (!/^[0-9]{7,8}$/.test(registro.dni)) {
-                    this.showAlert('El DNI debe tener 7 u 8 dígitos', 'error');
+                if (registro.dni.length !== 8 || !/^\d+$/.test(registro.dni)) {
+                    this.showAlert('El DNI debe tener exactamente 8 dígitos', 'error');
                     return false;
                 }
 
@@ -1480,12 +1499,8 @@
             }
 
             validarDNI(e) {
-                const dni = e.target.value;
-                const isValid = /^[0-9]{0,8}$/.test(dni);
-                
-                if (!isValid) {
-                    e.target.value = dni.slice(0, -1);
-                }
+                const value = e.target.value;
+                e.target.value = value.replace(/\D/g, '').substring(0, 8);
             }
 
             calculateAge() {
@@ -1504,41 +1519,128 @@
                 }
             }
 
-            formatDate(dateString) {
-                if (!dateString) return '-';
-                const date = new Date(dateString);
-                return date.toLocaleDateString('es-AR');
+            llenarFormulario(registro) {
+                Object.keys(registro).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element && key !== 'id') {
+                        element.value = registro[key] || '';
+                    }
+                });
+                
+                document.getElementById('registroId').value = registro.id;
+                this.calculateAge();
             }
 
-            showAlert(message, type = 'info') {
-                const alertContainer = document.getElementById('alertContainer');
-                const alert = document.createElement('div');
-                alert.className = `alert alert-${type}`;
+            limpiarFormulario() {
+                document.getElementById('registroForm').reset();
+                document.getElementById('registroId').value = '';
+                document.getElementById('edad').value = '';
+                this.currentEditingId = null;
+                document.getElementById('documentosImportadosSection').classList.add('hidden');
+            }
+
+            nuevoRegistro() {
+                this.limpiarFormulario();
+                this.mostrarFormulario();
+            }
+
+            cancelarEdicion() {
+                this.limpiarFormulario();
+                this.mostrarFormulario();
+            }
+
+            mostrarFormulario() {
+                document.getElementById('registroFormContainer').classList.remove('hidden');
+                document.getElementById('registrosContainer').classList.add('hidden');
+            }
+
+            verRegistros() {
+                document.getElementById('registroFormContainer').classList.add('hidden');
+                document.getElementById('registrosContainer').classList.remove('hidden');
+                this.loadRegistrosTable();
+            }
+
+            volverFormulario() {
+                this.mostrarFormulario();
+            }
+
+            loadRegistrosTable() {
+                const tbody = document.getElementById('registrosTableBody');
                 
-                const icon = type === 'success' ? 'check-circle' : 
-                           type === 'error' ? 'exclamation-circle' : 
-                           'info-circle';
+                if (this.registrosCache.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No hay registros guardados</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = this.registrosCache.map(registro => `
+                    <tr>
+                        <td>${registro.dni}</td>
+                        <td>${registro.apellido}</td>
+                        <td>${registro.nombre}</td>
+                        <td>${registro.fechaNacimiento}</td>
+                        <td>${registro.telefono || '-'}</td>
+                        <td>${registro.email || '-'}</td>
+                        <td>
+                            <button class="btn btn-info btn-small" onclick="registroManager.editarRegistro('${registro.id}')">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="registroManager.eliminarRegistro('${registro.id}')">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            mostrarSearchModal() {
+                document.getElementById('searchModal').classList.add('show');
+                document.getElementById('searchResultsTableBody').innerHTML = '';
+            }
+
+            cerrarSearchModal() {
+                document.getElementById('searchModal').classList.remove('show');
+                document.getElementById('searchForm').reset();
+            }
+
+            performSearch() {
+                const apellido = document.getElementById('searchApellido').value.toLowerCase();
+                const nombre = document.getElementById('searchNombre').value.toLowerCase();
+                const dni = document.getElementById('searchDNI').value;
+
+                const resultados = this.registrosCache.filter(registro => {
+                    const matchApellido = !apellido || registro.apellido.toLowerCase().includes(apellido);
+                    const matchNombre = !nombre || registro.nombre.toLowerCase().includes(nombre);
+                    const matchDNI = !dni || registro.dni.includes(dni);
+                    
+                    return matchApellido && matchNombre && matchDNI;
+                });
+
+                const tbody = document.getElementById('searchResultsTableBody');
                 
-                alert.innerHTML = `
-                    <i class="fas fa-${icon}"></i>
-                    <span>${message}</span>
-                `;
-                
-                alertContainer.appendChild(alert);
-                
-                setTimeout(() => {
-                    if (alert.parentNode) {
-                        alert.parentNode.removeChild(alert);
-                    }
-                }, 5000);
+                if (resultados.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No se encontraron registros</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = resultados.map(registro => `
+                    <tr>
+                        <td>${registro.dni}</td>
+                        <td>${registro.apellido}</td>
+                        <td>${registro.nombre}</td>
+                        <td>
+                            <button class="btn btn-info btn-small" onclick="registroManager.editarRegistro('${registro.id}'); registroManager.cerrarSearchModal();">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
             }
 
             mostrarConfirmacion(mensaje, callback) {
                 document.getElementById('confirmMessage').textContent = mensaje;
                 document.getElementById('confirmModal').classList.add('show');
                 
-                const confirmBtn = document.getElementById('confirmBtn');
-                confirmBtn.onclick = () => {
+                document.getElementById('confirmBtn').onclick = () => {
                     callback();
                     this.cerrarModal();
                 };
@@ -1546,65 +1648,6 @@
 
             cerrarModal() {
                 document.getElementById('confirmModal').classList.remove('show');
-            }
-
-            mostrarSearchModal() {
-                document.getElementById('searchModal').classList.add('show');
-            }
-
-            cerrarSearchModal() {
-                document.getElementById('searchModal').classList.remove('show');
-                document.getElementById('searchForm').reset();
-                document.getElementById('searchResultsTableBody').innerHTML = '';
-            }
-
-            mostrarImportDocumentModal() {
-                if (!this.currentEditingId) {
-                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
-                    return;
-                }
-                
-                document.getElementById('importDocumentModal').classList.add('show');
-                this.loadImportedDocuments(this.currentEditingId);
-            }
-
-            cerrarImportDocumentModal() {
-                if (this.uploadInProgress) {
-                    this.mostrarConfirmacion(
-                        '¿Está seguro de que desea cancelar la subida del documento?',
-                        () => {
-                            this.cancelarSubida();
-                            document.getElementById('importDocumentModal').classList.remove('show');
-                        }
-                    );
-                } else {
-                    document.getElementById('importDocumentModal').classList.remove('show');
-                    this.limpiarFormularioDocumento();
-                }
-            }
-
-            limpiarFormularioDocumento() {
-                document.getElementById('importDocumentForm').reset();
-                document.getElementById('fileInfo').classList.add('hidden');
-                document.getElementById('fileValidationError').classList.add('hidden');
-                document.getElementById('uploadProgress').classList.add('hidden');
-                document.getElementById('uploadSuccess').classList.add('hidden');
-                document.getElementById('uploadDocumentBtn').disabled = false;
-                document.getElementById('fileDropZone').classList.remove('uploading');
-            }
-
-            cancelarSubida() {
-                this.uploadInProgress = false;
-                this.limpiarFormularioDocumento();
-                this.showAlert('Subida cancelada', 'info');
-            }
-
-            updateUploadProgress(progress, status) {
-                const progressFill = document.getElementById('progressFill');
-                const uploadStatus = document.getElementById('uploadStatus');
-                
-                progressFill.style.width = `${progress}%`;
-                uploadStatus.textContent = status;
             }
 
             imprimir() {
@@ -1617,280 +1660,68 @@
                     return;
                 }
 
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-
-                doc.setFontSize(16);
-                doc.text('Registro de Datos - Defensoría Civil y Comercial 6', 14, 15);
-
-                const tableColumn = ["DNI", "Apellido", "Nombre", "Fecha Nacimiento", "Teléfono", "Email"];
-                const tableRows = [];
-
-                this.registrosCache.forEach(registro => {
-                    const registroData = [
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    doc.setFontSize(16);
+                    doc.text('Registro de Datos - Defensoría Civil y Comercial 6', 20, 20);
+                    
+                    const tableData = this.registrosCache.map(registro => [
                         registro.dni,
                         registro.apellido,
                         registro.nombre,
-                        this.formatDate(registro.fechaNacimiento),
+                        registro.fechaNacimiento,
                         registro.telefono || '-',
                         registro.email || '-'
-                    ];
-                    tableRows.push(registroData);
-                });
+                    ]);
 
-                doc.autoTable(tableColumn, tableRows, {
-                    startY: 20,
-                    headStyles: { fillColor: [37, 99, 235] },
-                    styles: { fontSize: 8, cellPadding: 3 },
-                    margin: { top: 10, left: 10, right: 10, bottom: 10 },
-                });
-
-                doc.save('registros.pdf');
-                this.showAlert('Registros exportados a PDF', 'success');
-            }
-
-            async handleDocumentUpload() {
-                if (!this.isOnline) {
-                    this.showAlert('Sin conexión a internet. No se puede subir el documento.', 'error');
-                    return;
-                }
-
-                if (this.uploadInProgress) {
-                    this.showAlert('Ya hay una subida en progreso. Por favor espere.', 'error');
-                    return;
-                }
-
-                const fileInput = document.getElementById('documentFile');
-                const descriptionInput = document.getElementById('documentDescription');
-                const file = fileInput.files[0];
-                const description = descriptionInput.value.trim();
-
-                if (!file) {
-                    this.showAlert('Por favor seleccione un archivo.', 'error');
-                    return;
-                }
-
-                if (!description) {
-                    this.showAlert('Por favor ingrese una descripción para el documento.', 'error');
-                    return;
-                }
-
-                if (!this.currentEditingId) {
-                    this.showAlert('Debe seleccionar un registro para asociar el documento.', 'error');
-                    return;
-                }
-
-                // Validar archivo nuevamente antes de subir
-                const validationErrors = this.validateFile(file);
-                if (validationErrors.length > 0) {
-                    this.showFileValidationError(validationErrors);
-                    return;
-                }
-
-                this.uploadInProgress = true;
-                const uploadProgress = document.getElementById('uploadProgress');
-                const uploadSuccess = document.getElementById('uploadSuccess');
-                const uploadBtn = document.getElementById('uploadDocumentBtn');
-                const dropZone = document.getElementById('fileDropZone');
-                
-                uploadProgress.classList.remove('hidden');
-                uploadSuccess.classList.add('hidden');
-                uploadBtn.disabled = true;
-                dropZone.classList.add('uploading');
-
-                try {
-                    const timestamp = Date.now();
-                    const fileName = `${timestamp}_${file.name}`;
-                    const storageRef = window.firebaseStorageRef(window.firebaseStorage, `documentos/${this.currentEditingId}/${fileName}`);
-                    
-                    // Usar uploadBytesResumable para progreso en tiempo real
-                    const uploadTask = window.firebaseUploadBytesResumable(storageRef, file);
-
-                    uploadTask.on('state_changed', 
-                        (snapshot) => {
-                            // Progreso en tiempo real
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            this.updateUploadProgress(progress, `Subiendo... ${Math.round(progress)}%`);
-                        }, 
-                        (error) => {
-                            console.error('Error uploading document:', error);
-                            this.showAlert('Error al subir el documento: ' + error.message, 'error');
-                            this.uploadInProgress = false;
-                            uploadProgress.classList.add('hidden');
-                            uploadBtn.disabled = false;
-                            dropZone.classList.remove('uploading');
-                        }, 
-                        async () => {
-                            // Subida completada
-                            try {
-                                const downloadURL = await window.firebaseGetDownloadURL(uploadTask.snapshot.ref);
-
-                                // Guardar información del documento en la base de datos
-                                const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${this.currentEditingId}/documentos`);
-                                const newDocRef = window.firebasePush(documentosRef);
-                                await window.firebaseSet(newDocRef, {
-                                    name: file.name,
-                                    originalName: file.name,
-                                    storageName: fileName,
-                                    description: description,
-                                    url: downloadURL,
-                                    size: file.size,
-                                    type: this.getFileType(file),
-                                    mimeType: file.type,
-                                    uploadedAt: new Date().toISOString()
-                                });
-
-                                // Mostrar éxito
-                                uploadProgress.classList.add('hidden');
-                                uploadSuccess.classList.remove('hidden');
-                                dropZone.classList.remove('uploading');
-                                
-                                this.showAlert('Documento subido exitosamente', 'success');
-                                
-                                // Limpiar formulario después de un breve delay
-                                setTimeout(() => {
-                                    this.limpiarFormularioDocumento();
-                                }, 2000);
-
-                                // Recargar la lista de documentos inmediatamente
-                                this.loadImportedDocuments(this.currentEditingId);
-
-                            } catch (error) {
-                                console.error('Error saving document info:', error);
-                                this.showAlert('Error al guardar información del documento: ' + error.message, 'error');
-                                uploadProgress.classList.add('hidden');
-                                uploadBtn.disabled = false;
-                                dropZone.classList.remove('uploading');
-                            } finally {
-                                this.uploadInProgress = false;
-                            }
-                        }
-                    );
-
-                } catch (error) {
-                    console.error('Error uploading document:', error);
-                    this.showAlert('Error al subir el documento: ' + error.message, 'error');
-                    uploadProgress.classList.add('hidden');
-                    uploadBtn.disabled = false;
-                    dropZone.classList.remove('uploading');
-                    this.uploadInProgress = false;
-                }
-            }
-
-            async loadImportedDocuments(registroId) {
-                if (!this.isOnline) return;
-
-                const tbody = document.getElementById('importedDocumentsTableBody');
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Cargando documentos...</td></tr>';
-
-                try {
-                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos`);
-                    window.firebaseOnValue(documentosRef, (snapshot) => {
-                        const data = snapshot.val();
-                        const documentos = data ? Object.keys(data).map(key => ({
-                            id: key,
-                            ...data[key]
-                        })) : [];
-                        
-                        tbody.innerHTML = '';
-                        if (documentos.length === 0) {
-                            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No hay documentos importados.</td></tr>';
-                            return;
-                        }
-
-                        // Ordenar por fecha de subida (más recientes primero)
-                        documentos.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
-
-                        documentos.forEach(doc => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>
-                                    <div class="document-name">${doc.name}</div>
-                                </td>
-                                <td>
-                                    <div class="document-type">${doc.type || 'Archivo'}</div>
-                                </td>
-                                <td>
-                                    <div class="document-size">${this.formatFileSize(doc.size || 0)}</div>
-                                </td>
-                                <td>${doc.description}</td>
-                                <td>${this.formatDate(doc.uploadedAt)}</td>
-                                <td>
-                                    <button class="btn btn-info btn-small" onclick="registroManager.viewDocument('${doc.url}', '${doc.name}')">
-                                        <i class="fas fa-eye"></i> Ver
-                                    </button>
-                                    <button class="btn btn-success btn-small" onclick="registroManager.downloadDocument('${doc.url}', '${doc.name}')">
-                                        <i class="fas fa-download"></i> Descargar
-                                    </button>
-                                    <button class="btn btn-danger btn-small" onclick="registroManager.deleteDocument('${registroId}', '${doc.id}', '${doc.storageName || doc.name}')">
-                                        <i class="fas fa-trash"></i> Eliminar
-                                    </button>
-                                </td>
-                            `;
-                            tbody.appendChild(row);
-                        });
+                    doc.autoTable({
+                        head: [['DNI', 'Apellido', 'Nombre', 'Fecha Nac.', 'Teléfono', 'Email']],
+                        body: tableData,
+                        startY: 30,
+                        styles: { fontSize: 8 }
                     });
+
+                    doc.save('registros-defensoria.pdf');
+                    this.showAlert('PDF exportado exitosamente', 'success');
                 } catch (error) {
-                    console.error('Error loading imported documents:', error);
-                    this.showAlert('Error al cargar documentos importados: ' + error.message, 'error');
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Error al cargar documentos.</td></tr>';
+                    console.error('Error exporting PDF:', error);
+                    this.showAlert('Error al exportar PDF', 'error');
                 }
             }
 
-            loadDocumentosImportados(registroId) {
-                this.loadImportedDocuments(registroId);
-                document.getElementById('documentosImportadosSection').classList.remove('hidden');
-            }
-
-            async deleteDocument(registroId, documentId, documentName) {
-                if (!this.isOnline) {
-                    this.showAlert('Sin conexión a internet. No se puede eliminar el documento.', 'error');
-                    return;
-                }
-
-                this.mostrarConfirmacion(
-                    `¿Está seguro de que desea eliminar el documento "${documentName}"?`,
-                    async () => {
-                        try {
-                            // Eliminar del storage
-                            const storageRef = window.firebaseStorageRef(window.firebaseStorage, `documentos/${registroId}/${documentName}`);
-                            await window.firebaseDeleteObject(storageRef);
-
-                            // Eliminar de la base de datos
-                            const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${documentId}`);
-                            await window.firebaseRemove(docRef);
-
-                            this.showAlert('Documento eliminado exitosamente', 'success');
-                        } catch (error) {
-                            console.error('Error deleting document:', error);
-                            this.showAlert('Error al eliminar el documento: ' + error.message, 'error');
-                        }
+            showAlert(message, type = 'info') {
+                const alertContainer = document.getElementById('alertContainer');
+                const alertId = 'alert-' + Date.now();
+                
+                const alertElement = document.createElement('div');
+                alertElement.id = alertId;
+                alertElement.className = `alert alert-${type}`;
+                
+                const icon = type === 'success' ? 'check-circle' : 
+                           type === 'error' ? 'exclamation-circle' : 
+                           'info-circle';
+                
+                alertElement.innerHTML = `
+                    <i class="fas fa-${icon}"></i>
+                    <span>${message}</span>
+                `;
+                
+                alertContainer.appendChild(alertElement);
+                
+                setTimeout(() => {
+                    const element = document.getElementById(alertId);
+                    if (element) {
+                        element.remove();
                     }
-                );
-            }
-
-            viewDocument(url, name) {
-                window.open(url, '_blank');
-            }
-
-            downloadDocument(url, name) {
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = name;
-                a.target = '_blank';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                this.showAlert(`Descargando ${name}...`, 'info');
+                }, 5000);
             }
         }
 
-        const registroManager = new RegistroManager();
-        window.registroManager = registroManager;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            registroManager.checkConnectionStatus();
-            registroManager.loadRegistros();
+        // Inicializar la aplicación cuando se carga la página
+        window.addEventListener('DOMContentLoaded', () => {
+            window.registroManager = new RegistroManager();
         });
     </script>
 </body>
