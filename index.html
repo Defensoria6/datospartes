@@ -353,6 +353,12 @@
             color: var(--text-color);
         }
 
+        .remove-section-btn {
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
         .add-section-btn {
             display: flex;
             align-items: center;
@@ -710,18 +716,10 @@
             <i class="fas fa-wifi"></i> Conectando...
         </div>
 
-        <header class="header">
-            <h1>Registro de Datos</h1>
-            <p>Administración de Causas Defensoría Civil y Comercial 6</p>
-        </header>
-
         <main class="content">
             <div id="alertContainer" class="alert-container"></div>
 
             <div class="form-actions">
-                <a href="https://defensoria6.github.io/sistemacausas/" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
                 <button id="nuevoRegistroBtn" class="btn btn-primary" onclick="registroManager.nuevoRegistro()">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -737,10 +735,7 @@
                 <button id="exportarBtn" class="btn btn-secondary" onclick="registroManager.exportar()">
                     <i class="fas fa-file-pdf"></i> Exportar PDF
                 </button>
-                <button id="importarDocumentosBtn" class="btn btn-secondary" onclick="registroManager.mostrarImportDocumentModal()">
-                    <i class="fas fa-upload"></i> Importar Documentos
-                </button>
-            </div>
+                </div>
 
             <div id="registroFormContainer" class="container">
                 <form id="registroForm">
@@ -836,144 +831,32 @@
 
                     <div class="form-section">
                         <h2><i class="fas fa-gavel"></i> Información Judicial</h2>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="expte">Expte</label>
-                                <input type="text" id="expte" name="expte">
-                            </div>
-                            <div class="form-group">
-                                <label for="caratula">Carátula</label>
-                                <input type="text" id="caratula" name="caratula">
-                            </div>
-                            <div class="form-group">
-                                <label for="juzgado">Juzgado</label>
-                                <input type="text" id="juzgado" name="juzgado">
-                            </div>
-                            <div class="form-group">
-                                <label for="secretaria">Secretaría</label>
-                                <input type="text" id="secretaria" name="secretaria">
-                            </div>
-                            <div class="form-group">
-                                <label for="poderJudicial">Poder Judicial</label>
-                                <select id="poderJudicial" name="poderJudicial">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="Buenos Aires">Buenos Aires</option>
-                                    <option value="Catamarca">Catamarca</option>
-                                    <option value="Chaco">Chaco</option>
-                                    <option value="Chubut">Chubut</option>
-                                    <option value="Córdoba">Córdoba</option>
-                                    <option value="Corrientes">Corrientes</option>
-                                    <option value="Entre Ríos">Entre Ríos</option>
-                                    <option value="Formosa">Formosa</option>
-                                    <option value="Jujuy">Jujuy</option>
-                                    <option value="La Pampa">La Pampa</option>
-                                    <option value="La Rioja">La Rioja</option>
-                                    <option value="Mendoza">Mendoza</option>
-                                    <option value="Misiones">Misiones</option>
-                                    <option value="Neuquén">Neuquén</option>
-                                    <option value="Río Negro">Río Negro</option>
-                                    <option value="Salta">Salta</option>
-                                    <option value="San Juan">San Juan</option>
-                                    <option value="San Luis">San Luis</option>
-                                    <option value="Santa Cruz">Santa Cruz</option>
-                                    <option value="Santa Fe">Santa Fe</option>
-                                    <option value="Santiago del Estero">Santiago del Estero</option>
-                                    <option value="Tierra del Fuego">Tierra del Fuego</option>
-                                    <option value="Tucumán">Tucumán</option>
-                                    <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaInicio">Fecha de Inicio</label>
-                                <input type="date" id="fechaInicio" name="fechaInicio">
-                            </div>
-                            <div class="form-group">
-                                <label for="estadoActual">Estado Actual</label>
-                                <select id="estadoActual" name="estadoActual">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="En trámite">En trámite</option>
-                                    <option value="Archivado">Archivado</option>
-                                    <option value="Finalizado">Finalizado</option>
-                                    <option value="Pendiente">Pendiente</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="condicionParte">Condición de Parte</label>
-                                <select id="condicionParte" name="condicionParte">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="Actor/a">Actor/a</option>
-                                    <option value="Demandado/a">Demandado/a</option>
-                                    <option value="Imputado/a">Imputado/a</option>
-                                    <option value="Querellante">Querellante</option>
-                                    <option value="Tercero">Tercero</option>
-                                    <option value="Testigo">Testigo</option>
-                                    <option value="Perito">Perito</option>
-                                    <option value="Víctima">Víctima</option>
-                                    <option value="Denunciante">Denunciante</option>
-                                    <option value="Denunciado/a">Denunciado/a</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="observacionesJudiciales">Observaciones</label>
-                                <textarea id="observacionesJudiciales" name="observacionesJudiciales" rows="3"></textarea>
-                            </div>
+                        <div id="judicialSectionsContainer">
+                            <!-- Las secciones judiciales se agregarán aquí dinámicamente -->
                         </div>
+                        <button type="button" class="btn btn-secondary add-section-btn" onclick="registroManager.agregarSeccionJudicial()">
+                            <i class="fas fa-plus"></i> Agregar Información Judicial
+                        </button>
                     </div>
 
                     <div class="form-section">
                         <h2><i class="fas fa-user-md"></i> Información Médica</h2>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="enfermedades">Enfermedades</label>
-                                <textarea id="enfermedades" name="enfermedades" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="medicoTratante">Médico Tratante</label>
-                                <input type="text" id="medicoTratante" name="medicoTratante">
-                            </div>
-                            <div class="form-group">
-                                <label for="lugarInternacion">Lugar de Internación</label>
-                                <input type="text" id="lugarInternacion" name="lugarInternacion">
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaIngreso">Fecha Ingreso</label>
-                                <input type="date" id="fechaIngreso" name="fechaIngreso">
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaAlta">Fecha Alta</label>
-                                <input type="date" id="fechaAlta" name="fechaAlta">
-                            </div>
-                            <div class="form-group">
-                                <label for="observacionesMedicas">Observaciones</label>
-                                <textarea id="observacionesMedicas" name="observacionesMedicas" rows="3"></textarea>
-                            </div>
+                        <div id="medicaSectionsContainer">
+                            <!-- Las secciones médicas se agregarán aquí dinámicamente -->
                         </div>
+                        <button type="button" class="btn btn-secondary add-section-btn" onclick="registroManager.agregarSeccionMedica()">
+                            <i class="fas fa-plus"></i> Agregar Información Médica
+                        </button>
                     </div>
 
                     <div class="form-section">
                         <h2><i class="fas fa-briefcase"></i> Información Laboral</h2>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="empleo">Empleo</label>
-                                <input type="text" id="empleo" name="empleo">
-                            </div>
-                            <div class="form-group">
-                                <label for="empleador">Empleador</label>
-                                <input type="text" id="empleador" name="empleador">
-                            </div>
-                            <div class="form-group">
-                                <label for="domicilioLaboral">Domicilio Laboral</label>
-                                <textarea id="domicilioLaboral" name="domicilioLaboral" rows="2"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="montoSalario">Monto Salario</label>
-                                <input type="number" id="montoSalario" name="montoSalario" step="0.01">
-                            </div>
-                            <div class="form-group">
-                                <label for="observacionesLaborales">Observaciones</label>
-                                <textarea id="observacionesLaborales" name="observacionesLaborales" rows="3"></textarea>
-                            </div>
+                        <div id="laboralSectionsContainer">
+                            <!-- Las secciones laborales se agregarán aquí dinámicamente -->
                         </div>
+                        <button type="button" class="btn btn-secondary add-section-btn" onclick="registroManager.agregarSeccionLaboral()">
+                            <i class="fas fa-plus"></i> Agregar Información Laboral
+                        </button>
                     </div>
 
                     <div class="form-section">
@@ -1168,6 +1051,9 @@
                 this.registrosCache = [];
                 this.isOnline = navigator.onLine;
                 this.uploadedFiles = [];
+                this.judicialSectionCounter = 0;
+                this.medicaSectionCounter = 0;
+                this.laboralSectionCounter = 0;
                 this.setupEventListeners();
                 this.loadRegistros();
                 this.checkConnectionStatus();
@@ -1203,6 +1089,191 @@
                 document.getElementById("closeSearchModalBtn").addEventListener("click", () => {
                     this.cerrarSearchModal();
                 });
+            }
+
+            agregarSeccionJudicial(data = {}) {
+                this.judicialSectionCounter++;
+                const sectionId = `judicialSection_${this.judicialSectionCounter}`;
+                
+                const sectionHTML = `
+                    <div class="dynamic-section" id="${sectionId}">
+                        <div class="dynamic-section-header">
+                            <div class="dynamic-section-title">Información Judicial #${this.judicialSectionCounter}</div>
+                            <i class="fas fa-times remove-section-btn" onclick="registroManager.eliminarSeccion('${sectionId}')"></i>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="expte_${sectionId}">Expte</label>
+                                <input type="text" id="expte_${sectionId}" name="expte[]" value="${data.expte || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="caratula_${sectionId}">Carátula</label>
+                                <input type="text" id="caratula_${sectionId}" name="caratula[]" value="${data.caratula || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="juzgado_${sectionId}">Juzgado</label>
+                                <input type="text" id="juzgado_${sectionId}" name="juzgado[]" value="${data.juzgado || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="secretaria_${sectionId}">Secretaría</label>
+                                <input type="text" id="secretaria_${sectionId}" name="secretaria[]" value="${data.secretaria || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="poderJudicial_${sectionId}">Poder Judicial</label>
+                                <select id="poderJudicial_${sectionId}" name="poderJudicial[]">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Buenos Aires" ${data.poderJudicial === 'Buenos Aires' ? 'selected' : ''}>Buenos Aires</option>
+                                    <option value="Catamarca" ${data.poderJudicial === 'Catamarca' ? 'selected' : ''}>Catamarca</option>
+                                    <option value="Chaco" ${data.poderJudicial === 'Chaco' ? 'selected' : ''}>Chaco</option>
+                                    <option value="Chubut" ${data.poderJudicial === 'Chubut' ? 'selected' : ''}>Chubut</option>
+                                    <option value="Córdoba" ${data.poderJudicial === 'Córdoba' ? 'selected' : ''}>Córdoba</option>
+                                    <option value="Corrientes" ${data.poderJudicial === 'Corrientes' ? 'selected' : ''}>Corrientes</option>
+                                    <option value="Entre Ríos" ${data.poderJudicial === 'Entre Ríos' ? 'selected' : ''}>Entre Ríos</option>
+                                    <option value="Formosa" ${data.poderJudicial === 'Formosa' ? 'selected' : ''}>Formosa</option>
+                                    <option value="Jujuy" ${data.poderJudicial === 'Jujuy' ? 'selected' : ''}>Jujuy</option>
+                                    <option value="La Pampa" ${data.poderJudicial === 'La Pampa' ? 'selected' : ''}>La Pampa</option>
+                                    <option value="La Rioja" ${data.poderJudicial === 'La Rioja' ? 'selected' : ''}>La Rioja</option>
+                                    <option value="Mendoza" ${data.poderJudicial === 'Mendoza' ? 'selected' : ''}>Mendoza</option>
+                                    <option value="Misiones" ${data.poderJudicial === 'Misiones' ? 'selected' : ''}>Misiones</option>
+                                    <option value="Neuquén" ${data.poderJudicial === 'Neuquén' ? 'selected' : ''}>Neuquén</option>
+                                    <option value="Río Negro" ${data.poderJudicial === 'Río Negro' ? 'selected' : ''}>Río Negro</option>
+                                    <option value="Salta" ${data.poderJudicial === 'Salta' ? 'selected' : ''}>Salta</option>
+                                    <option value="San Juan" ${data.poderJudicial === 'San Juan' ? 'selected' : ''}>San Juan</option>
+                                    <option value="San Luis" ${data.poderJudicial === 'San Luis' ? 'selected' : ''}>San Luis</option>
+                                    <option value="Santa Cruz" ${data.poderJudicial === 'Santa Cruz' ? 'selected' : ''}>Santa Cruz</option>
+                                    <option value="Santa Fe" ${data.poderJudicial === 'Santa Fe' ? 'selected' : ''}>Santa Fe</option>
+                                    <option value="Santiago del Estero" ${data.poderJudicial === 'Santiago del Estero' ? 'selected' : ''}>Santiago del Estero</option>
+                                    <option value="Tierra del Fuego" ${data.poderJudicial === 'Tierra del Fuego' ? 'selected' : ''}>Tierra del Fuego</option>
+                                    <option value="Tucumán" ${data.poderJudicial === 'Tucumán' ? 'selected' : ''}>Tucumán</option>
+                                    <option value="Ciudad Autónoma de Buenos Aires" ${data.poderJudicial === 'Ciudad Autónoma de Buenos Aires' ? 'selected' : ''}>Ciudad Autónoma de Buenos Aires</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaInicio_${sectionId}">Fecha de Inicio</label>
+                                <input type="date" id="fechaInicio_${sectionId}" name="fechaInicio[]" value="${data.fechaInicio || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="estadoActual_${sectionId}">Estado Actual</label>
+                                <select id="estadoActual_${sectionId}" name="estadoActual[]">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="En trámite" ${data.estadoActual === 'En trámite' ? 'selected' : ''}>En trámite</option>
+                                    <option value="Archivado" ${data.estadoActual === 'Archivado' ? 'selected' : ''}>Archivado</option>
+                                    <option value="Finalizado" ${data.estadoActual === 'Finalizado' ? 'selected' : ''}>Finalizado</option>
+                                    <option value="Pendiente" ${data.estadoActual === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="condicionParte_${sectionId}">Condición de Parte</label>
+                                <select id="condicionParte_${sectionId}" name="condicionParte[]">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Actor/a" ${data.condicionParte === 'Actor/a' ? 'selected' : ''}>Actor/a</option>
+                                    <option value="Demandado/a" ${data.condicionParte === 'Demandado/a' ? 'selected' : ''}>Demandado/a</option>
+                                    <option value="Imputado/a" ${data.condicionParte === 'Imputado/a' ? 'selected' : ''}>Imputado/a</option>
+                                    <option value="Querellante" ${data.condicionParte === 'Querellante' ? 'selected' : ''}>Querellante</option>
+                                    <option value="Tercero" ${data.condicionParte === 'Tercero' ? 'selected' : ''}>Tercero</option>
+                                    <option value="Testigo" ${data.condicionParte === 'Testigo' ? 'selected' : ''}>Testigo</option>
+                                    <option value="Perito" ${data.condicionParte === 'Perito' ? 'selected' : ''}>Perito</option>
+                                    <option value="Víctima" ${data.condicionParte === 'Víctima' ? 'selected' : ''}>Víctima</option>
+                                    <option value="Denunciante" ${data.condicionParte === 'Denunciante' ? 'selected' : ''}>Denunciante</option>
+                                    <option value="Denunciado/a" ${data.condicionParte === 'Denunciado/a' ? 'selected' : ''}>Denunciado/a</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="observacionesJudiciales_${sectionId}">Observaciones</label>
+                                <textarea id="observacionesJudiciales_${sectionId}" name="observacionesJudiciales[]" rows="3">${data.observacionesJudiciales || ''}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('judicialSectionsContainer').insertAdjacentHTML('beforeend', sectionHTML);
+            }
+
+            agregarSeccionMedica(data = {}) {
+                this.medicaSectionCounter++;
+                const sectionId = `medicaSection_${this.medicaSectionCounter}`;
+                
+                const sectionHTML = `
+                    <div class="dynamic-section" id="${sectionId}">
+                        <div class="dynamic-section-header">
+                            <div class="dynamic-section-title">Información Médica #${this.medicaSectionCounter}</div>
+                            <i class="fas fa-times remove-section-btn" onclick="registroManager.eliminarSeccion('${sectionId}')"></i>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="enfermedades_${sectionId}">Enfermedades</label>
+                                <textarea id="enfermedades_${sectionId}" name="enfermedades[]" rows="3">${data.enfermedades || ''}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="medicoTratante_${sectionId}">Médico Tratante</label>
+                                <input type="text" id="medicoTratante_${sectionId}" name="medicoTratante[]" value="${data.medicoTratante || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="lugarInternacion_${sectionId}">Lugar de Internación</label>
+                                <input type="text" id="lugarInternacion_${sectionId}" name="lugarInternacion[]" value="${data.lugarInternacion || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaIngreso_${sectionId}">Fecha Ingreso</label>
+                                <input type="date" id="fechaIngreso_${sectionId}" name="fechaIngreso[]" value="${data.fechaIngreso || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaAlta_${sectionId}">Fecha Alta</label>
+                                <input type="date" id="fechaAlta_${sectionId}" name="fechaAlta[]" value="${data.fechaAlta || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="observacionesMedicas_${sectionId}">Observaciones</label>
+                                <textarea id="observacionesMedicas_${sectionId}" name="observacionesMedicas[]" rows="3">${data.observacionesMedicas || ''}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('medicaSectionsContainer').insertAdjacentHTML('beforeend', sectionHTML);
+            }
+
+            agregarSeccionLaboral(data = {}) {
+                this.laboralSectionCounter++;
+                const sectionId = `laboralSection_${this.laboralSectionCounter}`;
+                
+                const sectionHTML = `
+                    <div class="dynamic-section" id="${sectionId}">
+                        <div class="dynamic-section-header">
+                            <div class="dynamic-section-title">Información Laboral #${this.laboralSectionCounter}</div>
+                            <i class="fas fa-times remove-section-btn" onclick="registroManager.eliminarSeccion('${sectionId}')"></i>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="empleo_${sectionId}">Empleo</label>
+                                <input type="text" id="empleo_${sectionId}" name="empleo[]" value="${data.empleo || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="empleador_${sectionId}">Empleador</label>
+                                <input type="text" id="empleador_${sectionId}" name="empleador[]" value="${data.empleador || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="domicilioLaboral_${sectionId}">Domicilio Laboral</label>
+                                <textarea id="domicilioLaboral_${sectionId}" name="domicilioLaboral[]" rows="2">${data.domicilioLaboral || ''}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="montoSalario_${sectionId}">Monto Salario</label>
+                                <input type="number" id="montoSalario_${sectionId}" name="montoSalario[]" step="0.01" value="${data.montoSalario || ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="observacionesLaborales_${sectionId}">Observaciones</label>
+                                <textarea id="observacionesLaborales_${sectionId}" name="observacionesLaborales[]" rows="3">${data.observacionesLaborales || ''}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('laboralSectionsContainer').insertAdjacentHTML('beforeend', sectionHTML);
+            }
+
+            eliminarSeccion(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.remove();
+                }
             }
 
             checkConnectionStatus() {
@@ -1275,10 +1346,90 @@
                 const formData = new FormData(document.getElementById('registroForm'));
                 const registro = {};
                 
+                // Procesar campos normales
                 for (let [key, value] of formData.entries()) {
-                    if (key !== 'registroId') {
+                    if (key !== 'registroId' && !key.endsWith('[]')) {
                         registro[key] = value;
                     }
+                }
+                
+                // Procesar campos de información judicial (arrays)
+                const judicialData = {
+                    expte: formData.getAll('expte[]'),
+                    caratula: formData.getAll('caratula[]'),
+                    juzgado: formData.getAll('juzgado[]'),
+                    secretaria: formData.getAll('secretaria[]'),
+                    poderJudicial: formData.getAll('poderJudicial[]'),
+                    fechaInicio: formData.getAll('fechaInicio[]'),
+                    estadoActual: formData.getAll('estadoActual[]'),
+                    condicionParte: formData.getAll('condicionParte[]'),
+                    observacionesJudiciales: formData.getAll('observacionesJudiciales[]')
+                };
+                
+                // Agregar información judicial al registro
+                registro.informacionJudicial = [];
+                
+                // Crear objetos de información judicial para cada conjunto de campos
+                for (let i = 0; i < judicialData.expte.length; i++) {
+                    registro.informacionJudicial.push({
+                        expte: judicialData.expte[i],
+                        caratula: judicialData.caratula[i],
+                        juzgado: judicialData.juzgado[i],
+                        secretaria: judicialData.secretaria[i],
+                        poderJudicial: judicialData.poderJudicial[i],
+                        fechaInicio: judicialData.fechaInicio[i],
+                        estadoActual: judicialData.estadoActual[i],
+                        condicionParte: judicialData.condicionParte[i],
+                        observacionesJudiciales: judicialData.observacionesJudiciales[i]
+                    });
+                }
+
+                // Procesar campos de información médica (arrays)
+                const medicaData = {
+                    enfermedades: formData.getAll('enfermedades[]'),
+                    medicoTratante: formData.getAll('medicoTratante[]'),
+                    lugarInternacion: formData.getAll('lugarInternacion[]'),
+                    fechaIngreso: formData.getAll('fechaIngreso[]'),
+                    fechaAlta: formData.getAll('fechaAlta[]'),
+                    observacionesMedicas: formData.getAll('observacionesMedicas[]')
+                };
+                
+                // Agregar información médica al registro
+                registro.informacionMedica = [];
+                
+                // Crear objetos de información médica para cada conjunto de campos
+                for (let i = 0; i < medicaData.enfermedades.length; i++) {
+                    registro.informacionMedica.push({
+                        enfermedades: medicaData.enfermedades[i],
+                        medicoTratante: medicaData.medicoTratante[i],
+                        lugarInternacion: medicaData.lugarInternacion[i],
+                        fechaIngreso: medicaData.fechaIngreso[i],
+                        fechaAlta: medicaData.fechaAlta[i],
+                        observacionesMedicas: medicaData.observacionesMedicas[i]
+                    });
+                }
+
+                // Procesar campos de información laboral (arrays)
+                const laboralData = {
+                    empleo: formData.getAll('empleo[]'),
+                    empleador: formData.getAll('empleador[]'),
+                    domicilioLaboral: formData.getAll('domicilioLaboral[]'),
+                    montoSalario: formData.getAll('montoSalario[]'),
+                    observacionesLaborales: formData.getAll('observacionesLaborales[]')
+                };
+                
+                // Agregar información laboral al registro
+                registro.informacionLaboral = [];
+                
+                // Crear objetos de información laboral para cada conjunto de campos
+                for (let i = 0; i < laboralData.empleo.length; i++) {
+                    registro.informacionLaboral.push({
+                        empleo: laboralData.empleo[i],
+                        empleador: laboralData.empleador[i],
+                        domicilioLaboral: laboralData.domicilioLaboral[i],
+                        montoSalario: laboralData.montoSalario[i],
+                        observacionesLaborales: laboralData.observacionesLaborales[i]
+                    });
                 }
 
                 const registroId = document.getElementById('registroId').value;
@@ -1760,12 +1911,48 @@
             }
 
             llenarFormulario(registro) {
+                // Limpiar secciones existentes
+                document.getElementById('judicialSectionsContainer').innerHTML = '';
+                document.getElementById('medicaSectionsContainer').innerHTML = '';
+                document.getElementById('laboralSectionsContainer').innerHTML = '';
+                
+                // Llenar campos normales
                 Object.keys(registro).forEach(key => {
                     const element = document.getElementById(key);
-                    if (element && key !== 'id') {
+                    if (element && key !== 'id' && key !== 'informacionJudicial' && key !== 'informacionMedica' && key !== 'informacionLaboral') {
                         element.value = registro[key] || '';
                     }
                 });
+                
+                // Llenar información judicial si existe
+                if (registro.informacionJudicial && registro.informacionJudicial.length > 0) {
+                    registro.informacionJudicial.forEach(judicial => {
+                        this.agregarSeccionJudicial(judicial);
+                    });
+                } else {
+                    // Agregar una sección judicial vacía por defecto
+                    this.agregarSeccionJudicial();
+                }
+                
+                // Llenar información médica si existe
+                if (registro.informacionMedica && registro.informacionMedica.length > 0) {
+                    registro.informacionMedica.forEach(medica => {
+                        this.agregarSeccionMedica(medica);
+                    });
+                } else {
+                    // Agregar una sección médica vacía por defecto
+                    this.agregarSeccionMedica();
+                }
+                
+                // Llenar información laboral si existe
+                if (registro.informacionLaboral && registro.informacionLaboral.length > 0) {
+                    registro.informacionLaboral.forEach(laboral => {
+                        this.agregarSeccionLaboral(laboral);
+                    });
+                } else {
+                    // Agregar una sección laboral vacía por defecto
+                    this.agregarSeccionLaboral();
+                }
                 
                 document.getElementById('registroId').value = registro.id;
                 this.calculateAge();
@@ -1777,6 +1964,16 @@
                 document.getElementById('edad').value = '';
                 this.currentEditingId = null;
                 document.getElementById('documentosImportadosSection').classList.add('hidden');
+                
+                // Limpiar y agregar secciones vacías por defecto
+                document.getElementById('judicialSectionsContainer').innerHTML = '';
+                this.agregarSeccionJudicial();
+                
+                document.getElementById('medicaSectionsContainer').innerHTML = '';
+                this.agregarSeccionMedica();
+                
+                document.getElementById('laboralSectionsContainer').innerHTML = '';
+                this.agregarSeccionLaboral();
             }
 
             nuevoRegistro() {
@@ -1962,6 +2159,10 @@
         // Inicializar la aplicación cuando se carga la página
         window.addEventListener('DOMContentLoaded', () => {
             window.registroManager = new RegistroManager();
+            // Agregar secciones vacías por defecto al cargar la página
+            registroManager.agregarSeccionJudicial();
+            registroManager.agregarSeccionMedica();
+            registroManager.agregarSeccionLaboral();
         });
     </script>
 </body>
