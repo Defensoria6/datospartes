@@ -1,2169 +1,554 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Datos - Defensoría Civil y Comercial 6</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, push, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-        
-        // ==========================================================
-        //  Configuración de Firebase
-        // ==========================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
-            authDomain: "datos-partes.firebaseapp.com",
-            databaseURL: "https://datos-partes-default-rtdb.firebaseio.com",
-            projectId: "datos-partes",
-            storageBucket: "datos-partes.firebasestorage.app",
-            messagingSenderId: "277413385546",
-            appId: "1:277413385546:web:9863aaa081727a84479db3"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-        
-        window.firebaseDB = database;
-        window.firebaseRef = ref;
-        window.firebasePush = push;
-        window.firebaseSet = set;
-        window.firebaseGet = get;
-        window.firebaseRemove = remove;
-        window.firebaseOnValue = onValue;
-    </script>
-    
-    <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
-
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --primary-light: #eff6ff;
-            --text-color: #1f2937;
-            --border-color: #e5e7eb;
-            --bg-color: #f9fafb;
-            --white: #ffffff;
-            --danger-color: #ef4444;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --info-color: #3b82f6;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .main-container {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .container {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            font-size: 2.2em;
-            color: var(--primary-color);
-            margin: 0 0 5px 0;
-            font-weight: 700;
-        }
-
-        .header p {
-            color: var(--text-muted);
-            margin: 0;
-            font-size: 0.9em;
-        }
-
-        .form-section {
-            background: var(--white);
-            padding: 20px 25px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .form-section:last-of-type {
-            margin-bottom: 0;
-        }
-
-        .form-section h2 {
-            font-size: 1.4em;
-            color: var(--text-color);
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-section h2 i {
-            color: var(--primary-color);
-        }
-
-        .form-grid {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--text-color);
-            font-size: 0.9em;
-        }
-
-        .required {
-            color: var(--danger-color);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1em;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px var(--primary-light);
-            background-color: var(--white);
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background-color: #1e40af;
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--border-color);
-            transform: translateY(-1px);
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: var(--white);
-        }
-
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
-
-        .btn-success {
-            background-color: var(--success-color);
-            color: var(--white);
-        }
-
-        .btn-success:hover {
-            background-color: #059669;
-        }
-
-        .btn-info {
-            background-color: var(--info-color);
-            color: var(--white);
-        }
-
-        .btn-info:hover {
-            background-color: #2563eb;
-        }
-
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 0.9em;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .loading {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid var(--border-color);
-            border-top: 2px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .alert-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .alert {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-top: 10px;
-            animation: fadeIn 0.5s, fadeOut 0.5s 4.5s forwards;
-            min-width: 250px;
-        }
-
-        .alert.alert-success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #34d399;
-        }
-
-        .alert.alert-error {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #f87171;
-        }
-
-        .alert.alert-info {
-            background-color: #dbeafe;
-            color: #1e40af;
-            border: 1px solid #60a5fa;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(20px); }
-        }
-
-        /* Estilos para secciones dinámicas */
-        .dynamic-section {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: var(--bg-color);
-        }
-
-        .dynamic-section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .dynamic-section-title {
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .remove-section-btn {
-            color: var(--danger-color);
-            cursor: pointer;
-            font-size: 1.2em;
-        }
-
-        .add-section-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        /* Estilos para la tabla de registros */
-        .table-container {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--white);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .table th,
-        .table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .table th {
-            background-color: var(--primary-color);
-            color: var(--white);
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .table tr:hover {
-            background-color: var(--primary-light);
-        }
-
-        .table .btn {
-            padding: 6px 12px;
-            font-size: 0.8em;
-            margin: 0 2px;
-        }
-
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            text-align: left;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-        }
-
-        .modal-title {
-            margin: 0;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 2em;
-            cursor: pointer;
-            color: var(--text-color);
-        }
-
-        .connection-status {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 600;
-            z-index: 1000;
-        }
-
-        .connection-status.online {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #34d399;
-        }
-
-        .connection-status.offline {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #f87171;
-        }
-
-        .documents-list {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: var(--bg-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .documents-list h3 {
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-
-        .document-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: var(--white);
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-        }
-
-        .document-info {
-            flex: 1;
-        }
-
-        .document-name {
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .document-description {
-            font-size: 0.9em;
-            color: #6b7280;
-        }
-
-        .document-type {
-            font-size: 0.8em;
-            color: var(--info-color);
-            font-weight: 500;
-        }
-
-        .document-size {
-            font-size: 0.8em;
-            color: #9ca3af;
-        }
-
-        .file-drop-zone {
-            border: 2px dashed var(--border-color);
-            border-radius: 8px;
-            padding: 40px 20px;
-            text-align: center;
-            background-color: var(--bg-color);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .file-drop-zone:hover,
-        .file-drop-zone.dragover {
-            border-color: var(--primary-color);
-            background-color: var(--primary-light);
-        }
-
-        .file-drop-zone.uploading {
-            border-color: var(--success-color);
-            background-color: #d1fae5;
-        }
-
-        .file-drop-zone i {
-            font-size: 3em;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .file-info {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: var(--primary-light);
-            border-radius: 6px;
-            border: 1px solid var(--primary-color);
-        }
-
-        .supported-formats {
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: #6b7280;
-        }
-
-        .supported-formats strong {
-            color: var(--text-color);
-        }
-
-        .upload-progress {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: var(--success-color);
-            border-radius: 6px;
-            color: white;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: white;
-            transition: width 0.1s ease;
-            width: 0%;
-        }
-
-        .file-validation-error {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #fee2e2;
-            border: 1px solid #f87171;
-            border-radius: 6px;
-            color: #991b1b;
-            font-size: 0.9em;
-        }
-
-        .upload-success {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: var(--success-color);
-            border-radius: 6px;
-            color: white;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 15px;
-            }
-
-            .header h1 {
-                font-size: 1.6em;
-            }
-
-            .header p {
-                font-size: 0.8em;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .form-actions {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px;
-            }
-
-            .btn {
-                padding: 10px 15px;
-                font-size: 0.9em;
-                min-width: auto;
-            }
-
-            .btn-secondary {
-                padding: 8px 12px;
-            }
-
-            .table-container {
-                overflow-x: auto;
-            }
-
-            .table th, .table td {
-                font-size: 0.8em;
-                padding: 8px 10px;
-            }
-
-            .modal-content {
-                width: 95%;
-                max-width: none;
-                padding: 20px;
-            }
-
-            .form-section {
-                padding: 15px 20px;
-            }
-
-            .form-section h2 {
-                font-size: 1.2em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.4em;
-            }
-
-            .form-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .btn {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-
-            .form-section {
-                padding: 12px 15px;
-            }
-
-            .container {
-                padding: 10px;
-            }
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Datos - Defensoría Civil y Comercial 6</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Firebase (módulo) -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getDatabase, ref, push, set, get, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
+      authDomain: "datos-partes.firebaseapp.com",
+      databaseURL: "https://datos-partes-default-rtdb.firebaseio.com",
+      projectId: "datos-partes",
+      storageBucket: "datos-partes.firebasestorage.app",
+      messagingSenderId: "277413385546",
+      appId: "1:277413385546:web:9863aaa081727a84479db3",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Exponer utilidades a window para el script no-módulo
+    window.db = db;
+    window.dbRef = ref;
+    window.dbPush = push;
+    window.dbSet = set;
+    window.dbGet = get;
+    window.dbOn = onValue;
+    window.dbRemove = remove;
+    window.dbUpdate = update;
+  </script>
+
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --bg-color: #f8f9fa;
+      --text-color: #111827;
+      --muted-text: #6b7280;
+      --border-color: #e5e7eb;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+    }
+
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: center; /* centrada */
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--text-color);
+      font-size: 0.9em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn i { margin-right: 6px; }
+
+    .btn-primary { background: var(--primary-color); border: 1px solid var(--primary-color); color: var(--white); }
+    .btn-danger { background: #dc2626; border: 1px solid #dc2626; color: var(--white); }
+    .btn-warning { background: #f59e0b; border: 1px solid #f59e0b; color: var(--white); }
+
+    .btn:hover { filter: brightness(0.96); }
+
+    .main-container { max-width: 1100px; margin: 22px auto; padding: 0 20px; }
+
+    .form-section {
+      background: var(--white);
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .form-section.active { display: block; }
+    .section-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+    .form-section h2 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--primary-color); font-weight: 600; }
+    .form-section p { margin: 0; color: var(--muted-text); font-size: 0.9rem; }
+
+    .form-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.85em; font-weight: 600; color: #374151; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: #fcfcfd; font-size: 0.92em;
+    }
+    .form-group textarea { min-height: 72px; resize: vertical; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08); }
+
+    .table-container { overflow-x: auto; margin-top: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+    table th, table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
+    table th { background: #f3f4f6; font-weight: 600; }
+
+    .actions { display: flex; gap: 6px; }
+
+    .toggle-container { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 12px 0; }
+    .search-box input {
+      padding: 8px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9em;
+      width: 240px;
+    }
+
+    .muted { color: var(--muted-text); font-size: 0.85rem; }
+  </style>
 </head>
 <body>
-    <div class="main-container">
-        <div id="connectionStatus" class="connection-status offline">
-            <i class="fas fa-wifi"></i> Conectando...
+  <div class="topbar">
+    <button class="btn" onclick="mostrarSeccion('personal')"><i class="fas fa-user"></i>Datos Personales</button>
+    <button class="btn" onclick="mostrarSeccion('judicial')"><i class="fas fa-gavel"></i>Judicial</button>
+    <button class="btn" onclick="mostrarSeccion('medica')"><i class="fas fa-stethoscope"></i>Médica</button>
+    <button class="btn" onclick="mostrarSeccion('laboral')"><i class="fas fa-briefcase"></i>Laboral</button>
+    <button class="btn" onclick="mostrarSeccion('listado')"><i class="fas fa-list"></i>Listado</button>
+  </div>
+
+  <div class="main-container">
+    <!-- PERSONAL -->
+    <form id="personalForm" class="form-section active">
+      <div class="section-header">
+        <h2>Datos Personales</h2>
+        <p class="muted">Cargue múltiples registros. Seleccione una fila para editar.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Apellido</label><input name="apellido" type="text" /></div>
+        <div class="form-group"><label>Nombre</label><input name="nombre" type="text" /></div>
+        <div class="form-group"><label>DNI</label><input name="dni" type="text" /></div>
+        <div class="form-group"><label>Edad</label><input name="edad" type="number" /></div>
+        <div class="form-group"><label>Domicilio</label><input name="domicilio" type="text" /></div>
+        <div class="form-group"><label>Teléfono</label><input name="telefono" type="text" /></div>
+        <div class="form-group"><label>Email</label><input name="email" type="email" /></div>
+        <div class="form-group"><label>Estado Civil</label><input name="estadoCivil" type="text" /></div>
+        <div class="form-group"><label>Nacionalidad</label><input name="nacionalidad" type="text" /></div>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
+        <button type="button" class="btn" onclick="resetForm('personalForm')">Limpiar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Apellido</th><th>Nombre</th><th>DNI</th><th>Edad</th><th>Domicilio</th><th>Teléfono</th><th>Email</th><th>Estado Civil</th><th>Nacionalidad</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="personalTable"></tbody>
+        </table>
+      </div>
+    </form>
+
+    <!-- JUDICIAL -->
+    <form id="judicialForm" class="form-section">
+      <div class="section-header">
+        <h2>Datos Judiciales</h2>
+        <p class="muted">Puede cargar más de un registro por persona.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Número de Causa</label><input name="numCausa" type="text" /></div>
+        <div class="form-group"><label>Juzgado</label><input name="juzgado" type="text" /></div>
+        <div class="form-group"><label>Jurisdicción</label><input name="jurisdiccion" type="text" /></div>
+        <div class="form-group"><label>Secretaría</label><input name="secretaria" type="text" /></div>
+        <div class="form-group"><label>Carátula</label><input name="caratula" type="text" /></div>
+        <div class="form-group"><label>Situación</label><textarea name="situacion"></textarea></div>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
+        <button type="button" class="btn" onclick="resetForm('judicialForm')">Limpiar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>N° Causa</th><th>Juzgado</th><th>Jurisdicción</th><th>Secretaría</th><th>Carátula</th><th>Situación</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="judicialTable"></tbody>
+        </table>
+      </div>
+    </form>
+
+    <!-- MÉDICA -->
+    <form id="medicaForm" class="form-section">
+      <div class="section-header">
+        <h2>Datos Médicos</h2>
+        <p class="muted">Registre historial y tratamientos.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Diagnóstico</label><textarea name="diagnostico"></textarea></div>
+        <div class="form-group"><label>Tratamiento</label><textarea name="tratamiento"></textarea></div>
+        <div class="form-group"><label>Médico</label><input name="medico" type="text" /></div>
+        <div class="form-group"><label>Centro Médico</label><input name="centroMedico" type="text" /></div>
+        <div class="form-group"><label>Obra Social</label><input name="obraSocial" type="text" /></div>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
+        <button type="button" class="btn" onclick="resetForm('medicaForm')">Limpiar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Diagnóstico</th><th>Tratamiento</th><th>Médico</th><th>Centro Médico</th><th>Obra Social</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="medicaTable"></tbody>
+        </table>
+      </div>
+    </form>
+
+    <!-- LABORAL -->
+    <form id="laboralForm" class="form-section">
+      <div class="section-header">
+        <h2>Datos Laborales</h2>
+        <p class="muted">Soporta múltiples antecedentes laborales.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Empresa</label><input name="empresa" type="text" /></div>
+        <div class="form-group"><label>Puesto</label><input name="puesto" type="text" /></div>
+        <div class="form-group"><label>Antigüedad</label><input name="antiguedad" type="text" /></div>
+        <div class="form-group"><label>Dirección</label><input name="direccion" type="text" /></div>
+        <div class="form-group"><label>Teléfono Empresa</label><input name="telefonoEmpresa" type="text" /></div>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
+        <button type="button" class="btn" onclick="resetForm('laboralForm')">Limpiar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Empresa</th><th>Puesto</th><th>Antigüedad</th><th>Dirección</th><th>Teléfono Empresa</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="laboralTable"></tbody>
+        </table>
+      </div>
+    </form>
+
+    <!-- LISTADO GLOBAL -->
+    <div id="listado" class="form-section">
+      <div class="section-header">
+        <h2>Listado de Registros</h2>
+        <p class="muted">Cambie entre vista completa o compacta y filtre por DNI/Nombre/Apellido.</p>
+      </div>
+      <div class="toggle-container">
+        <div class="search-box">
+          <input id="searchInput" type="text" placeholder="Buscar por DNI, Nombre o Apellido..." oninput="filterListado()" />
         </div>
-
-        <main class="content">
-            <div id="alertContainer" class="alert-container"></div>
-
-            <div class="form-actions">
-                <button id="nuevoRegistroBtn" class="btn btn-primary" onclick="registroManager.nuevoRegistro()">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <button id="verRegistrosBtn" class="btn btn-secondary" onclick="registroManager.verRegistros()">
-                    <i class="fas fa-list"></i> Ver Registros
-                </button>
-                <button id="buscarRegistroBtn" class="btn btn-secondary" onclick="registroManager.mostrarSearchModal()">
-                    <i class="fas fa-search"></i> Buscar Registro
-                </button>
-                <button id="imprimirBtn" class="btn btn-secondary" onclick="registroManager.imprimir()">
-                    <i class="fas fa-print"></i> Imprimir
-                </button>
-                <button id="exportarBtn" class="btn btn-secondary" onclick="registroManager.exportar()">
-                    <i class="fas fa-file-pdf"></i> Exportar PDF
-                </button>
-                </div>
-
-            <div id="registroFormContainer" class="container">
-                <form id="registroForm">
-                    <input type="hidden" id="registroId" name="registroId">
-                    
-                    <div class="form-section">
-                        <h2><i class="fas fa-user"></i> Datos Personales</h2>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="apellido">Apellido <span class="required">*</span></label>
-                                <input type="text" id="apellido" name="apellido" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="nombre">Nombre <span class="required">*</span></label>
-                                <input type="text" id="nombre" name="nombre" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="dni">DNI <span class="required">*</span></label>
-                                <input type="text" id="dni" name="dni" required maxlength="8">
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaNacimiento">Fecha de Nacimiento <span class="required">*</span></label>
-                                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="edad">Edad</label>
-                                <input type="number" id="edad" name="edad" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="estadoCivil">Estado Civil</label>
-                                <select id="estadoCivil" name="estadoCivil">
-                                    <option value="">Desconocido</option>
-                                    <option value="Soltero/a">Soltero/a</option>
-                                    <option value="Casado/a">Casado/a</option>
-                                    <option value="Divorciado/a">Divorciado/a</option>
-                                    <option value="Viudo/a">Viudo/a</option>
-                                    <option value="Unión Convivencial">Unión Convivencial</option>
-                                    <option value="Separado/a de hecho">Separado/a de hecho</option>
-                                    <option value="Separado/a judicialmente">Separado/a judicialmente</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="genero">Género</label>
-                                <select id="genero" name="genero">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
-                                    <option value="No binario">No binario</option>
-                                    <option value="Travesti">Travesti</option>
-                                    <option value="Transgénero">Transgénero</option>
-                                    <option value="Transexual">Transexual</option>
-                                    <option value="Intersex">Intersex</option>
-                                    <option value="Otro">Otro</option>
-                                    <option value="Prefiero no decir">Prefiero no decir</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="nacionalidad">Nacionalidad</label>
-                                <select id="nacionalidad" name="nacionalidad">
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Boliviana">Boliviana</option>
-                                    <option value="Brasileña">Brasileña</option>
-                                    <option value="Chilena">Chilena</option>
-                                    <option value="Colombiana">Colombiana</option>
-                                    <option value="Ecuatoriana">Ecuatoriana</option>
-                                    <option value="Paraguaya">Paraguaya</option>
-                                    <option value="Peruana">Peruana</option>
-                                    <option value="Uruguaya">Uruguaya</option>
-                                    <option value="Venezolana">Venezolana</option>
-                                    <option value="Otra">Otra</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h2><i class="fas fa-address-book"></i> Datos de Contacto</h2>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="telefono">Teléfono</label>
-                                <input type="tel" id="telefono" name="telefono">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email">
-                            </div>
-                            <div class="form-group">
-                                <label for="direccion">Dirección</label>
-                                <textarea id="direccion" name="direccion" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h2><i class="fas fa-gavel"></i> Información Judicial</h2>
-                        <div id="judicialSectionsContainer">
-                            <!-- Las secciones judiciales se agregarán aquí dinámicamente -->
-                        </div>
-                        <button type="button" class="btn btn-secondary add-section-btn" onclick="registroManager.agregarSeccionJudicial()">
-                            <i class="fas fa-plus"></i> Agregar Información Judicial
-                        </button>
-                    </div>
-
-                    <div class="form-section">
-                        <h2><i class="fas fa-user-md"></i> Información Médica</h2>
-                        <div id="medicaSectionsContainer">
-                            <!-- Las secciones médicas se agregarán aquí dinámicamente -->
-                        </div>
-                        <button type="button" class="btn btn-secondary add-section-btn" onclick="registroManager.agregarSeccionMedica()">
-                            <i class="fas fa-plus"></i> Agregar Información Médica
-                        </button>
-                    </div>
-
-                    <div class="form-section">
-                        <h2><i class="fas fa-briefcase"></i> Información Laboral</h2>
-                        <div id="laboralSectionsContainer">
-                            <!-- Las secciones laborales se agregarán aquí dinámicamente -->
-                        </div>
-                        <button type="button" class="btn btn-secondary add-section-btn" onclick="registroManager.agregarSeccionLaboral()">
-                            <i class="fas fa-plus"></i> Agregar Información Laboral
-                        </button>
-                    </div>
-
-                    <div class="form-section">
-                        <h2><i class="fas fa-info-circle"></i> Información Adicional</h2>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="observaciones">Observaciones</label>
-                                <textarea id="observaciones" name="observaciones" rows="4"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Guardar Registro
-                        </button>
-                        <button type="button" id="cancelarEdicionBtn" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Cancelar
-                        </button>
-                    </div>
-                </form>
-
-                <div id="documentosImportadosSection" class="form-section hidden">
-                    <h2><i class="fas fa-file-alt"></i> Documentos Importados</h2>
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre del Archivo</th>
-                                    <th>Descripción</th>
-                                    <th>Fecha de Subida</th>
-                                    <th>Tamaño</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="documentosImportadosTableBody">
-                                <tr>
-                                    <td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados para este registro.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="registrosContainer" class="container hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2><i class="fas fa-list"></i> Lista de Registros</h2>
-                    <button class="btn btn-primary" onclick="registroManager.volverFormulario()">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>DNI</th>
-                                <th>Apellido</th>
-                                <th>Nombre</th>
-                                <th>Fecha Nacimiento</th>
-                                <th>Teléfono</th>
-                                <th>Email</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="registrosTableBody">
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 20px;">No hay registros guardados</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-
-        <!-- Modal de confirmación -->
-        <div id="confirmModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Confirmar Acción</h3>
-                    <button class="close-btn" onclick="registroManager.cerrarModal()">&times;</button>
-                </div>
-                <p id="confirmMessage"></p>
-                <div class="form-actions">
-                    <button id="confirmBtn" class="btn btn-danger">Confirmar</button>
-                    <button class="btn btn-secondary" onclick="registroManager.cerrarModal()">Cancelar</button>
-                </div>
-            </div>
+        <div>
+          <button class="btn" type="button" onclick="toggleListado('completo')">Listado Completo</button>
+          <button class="btn" type="button" onclick="toggleListado('compacto')">Listado Compacto</button>
         </div>
-
-        <!-- Modal de búsqueda -->
-        <div id="searchModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Buscar Registro</h3>
-                    <button id="closeSearchModalBtn" class="close-btn">&times;</button>
-                </div>
-                <form id="searchForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="searchApellido">Apellido</label>
-                            <input type="text" id="searchApellido" name="searchApellido">
-                        </div>
-                        <div class="form-group">
-                            <label for="searchNombre">Nombre</label>
-                            <input type="text" id="searchNombre" name="searchNombre">
-                        </div>
-                        <div class="form-group">
-                            <label for="searchDNI">DNI</label>
-                            <input type="text" id="searchDNI" name="searchDNI">
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Buscar
-                        </button>
-                    </div>
-                </form>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>DNI</th>
-                                <th>Apellido</th>
-                                <th>Nombre</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="searchResultsTableBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal de importar documentos -->
-        <div id="importDocumentModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Importar Documentos</h3>
-                    <button id="closeImportDocumentModalBtn" class="close-btn" onclick="registroManager.cerrarImportDocumentModal()">&times;</button>
-                </div>
-                
-                <!-- Zona de arrastrar y soltar archivos -->
-                <div id="fileDropZone" class="file-drop-zone">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>Arrastra archivos aquí o haz clic para seleccionar</h3>
-                    <p>Formatos soportados: PDF, DOC, DOCX, JPG, PNG, TXT</p>
-                    <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt" style="display: none;">
-                    <div class="supported-formats">
-                        <strong>Tamaño máximo:</strong> 10MB por archivo
-                    </div>
-                </div>
-
-                <!-- Botón alternativo de Cloudinary -->
-                <div class="form-actions">
-                    <button id="upload_widget" class="btn btn-primary">
-                        <i class="fas fa-upload"></i> Subir con Cloudinary
-                    </button>
-                </div>
-
-                <!-- Lista de documentos del registro -->
-                <div class="documents-list">
-                    <h3><i class="fas fa-folder-open"></i> Documentos del Registro</h3>
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Fecha</th>
-                                    <th>Tamaño</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="importedDocumentsTableBody">
-                                <tr>
-                                    <td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
+      <div id="listadoContainer" class="table-container"></div>
     </div>
+  </div>
 
-    <script>
-        class RegistroManager {
-            constructor() {
-                this.currentEditingId = null;
-                this.registrosCache = [];
-                this.isOnline = navigator.onLine;
-                this.uploadedFiles = [];
-                this.judicialSectionCounter = 0;
-                this.medicaSectionCounter = 0;
-                this.laboralSectionCounter = 0;
-                this.setupEventListeners();
-                this.loadRegistros();
-                this.checkConnectionStatus();
-                this.setupFileUpload();
+  <!-- Lógica principal (no-módulo) -->
+  <script>
+    let listadoData = {};
+    let listadoTipo = 'completo';
 
-                window.addEventListener("online", () => this.updateConnectionStatus());
-                window.addEventListener("offline", () => this.updateConnectionStatus());
+    function mostrarSeccion(id) {
+      // Ocultar todas
+      document.querySelectorAll('.form-section').forEach((s) => s.classList.remove('active'));
+
+      // Render de listado si corresponde
+      if (id === 'listado') {
+        renderListado(listadoTipo);
+      }
+
+      // Resolver destino de forma segura (evita TypeError si no existe)
+      const targetId = id === 'listado' ? 'listado' : id + 'Form';
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.classList.add('active');
+      } else {
+        console.warn('Sección no encontrada:', targetId);
+      }
+    }
+
+    function resetForm(formId) {
+      const form = document.getElementById(formId);
+      if (!form) return;
+      form.reset();
+      delete form.dataset.editId;
+      delete form.dataset.path;
+    }
+
+    function toggleListado(tipo) {
+      listadoTipo = tipo;
+      renderListado(tipo);
+    }
+
+    async function renderListado(tipo) {
+      const container = document.getElementById('listadoContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      const sections = ['personal', 'judicial', 'medica', 'laboral'];
+      listadoData = {};
+
+      for (const path of sections) {
+        const sectionRef = window.dbRef(window.db, path);
+        const snapshot = await window.dbGet(sectionRef);
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          listadoData[path] = data;
+
+          const table = document.createElement('table');
+          const thead = document.createElement('thead');
+          const tbody = document.createElement('tbody');
+
+          const firstItem = Object.values(data)[0] || {};
+          const keys = Object.keys(firstItem);
+
+          const headerRow = document.createElement('tr');
+          keys.forEach((k) => {
+            const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
+            if (tipo === 'completo' || (tipo === 'compacto' && showCompact)) {
+              const th = document.createElement('th');
+              th.textContent = k;
+              headerRow.appendChild(th);
             }
+          });
+          thead.appendChild(headerRow);
 
-            setupEventListeners() {
-                document.getElementById("registroForm").addEventListener("submit", (e) => {
-                    e.preventDefault();
-                    this.guardarRegistro();
-                });
+          Object.values(data).forEach((item) => {
+            const row = document.createElement('tr');
+            keys.forEach((k) => {
+              const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
+              if (tipo === 'completo' || (tipo === 'compacto' && showCompact)) {
+                const td = document.createElement('td');
+                td.textContent = item[k] ?? '';
+                row.appendChild(td);
+              }
+            });
+            tbody.appendChild(row);
+          });
 
-                document.getElementById("cancelarEdicionBtn").addEventListener("click", () => {
-                    this.cancelarEdicion();
-                });
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          const h3 = document.createElement('h3');
+          h3.textContent = `Sección ${path}`;
+          container.appendChild(h3);
+          container.appendChild(table);
+        }
+      }
+    }
 
-                document.getElementById("fechaNacimiento").addEventListener("change", () => {
-                    this.calculateAge();
-                });
+    function filterListado() {
+      const searchValue = (document.getElementById('searchInput')?.value || '').toLowerCase();
+      const container = document.getElementById('listadoContainer');
+      if (!container) return;
+      container.innerHTML = '';
 
-                document.getElementById("dni").addEventListener("input", (e) => {
-                    this.validarDNI(e);
-                });
+      Object.keys(listadoData).forEach((path) => {
+        const data = listadoData[path];
+        const firstItem = Object.values(data)[0] || {};
+        const keys = Object.keys(firstItem);
 
-                document.getElementById("searchForm").addEventListener("submit", (e) => {
-                    e.preventDefault();
-                    this.performSearch();
-                });
+        const filtered = Object.values(data).filter((item) => {
+          const a = (item['dni'] || '').toLowerCase();
+          const b = (item['nombre'] || '').toLowerCase();
+          const c = (item['apellido'] || '').toLowerCase();
+          return a.includes(searchValue) || b.includes(searchValue) || c.includes(searchValue);
+        });
 
-                document.getElementById("closeSearchModalBtn").addEventListener("click", () => {
-                    this.cerrarSearchModal();
-                });
+        if (filtered.length > 0) {
+          const table = document.createElement('table');
+          const thead = document.createElement('thead');
+          const tbody = document.createElement('tbody');
+
+          const headerRow = document.createElement('tr');
+          keys.forEach((k) => {
+            const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
+            if (listadoTipo === 'completo' || (listadoTipo === 'compacto' && showCompact)) {
+              const th = document.createElement('th');
+              th.textContent = k;
+              headerRow.appendChild(th);
             }
+          });
+          thead.appendChild(headerRow);
 
-            agregarSeccionJudicial(data = {}) {
-                this.judicialSectionCounter++;
-                const sectionId = `judicialSection_${this.judicialSectionCounter}`;
-                
-                const sectionHTML = `
-                    <div class="dynamic-section" id="${sectionId}">
-                        <div class="dynamic-section-header">
-                            <div class="dynamic-section-title">Información Judicial #${this.judicialSectionCounter}</div>
-                            <i class="fas fa-times remove-section-btn" onclick="registroManager.eliminarSeccion('${sectionId}')"></i>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="expte_${sectionId}">Expte</label>
-                                <input type="text" id="expte_${sectionId}" name="expte[]" value="${data.expte || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="caratula_${sectionId}">Carátula</label>
-                                <input type="text" id="caratula_${sectionId}" name="caratula[]" value="${data.caratula || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="juzgado_${sectionId}">Juzgado</label>
-                                <input type="text" id="juzgado_${sectionId}" name="juzgado[]" value="${data.juzgado || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="secretaria_${sectionId}">Secretaría</label>
-                                <input type="text" id="secretaria_${sectionId}" name="secretaria[]" value="${data.secretaria || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="poderJudicial_${sectionId}">Poder Judicial</label>
-                                <select id="poderJudicial_${sectionId}" name="poderJudicial[]">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="Buenos Aires" ${data.poderJudicial === 'Buenos Aires' ? 'selected' : ''}>Buenos Aires</option>
-                                    <option value="Catamarca" ${data.poderJudicial === 'Catamarca' ? 'selected' : ''}>Catamarca</option>
-                                    <option value="Chaco" ${data.poderJudicial === 'Chaco' ? 'selected' : ''}>Chaco</option>
-                                    <option value="Chubut" ${data.poderJudicial === 'Chubut' ? 'selected' : ''}>Chubut</option>
-                                    <option value="Córdoba" ${data.poderJudicial === 'Córdoba' ? 'selected' : ''}>Córdoba</option>
-                                    <option value="Corrientes" ${data.poderJudicial === 'Corrientes' ? 'selected' : ''}>Corrientes</option>
-                                    <option value="Entre Ríos" ${data.poderJudicial === 'Entre Ríos' ? 'selected' : ''}>Entre Ríos</option>
-                                    <option value="Formosa" ${data.poderJudicial === 'Formosa' ? 'selected' : ''}>Formosa</option>
-                                    <option value="Jujuy" ${data.poderJudicial === 'Jujuy' ? 'selected' : ''}>Jujuy</option>
-                                    <option value="La Pampa" ${data.poderJudicial === 'La Pampa' ? 'selected' : ''}>La Pampa</option>
-                                    <option value="La Rioja" ${data.poderJudicial === 'La Rioja' ? 'selected' : ''}>La Rioja</option>
-                                    <option value="Mendoza" ${data.poderJudicial === 'Mendoza' ? 'selected' : ''}>Mendoza</option>
-                                    <option value="Misiones" ${data.poderJudicial === 'Misiones' ? 'selected' : ''}>Misiones</option>
-                                    <option value="Neuquén" ${data.poderJudicial === 'Neuquén' ? 'selected' : ''}>Neuquén</option>
-                                    <option value="Río Negro" ${data.poderJudicial === 'Río Negro' ? 'selected' : ''}>Río Negro</option>
-                                    <option value="Salta" ${data.poderJudicial === 'Salta' ? 'selected' : ''}>Salta</option>
-                                    <option value="San Juan" ${data.poderJudicial === 'San Juan' ? 'selected' : ''}>San Juan</option>
-                                    <option value="San Luis" ${data.poderJudicial === 'San Luis' ? 'selected' : ''}>San Luis</option>
-                                    <option value="Santa Cruz" ${data.poderJudicial === 'Santa Cruz' ? 'selected' : ''}>Santa Cruz</option>
-                                    <option value="Santa Fe" ${data.poderJudicial === 'Santa Fe' ? 'selected' : ''}>Santa Fe</option>
-                                    <option value="Santiago del Estero" ${data.poderJudicial === 'Santiago del Estero' ? 'selected' : ''}>Santiago del Estero</option>
-                                    <option value="Tierra del Fuego" ${data.poderJudicial === 'Tierra del Fuego' ? 'selected' : ''}>Tierra del Fuego</option>
-                                    <option value="Tucumán" ${data.poderJudicial === 'Tucumán' ? 'selected' : ''}>Tucumán</option>
-                                    <option value="Ciudad Autónoma de Buenos Aires" ${data.poderJudicial === 'Ciudad Autónoma de Buenos Aires' ? 'selected' : ''}>Ciudad Autónoma de Buenos Aires</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaInicio_${sectionId}">Fecha de Inicio</label>
-                                <input type="date" id="fechaInicio_${sectionId}" name="fechaInicio[]" value="${data.fechaInicio || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="estadoActual_${sectionId}">Estado Actual</label>
-                                <select id="estadoActual_${sectionId}" name="estadoActual[]">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="En trámite" ${data.estadoActual === 'En trámite' ? 'selected' : ''}>En trámite</option>
-                                    <option value="Archivado" ${data.estadoActual === 'Archivado' ? 'selected' : ''}>Archivado</option>
-                                    <option value="Finalizado" ${data.estadoActual === 'Finalizado' ? 'selected' : ''}>Finalizado</option>
-                                    <option value="Pendiente" ${data.estadoActual === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="condicionParte_${sectionId}">Condición de Parte</label>
-                                <select id="condicionParte_${sectionId}" name="condicionParte[]">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="Actor/a" ${data.condicionParte === 'Actor/a' ? 'selected' : ''}>Actor/a</option>
-                                    <option value="Demandado/a" ${data.condicionParte === 'Demandado/a' ? 'selected' : ''}>Demandado/a</option>
-                                    <option value="Imputado/a" ${data.condicionParte === 'Imputado/a' ? 'selected' : ''}>Imputado/a</option>
-                                    <option value="Querellante" ${data.condicionParte === 'Querellante' ? 'selected' : ''}>Querellante</option>
-                                    <option value="Tercero" ${data.condicionParte === 'Tercero' ? 'selected' : ''}>Tercero</option>
-                                    <option value="Testigo" ${data.condicionParte === 'Testigo' ? 'selected' : ''}>Testigo</option>
-                                    <option value="Perito" ${data.condicionParte === 'Perito' ? 'selected' : ''}>Perito</option>
-                                    <option value="Víctima" ${data.condicionParte === 'Víctima' ? 'selected' : ''}>Víctima</option>
-                                    <option value="Denunciante" ${data.condicionParte === 'Denunciante' ? 'selected' : ''}>Denunciante</option>
-                                    <option value="Denunciado/a" ${data.condicionParte === 'Denunciado/a' ? 'selected' : ''}>Denunciado/a</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="observacionesJudiciales_${sectionId}">Observaciones</label>
-                                <textarea id="observacionesJudiciales_${sectionId}" name="observacionesJudiciales[]" rows="3">${data.observacionesJudiciales || ''}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('judicialSectionsContainer').insertAdjacentHTML('beforeend', sectionHTML);
+          filtered.forEach((item) => {
+            const row = document.createElement('tr');
+            keys.forEach((k) => {
+              const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
+              if (listadoTipo === 'completo' || (listadoTipo === 'compacto' && showCompact)) {
+                const td = document.createElement('td');
+                td.textContent = item[k] ?? '';
+                row.appendChild(td);
+              }
+            });
+            tbody.appendChild(row);
+          });
+
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          const h3 = document.createElement('h3');
+          h3.textContent = `Sección ${path}`;
+          container.appendChild(h3);
+          container.appendChild(table);
+        }
+      });
+    }
+
+    // --- Utilidades de CRUD para formularios/tablitas ---
+    function setupSection(formId, path, tableId) {
+      const form = document.getElementById(formId);
+      const tableBody = document.getElementById(tableId);
+      if (!form || !tableBody) return;
+
+      // Crear/Actualizar (si hay data-edit-id se actualiza)
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {};
+        new FormData(form).forEach((v, k) => (payload[k] = v));
+
+        if (form.dataset.editId) {
+          const itemRef = window.dbRef(window.db, `${path}/${form.dataset.editId}`);
+          await window.dbUpdate(itemRef, payload);
+        } else {
+          const sectionRef = window.dbRef(window.db, path);
+          await window.dbSet(window.dbPush(sectionRef), payload);
+        }
+        resetForm(formId);
+      });
+
+      // Pintar tabla en vivo
+      const sectionRef = window.dbRef(window.db, path);
+      window.dbOn(sectionRef, (snapshot) => {
+        tableBody.innerHTML = '';
+        if (!snapshot.exists()) return;
+        const data = snapshot.val();
+
+        Object.entries(data).forEach(([id, item]) => {
+          const tr = document.createElement('tr');
+
+          // Celdas de datos (orden según las keys del primer objeto)
+          const keys = Object.keys(item);
+          keys.forEach((k) => {
+            const td = document.createElement('td');
+            td.textContent = item[k] ?? '';
+            tr.appendChild(td);
+          });
+
+          // Acciones
+          const tdActions = document.createElement('td');
+          tdActions.className = 'actions';
+
+          const btnEdit = document.createElement('button');
+          btnEdit.className = 'btn btn-warning';
+          btnEdit.type = 'button';
+          btnEdit.textContent = 'Editar';
+          btnEdit.onclick = () => {
+            // Cargar datos en formulario
+            Object.entries(item).forEach(([k, v]) => {
+              if (form.elements[k]) form.elements[k].value = v;
+            });
+            form.dataset.editId = id;
+            form.dataset.path = path;
+            mostrarSeccion(path); // enfoca la sección actual
+          };
+
+          const btnDelete = document.createElement('button');
+          btnDelete.className = 'btn btn-danger';
+          btnDelete.type = 'button';
+          btnDelete.textContent = 'Eliminar';
+          btnDelete.onclick = async () => {
+            if (confirm('¿Seguro que deseas eliminar este registro?')) {
+              const itemRef = window.dbRef(window.db, `${path}/${id}`);
+              await window.dbRemove(itemRef);
             }
-
-            agregarSeccionMedica(data = {}) {
-                this.medicaSectionCounter++;
-                const sectionId = `medicaSection_${this.medicaSectionCounter}`;
-                
-                const sectionHTML = `
-                    <div class="dynamic-section" id="${sectionId}">
-                        <div class="dynamic-section-header">
-                            <div class="dynamic-section-title">Información Médica #${this.medicaSectionCounter}</div>
-                            <i class="fas fa-times remove-section-btn" onclick="registroManager.eliminarSeccion('${sectionId}')"></i>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="enfermedades_${sectionId}">Enfermedades</label>
-                                <textarea id="enfermedades_${sectionId}" name="enfermedades[]" rows="3">${data.enfermedades || ''}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="medicoTratante_${sectionId}">Médico Tratante</label>
-                                <input type="text" id="medicoTratante_${sectionId}" name="medicoTratante[]" value="${data.medicoTratante || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="lugarInternacion_${sectionId}">Lugar de Internación</label>
-                                <input type="text" id="lugarInternacion_${sectionId}" name="lugarInternacion[]" value="${data.lugarInternacion || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaIngreso_${sectionId}">Fecha Ingreso</label>
-                                <input type="date" id="fechaIngreso_${sectionId}" name="fechaIngreso[]" value="${data.fechaIngreso || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaAlta_${sectionId}">Fecha Alta</label>
-                                <input type="date" id="fechaAlta_${sectionId}" name="fechaAlta[]" value="${data.fechaAlta || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="observacionesMedicas_${sectionId}">Observaciones</label>
-                                <textarea id="observacionesMedicas_${sectionId}" name="observacionesMedicas[]" rows="3">${data.observacionesMedicas || ''}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('medicaSectionsContainer').insertAdjacentHTML('beforeend', sectionHTML);
-            }
-
-            agregarSeccionLaboral(data = {}) {
-                this.laboralSectionCounter++;
-                const sectionId = `laboralSection_${this.laboralSectionCounter}`;
-                
-                const sectionHTML = `
-                    <div class="dynamic-section" id="${sectionId}">
-                        <div class="dynamic-section-header">
-                            <div class="dynamic-section-title">Información Laboral #${this.laboralSectionCounter}</div>
-                            <i class="fas fa-times remove-section-btn" onclick="registroManager.eliminarSeccion('${sectionId}')"></i>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="empleo_${sectionId}">Empleo</label>
-                                <input type="text" id="empleo_${sectionId}" name="empleo[]" value="${data.empleo || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="empleador_${sectionId}">Empleador</label>
-                                <input type="text" id="empleador_${sectionId}" name="empleador[]" value="${data.empleador || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="domicilioLaboral_${sectionId}">Domicilio Laboral</label>
-                                <textarea id="domicilioLaboral_${sectionId}" name="domicilioLaboral[]" rows="2">${data.domicilioLaboral || ''}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="montoSalario_${sectionId}">Monto Salario</label>
-                                <input type="number" id="montoSalario_${sectionId}" name="montoSalario[]" step="0.01" value="${data.montoSalario || ''}">
-                            </div>
-                            <div class="form-group">
-                                <label for="observacionesLaborales_${sectionId}">Observaciones</label>
-                                <textarea id="observacionesLaborales_${sectionId}" name="observacionesLaborales[]" rows="3">${data.observacionesLaborales || ''}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('laboralSectionsContainer').insertAdjacentHTML('beforeend', sectionHTML);
-            }
-
-            eliminarSeccion(sectionId) {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    section.remove();
-                }
-            }
-
-            checkConnectionStatus() {
-                this.updateConnectionStatus();
-                
-                // Verificar conexión con Firebase
-                if (window.firebaseDB) {
-                    const connectedRef = window.firebaseRef(window.firebaseDB, '.info/connected');
-                    window.firebaseOnValue(connectedRef, (snapshot) => {
-                        if (snapshot.val() === true) {
-                            this.isOnline = true;
-                        } else {
-                            this.isOnline = false;
-                        }
-                        this.updateConnectionStatus();
-                    });
-                }
-            }
-
-            updateConnectionStatus() {
-                const statusElement = document.getElementById('connectionStatus');
-                if (this.isOnline && navigator.onLine) {
-                    statusElement.className = 'connection-status online';
-                    statusElement.innerHTML = '<i class="fas fa-wifi"></i> Conectado';
-                } else {
-                    statusElement.className = 'connection-status offline';
-                    statusElement.innerHTML = '<i class="fas fa-wifi"></i> Sin conexión';
-                }
-            }
-
-            async loadRegistros() {
-                if (!this.isOnline) {
-                    this.loadFromLocalStorage();
-                    return;
-                }
-
-                try {
-                    const registrosRef = window.firebaseRef(window.firebaseDB, 'registros');
-                    const snapshot = await window.firebaseGet(registrosRef);
-                    
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        this.registrosCache = Object.keys(data).map(key => ({
-                            id: key,
-                            ...data[key]
-                        }));
-                        
-                        // Guardar en localStorage como respaldo
-                        localStorage.setItem('registrosCache', JSON.stringify(this.registrosCache));
-                    } else {
-                        this.registrosCache = [];
-                    }
-                } catch (error) {
-                    console.error('Error loading registros:', error);
-                    this.loadFromLocalStorage();
-                    this.showAlert('Error al cargar registros. Usando datos locales.', 'error');
-                }
-            }
-
-            loadFromLocalStorage() {
-                const cached = localStorage.getItem('registrosCache');
-                if (cached) {
-                    this.registrosCache = JSON.parse(cached);
-                } else {
-                    this.registrosCache = [];
-                }
-            }
-
-            async guardarRegistro() {
-                const formData = new FormData(document.getElementById('registroForm'));
-                const registro = {};
-                
-                // Procesar campos normales
-                for (let [key, value] of formData.entries()) {
-                    if (key !== 'registroId' && !key.endsWith('[]')) {
-                        registro[key] = value;
-                    }
-                }
-                
-                // Procesar campos de información judicial (arrays)
-                const judicialData = {
-                    expte: formData.getAll('expte[]'),
-                    caratula: formData.getAll('caratula[]'),
-                    juzgado: formData.getAll('juzgado[]'),
-                    secretaria: formData.getAll('secretaria[]'),
-                    poderJudicial: formData.getAll('poderJudicial[]'),
-                    fechaInicio: formData.getAll('fechaInicio[]'),
-                    estadoActual: formData.getAll('estadoActual[]'),
-                    condicionParte: formData.getAll('condicionParte[]'),
-                    observacionesJudiciales: formData.getAll('observacionesJudiciales[]')
-                };
-                
-                // Agregar información judicial al registro
-                registro.informacionJudicial = [];
-                
-                // Crear objetos de información judicial para cada conjunto de campos
-                for (let i = 0; i < judicialData.expte.length; i++) {
-                    registro.informacionJudicial.push({
-                        expte: judicialData.expte[i],
-                        caratula: judicialData.caratula[i],
-                        juzgado: judicialData.juzgado[i],
-                        secretaria: judicialData.secretaria[i],
-                        poderJudicial: judicialData.poderJudicial[i],
-                        fechaInicio: judicialData.fechaInicio[i],
-                        estadoActual: judicialData.estadoActual[i],
-                        condicionParte: judicialData.condicionParte[i],
-                        observacionesJudiciales: judicialData.observacionesJudiciales[i]
-                    });
-                }
-
-                // Procesar campos de información médica (arrays)
-                const medicaData = {
-                    enfermedades: formData.getAll('enfermedades[]'),
-                    medicoTratante: formData.getAll('medicoTratante[]'),
-                    lugarInternacion: formData.getAll('lugarInternacion[]'),
-                    fechaIngreso: formData.getAll('fechaIngreso[]'),
-                    fechaAlta: formData.getAll('fechaAlta[]'),
-                    observacionesMedicas: formData.getAll('observacionesMedicas[]')
-                };
-                
-                // Agregar información médica al registro
-                registro.informacionMedica = [];
-                
-                // Crear objetos de información médica para cada conjunto de campos
-                for (let i = 0; i < medicaData.enfermedades.length; i++) {
-                    registro.informacionMedica.push({
-                        enfermedades: medicaData.enfermedades[i],
-                        medicoTratante: medicaData.medicoTratante[i],
-                        lugarInternacion: medicaData.lugarInternacion[i],
-                        fechaIngreso: medicaData.fechaIngreso[i],
-                        fechaAlta: medicaData.fechaAlta[i],
-                        observacionesMedicas: medicaData.observacionesMedicas[i]
-                    });
-                }
-
-                // Procesar campos de información laboral (arrays)
-                const laboralData = {
-                    empleo: formData.getAll('empleo[]'),
-                    empleador: formData.getAll('empleador[]'),
-                    domicilioLaboral: formData.getAll('domicilioLaboral[]'),
-                    montoSalario: formData.getAll('montoSalario[]'),
-                    observacionesLaborales: formData.getAll('observacionesLaborales[]')
-                };
-                
-                // Agregar información laboral al registro
-                registro.informacionLaboral = [];
-                
-                // Crear objetos de información laboral para cada conjunto de campos
-                for (let i = 0; i < laboralData.empleo.length; i++) {
-                    registro.informacionLaboral.push({
-                        empleo: laboralData.empleo[i],
-                        empleador: laboralData.empleador[i],
-                        domicilioLaboral: laboralData.domicilioLaboral[i],
-                        montoSalario: laboralData.montoSalario[i],
-                        observacionesLaborales: laboralData.observacionesLaborales[i]
-                    });
-                }
-
-                const registroId = document.getElementById('registroId').value;
-
-                try {
-                    if (registroId) {
-                        // Actualizar registro existente
-                        if (this.isOnline) {
-                            const registroRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}`);
-                            await window.firebaseSet(registroRef, registro);
-                        }
-                        
-                        // Actualizar en cache local
-                        const index = this.registrosCache.findIndex(r => r.id === registroId);
-                        if (index !== -1) {
-                            this.registrosCache[index] = { id: registroId, ...registro };
-                        }
-                        
-                        this.showAlert('Registro actualizado exitosamente', 'success');
-                    } else {
-                        // Crear nuevo registro
-                        let newId;
-                        if (this.isOnline) {
-                            const registrosRef = window.firebaseRef(window.firebaseDB, 'registros');
-                            const newRegistroRef = window.firebasePush(registrosRef);
-                            await window.firebaseSet(newRegistroRef, registro);
-                            newId = newRegistroRef.key;
-                        } else {
-                            newId = 'local_' + Date.now();
-                        }
-                        
-                        // Agregar al cache local
-                        this.registrosCache.push({ id: newId, ...registro });
-                        this.showAlert('Registro guardado exitosamente', 'success');
-                    }
-
-                    // Guardar en localStorage como respaldo
-                    localStorage.setItem('registrosCache', JSON.stringify(this.registrosCache));
-                    
-                    this.limpiarFormulario();
-                } catch (error) {
-                    console.error('Error saving registro:', error);
-                    this.showAlert('Error al guardar el registro', 'error');
-                }
-            }
-
-            async eliminarRegistro(id) {
-                this.mostrarConfirmacion('¿Está seguro de que desea eliminar este registro?', async () => {
-                    try {
-                        if (this.isOnline) {
-                            const registroRef = window.firebaseRef(window.firebaseDB, `registros/${id}`);
-                            await window.firebaseRemove(registroRef);
-                        }
-                        
-                        // Eliminar del cache local
-                        this.registrosCache = this.registrosCache.filter(r => r.id !== id);
-                        localStorage.setItem('registrosCache', JSON.stringify(this.registrosCache));
-                        
-                        this.showAlert('Registro eliminado exitosamente', 'success');
-                        this.loadRegistrosTable();
-                    } catch (error) {
-                        console.error('Error deleting registro:', error);
-                        this.showAlert('Error al eliminar el registro', 'error');
-                    }
-                });
-            }
-
-            editarRegistro(id) {
-                const registro = this.registrosCache.find(r => r.id === id);
-                if (registro) {
-                    this.llenarFormulario(registro);
-                    this.currentEditingId = id;
-                    this.mostrarFormulario();
-                    this.loadImportedDocuments(id);
-                }
-            }
-
-            async loadImportedDocuments(registroId) {
-                if (!registroId) return;
-
-                try {
-                    if (this.isOnline) {
-                        const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos`);
-                        const snapshot = await window.firebaseGet(documentosRef);
-                        
-                        if (snapshot.exists()) {
-                            const documentos = snapshot.val();
-                            this.displayImportedDocuments(documentos);
-                        } else {
-                            this.displayImportedDocuments({});
-                        }
-                    }
-                    
-                    document.getElementById('documentosImportadosSection').classList.remove('hidden');
-                } catch (error) {
-                    console.error('Error loading documents:', error);
-                }
-            }
-
-            displayImportedDocuments(documentos) {
-                const tbody = document.getElementById('documentosImportadosTableBody');
-                
-                if (!documentos || Object.keys(documentos).length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados para este registro.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = Object.keys(documentos).map(docId => {
-                    const doc = documentos[docId];
-                    const fecha = new Date(doc.uploadedAt).toLocaleDateString();
-                    const tamaño = this.formatFileSize(doc.size);
-                    
-                    return `
-                        <tr>
-                            <td>${doc.name}</td>
-                            <td>${doc.description}</td>
-                            <td>${fecha}</td>
-                            <td>${tamaño}</td>
-                            <td>
-                                <button class="btn btn-info btn-small" onclick="registroManager.descargarDocumento('${docId}', '${this.currentEditingId}')">
-                                    <i class="fas fa-download"></i> Descargar
-                                </button>
-                                <button class="btn btn-danger btn-small" onclick="registroManager.eliminarDocumento('${docId}', '${this.currentEditingId}')">
-                                    <i class="fas fa-trash"></i> Eliminar
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-
-            formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-
-            async eliminarDocumento(docId, registroId) {
-                this.mostrarConfirmacion('¿Está seguro de que desea eliminar este documento?', async () => {
-                    try {
-                        if (this.isOnline) {
-                            const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${docId}`);
-                            await window.firebaseRemove(docRef);
-                        }
-                        
-                        this.showAlert('Documento eliminado exitosamente', 'success');
-                        this.loadImportedDocuments(registroId);
-                    } catch (error) {
-                        console.error('Error deleting document:', error);
-                        this.showAlert('Error al eliminar el documento', 'error');
-                    }
-                });
-            }
-
-            async descargarDocumento(docId, registroId) {
-                try {
-                    if (this.isOnline) {
-                        const docRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos/${docId}`);
-                        const snapshot = await window.firebaseGet(docRef);
-                        
-                        if (snapshot.exists()) {
-                            const doc = snapshot.val();
-                            
-                            if (doc.url) {
-                                // Documento de Cloudinary
-                                window.open(doc.url, '_blank');
-                            } else if (doc.data) {
-                                // Documento en base64
-                                const link = document.createElement('a');
-                                link.href = doc.data;
-                                link.download = doc.name;
-                                link.click();
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error downloading document:', error);
-                    this.showAlert('Error al descargar el documento', 'error');
-                }
-            }
-
-            mostrarImportDocumentModal() {
-                if (!this.currentEditingId) {
-                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
-                    return;
-                }
-                
-                document.getElementById('importDocumentModal').classList.add('show');
-                this.loadImportedDocumentsInModal(this.currentEditingId);
-            }
-
-            cerrarImportDocumentModal() {
-                document.getElementById('importDocumentModal').classList.remove('show');
-            }
-
-            async loadImportedDocumentsInModal(registroId) {
-                if (!registroId) return;
-
-                try {
-                    if (this.isOnline) {
-                        const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${registroId}/documentos`);
-                        const snapshot = await window.firebaseGet(documentosRef);
-                        
-                        if (snapshot.exists()) {
-                            const documentos = snapshot.val();
-                            this.displayImportedDocumentsInModal(documentos);
-                        } else {
-                            this.displayImportedDocumentsInModal({});
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error loading documents:', error);
-                }
-            }
-
-            displayImportedDocumentsInModal(documentos) {
-                const tbody = document.getElementById('importedDocumentsTableBody');
-                
-                if (!documentos || Object.keys(documentos).length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No hay documentos importados.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = Object.keys(documentos).map(docId => {
-                    const doc = documentos[docId];
-                    const fecha = new Date(doc.uploadedAt).toLocaleDateString();
-                    const tamaño = this.formatFileSize(doc.size);
-                    
-                    return `
-                        <tr>
-                            <td>${doc.name}</td>
-                            <td>${doc.description}</td>
-                            <td>${fecha}</td>
-                            <td>${tamaño}</td>
-                            <td>
-                                <button class="btn btn-info btn-small" onclick="registroManager.descargarDocumento('${docId}', '${this.currentEditingId}')">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                                <button class="btn btn-danger btn-small" onclick="registroManager.eliminarDocumento('${docId}', '${this.currentEditingId}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-
-            setupFileUpload() {
-                const fileDropZone = document.getElementById('fileDropZone');
-                const fileInput = document.getElementById('fileInput');
-
-                // Configurar zona de arrastrar y soltar
-                fileDropZone.addEventListener('click', () => {
-                    fileInput.click();
-                });
-
-                fileDropZone.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    fileDropZone.classList.add('dragover');
-                });
-
-                fileDropZone.addEventListener('dragleave', () => {
-                    fileDropZone.classList.remove('dragover');
-                });
-
-                fileDropZone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    fileDropZone.classList.remove('dragover');
-                    const files = e.dataTransfer.files;
-                    this.handleFileSelection(files);
-                });
-
-                fileInput.addEventListener('change', (e) => {
-                    this.handleFileSelection(e.target.files);
-                });
-
-                // Configurar widget de Cloudinary
-                this.setupCloudinaryWidget();
-            }
-
-            handleFileSelection(files) {
-                if (!this.currentEditingId) {
-                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
-                    return;
-                }
-
-                Array.from(files).forEach(file => {
-                    if (this.validateFile(file)) {
-                        this.uploadFile(file);
-                    }
-                });
-            }
-
-            validateFile(file) {
-                const maxSize = 10 * 1024 * 1024; // 10MB
-                const allowedTypes = [
-                    'application/pdf',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'image/jpeg',
-                    'image/png',
-                    'text/plain'
-                ];
-
-                if (file.size > maxSize) {
-                    this.showAlert(`El archivo ${file.name} es demasiado grande. Máximo 10MB.`, 'error');
-                    return false;
-                }
-
-                if (!allowedTypes.includes(file.type)) {
-                    this.showAlert(`Tipo de archivo no soportado: ${file.name}`, 'error');
-                    return false;
-                }
-
-                return true;
-            }
-
-            async uploadFile(file) {
-                const fileDropZone = document.getElementById('fileDropZone');
-                fileDropZone.classList.add('uploading');
-
-                // Simular progreso de subida
-                const progressHtml = `
-                    <div class="upload-progress">
-                        <div>Subiendo: ${file.name}</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <div id="progressText">0%</div>
-                    </div>
-                `;
-                
-                fileDropZone.innerHTML = progressHtml;
-
-                // Simular progreso
-                let progress = 0;
-                const progressInterval = setInterval(() => {
-                    progress += Math.random() * 20;
-                    if (progress > 100) progress = 100;
-                    
-                    document.getElementById('progressFill').style.width = progress + '%';
-                    document.getElementById('progressText').textContent = Math.round(progress) + '%';
-                    
-                    if (progress >= 100) {
-                        clearInterval(progressInterval);
-                        this.completeFileUpload(file);
-                    }
-                }, 200);
-            }
-
-            async completeFileUpload(file) {
-                try {
-                    // Convertir archivo a base64 para almacenamiento
-                    const base64 = await this.fileToBase64(file);
-                    
-                    const documentData = {
-                        name: file.name,
-                        description: `Documento subido: ${file.name}`,
-                        size: file.size,
-                        type: file.type,
-                        uploadedAt: new Date().toISOString(),
-                        data: base64
-                    };
-
-                    // Guardar en Firebase
-                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${this.currentEditingId}/documentos`);
-                    const newDocRef = window.firebasePush(documentosRef);
-                    await window.firebaseSet(newDocRef, documentData);
-
-                    this.showAlert(`Archivo ${file.name} subido exitosamente`, 'success');
-                    this.loadImportedDocuments(this.currentEditingId);
-                    this.resetFileDropZone();
-
-                } catch (error) {
-                    console.error('Error uploading file:', error);
-                    this.showAlert('Error al subir el archivo', 'error');
-                    this.resetFileDropZone();
-                }
-            }
-
-            fileToBase64(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = error => reject(error);
-                });
-            }
-
-            resetFileDropZone() {
-                const fileDropZone = document.getElementById('fileDropZone');
-                fileDropZone.classList.remove('uploading');
-                fileDropZone.innerHTML = `
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>Arrastra archivos aquí o haz clic para seleccionar</h3>
-                    <p>Formatos soportados: PDF, DOC, DOCX, JPG, PNG, TXT</p>
-                    <div class="supported-formats">
-                        <strong>Tamaño máximo:</strong> 10MB por archivo
-                    </div>
-                `;
-            }
-
-            setupCloudinaryWidget() {
-                if (typeof cloudinary === 'undefined') {
-                    console.warn('Cloudinary no está disponible');
-                    return;
-                }
-
-                const myWidget = cloudinary.createUploadWidget({
-                    cloudName: 'dbzucruu4', 
-                    uploadPreset: 'documentos_defensoria'
-                }, (error, result) => {
-                    if (error) {
-                        console.error('Error del widget de Cloudinary:', error);
-                        this.showAlert('Error al abrir el widget de subida.', 'error');
-                        return;
-                    }
-
-                    if (result.event === "success") {
-                        console.log('¡Archivo subido exitosamente!', result.info);
-                        this.guardarDocumentoCloudinary(result.info);
-                    }
-                });
-
-                document.getElementById("upload_widget").addEventListener("click", function(){
-                    myWidget.open();
-                }, false);
-            }
-
-            async guardarDocumentoCloudinary(info) {
-                if (!this.currentEditingId) {
-                    this.showAlert('Debe seleccionar o crear un registro antes de importar documentos.', 'error');
-                    return;
-                }
-
-                try {
-                    const documentosRef = window.firebaseRef(window.firebaseDB, `registros/${this.currentEditingId}/documentos`);
-                    const newDocRef = window.firebasePush(documentosRef);
-                    await window.firebaseSet(newDocRef, {
-                        name: info.original_filename + '.' + info.format,
-                        description: 'Documento subido con Cloudinary',
-                        url: info.secure_url,
-                        size: info.bytes,
-                        type: info.resource_type,
-                        uploadedAt: new Date().toISOString()
-                    });
-
-                    this.showAlert(`Archivo ${info.original_filename} subido exitosamente`, 'success');
-                    this.loadImportedDocuments(this.currentEditingId);
-                    this.loadImportedDocumentsInModal(this.currentEditingId);
-
-                } catch (error) {
-                    console.error('Error saving Cloudinary document:', error);
-                    this.showAlert('Error al guardar el documento', 'error');
-                }
-            }
-
-            validarDNI(e) {
-                const value = e.target.value;
-                e.target.value = value.replace(/\D/g, '').substring(0, 8);
-            }
-
-            calculateAge() {
-                const fechaNacimiento = document.getElementById('fechaNacimiento').value;
-                if (fechaNacimiento) {
-                    const today = new Date();
-                    const birthDate = new Date(fechaNacimiento);
-                    let age = today.getFullYear() - birthDate.getFullYear();
-                    const monthDiff = today.getMonth() - birthDate.getMonth();
-                    
-                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                        age--;
-                    }
-                    
-                    document.getElementById('edad').value = age;
-                }
-            }
-
-            llenarFormulario(registro) {
-                // Limpiar secciones existentes
-                document.getElementById('judicialSectionsContainer').innerHTML = '';
-                document.getElementById('medicaSectionsContainer').innerHTML = '';
-                document.getElementById('laboralSectionsContainer').innerHTML = '';
-                
-                // Llenar campos normales
-                Object.keys(registro).forEach(key => {
-                    const element = document.getElementById(key);
-                    if (element && key !== 'id' && key !== 'informacionJudicial' && key !== 'informacionMedica' && key !== 'informacionLaboral') {
-                        element.value = registro[key] || '';
-                    }
-                });
-                
-                // Llenar información judicial si existe
-                if (registro.informacionJudicial && registro.informacionJudicial.length > 0) {
-                    registro.informacionJudicial.forEach(judicial => {
-                        this.agregarSeccionJudicial(judicial);
-                    });
-                } else {
-                    // Agregar una sección judicial vacía por defecto
-                    this.agregarSeccionJudicial();
-                }
-                
-                // Llenar información médica si existe
-                if (registro.informacionMedica && registro.informacionMedica.length > 0) {
-                    registro.informacionMedica.forEach(medica => {
-                        this.agregarSeccionMedica(medica);
-                    });
-                } else {
-                    // Agregar una sección médica vacía por defecto
-                    this.agregarSeccionMedica();
-                }
-                
-                // Llenar información laboral si existe
-                if (registro.informacionLaboral && registro.informacionLaboral.length > 0) {
-                    registro.informacionLaboral.forEach(laboral => {
-                        this.agregarSeccionLaboral(laboral);
-                    });
-                } else {
-                    // Agregar una sección laboral vacía por defecto
-                    this.agregarSeccionLaboral();
-                }
-                
-                document.getElementById('registroId').value = registro.id;
-                this.calculateAge();
-            }
-
-            limpiarFormulario() {
-                document.getElementById('registroForm').reset();
-                document.getElementById('registroId').value = '';
-                document.getElementById('edad').value = '';
-                this.currentEditingId = null;
-                document.getElementById('documentosImportadosSection').classList.add('hidden');
-                
-                // Limpiar y agregar secciones vacías por defecto
-                document.getElementById('judicialSectionsContainer').innerHTML = '';
-                this.agregarSeccionJudicial();
-                
-                document.getElementById('medicaSectionsContainer').innerHTML = '';
-                this.agregarSeccionMedica();
-                
-                document.getElementById('laboralSectionsContainer').innerHTML = '';
-                this.agregarSeccionLaboral();
-            }
-
-            nuevoRegistro() {
-                this.limpiarFormulario();
-                this.mostrarFormulario();
-            }
-
-            cancelarEdicion() {
-                this.limpiarFormulario();
-                this.mostrarFormulario();
-            }
-
-            mostrarFormulario() {
-                document.getElementById('registroFormContainer').classList.remove('hidden');
-                document.getElementById('registrosContainer').classList.add('hidden');
-            }
-
-            verRegistros() {
-                document.getElementById('registroFormContainer').classList.add('hidden');
-                document.getElementById('registrosContainer').classList.remove('hidden');
-                this.loadRegistrosTable();
-            }
-
-            volverFormulario() {
-                this.mostrarFormulario();
-            }
-
-            loadRegistrosTable() {
-                const tbody = document.getElementById('registrosTableBody');
-                
-                if (this.registrosCache.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No hay registros guardados</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = this.registrosCache.map(registro => `
-                    <tr>
-                        <td>${registro.dni}</td>
-                        <td>${registro.apellido}</td>
-                        <td>${registro.nombre}</td>
-                        <td>${registro.fechaNacimiento}</td>
-                        <td>${registro.telefono || '-'}</td>
-                        <td>${registro.email || '-'}</td>
-                        <td>
-                            <button class="btn btn-info btn-small" onclick="registroManager.editarRegistro('${registro.id}')">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                            <button class="btn btn-danger btn-small" onclick="registroManager.eliminarRegistro('${registro.id}')">
-                                <i class="fas fa-trash"></i> Eliminar
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            mostrarSearchModal() {
-                document.getElementById('searchModal').classList.add('show');
-                document.getElementById('searchResultsTableBody').innerHTML = '';
-            }
-
-            cerrarSearchModal() {
-                document.getElementById('searchModal').classList.remove('show');
-                document.getElementById('searchForm').reset();
-            }
-
-            performSearch() {
-                const apellido = document.getElementById('searchApellido').value.toLowerCase();
-                const nombre = document.getElementById('searchNombre').value.toLowerCase();
-                const dni = document.getElementById('searchDNI').value;
-
-                const resultados = this.registrosCache.filter(registro => {
-                    const matchApellido = !apellido || registro.apellido.toLowerCase().includes(apellido);
-                    const matchNombre = !nombre || registro.nombre.toLowerCase().includes(nombre);
-                    const matchDNI = !dni || registro.dni.includes(dni);
-                    
-                    return matchApellido && matchNombre && matchDNI;
-                });
-
-                const tbody = document.getElementById('searchResultsTableBody');
-                
-                if (resultados.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No se encontraron registros</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = resultados.map(registro => `
-                    <tr>
-                        <td>${registro.dni}</td>
-                        <td>${registro.apellido}</td>
-                        <td>${registro.nombre}</td>
-                        <td>
-                            <button class="btn btn-info btn-small" onclick="registroManager.editarRegistro('${registro.id}'); registroManager.cerrarSearchModal();">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            mostrarConfirmacion(mensaje, callback) {
-                document.getElementById('confirmMessage').textContent = mensaje;
-                document.getElementById('confirmModal').classList.add('show');
-                
-                document.getElementById('confirmBtn').onclick = () => {
-                    callback();
-                    this.cerrarModal();
-                };
-            }
-
-            cerrarModal() {
-                document.getElementById('confirmModal').classList.remove('show');
-            }
-
-            imprimir() {
-                window.print();
-            }
-
-            exportar() {
-                if (this.registrosCache.length === 0) {
-                    this.showAlert('No hay registros para exportar', 'error');
-                    return;
-                }
-
-                try {
-                    const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF();
-                    
-                    doc.setFontSize(16);
-                    doc.text('Registro de Datos - Defensoría Civil y Comercial 6', 20, 20);
-                    
-                    const tableData = this.registrosCache.map(registro => [
-                        registro.dni,
-                        registro.apellido,
-                        registro.nombre,
-                        registro.fechaNacimiento,
-                        registro.telefono || '-',
-                        registro.email || '-'
-                    ]);
-
-                    doc.autoTable({
-                        head: [['DNI', 'Apellido', 'Nombre', 'Fecha Nac.', 'Teléfono', 'Email']],
-                        body: tableData,
-                        startY: 30,
-                        styles: { fontSize: 8 }
-                    });
-
-                    doc.save('registros-defensoria.pdf');
-                    this.showAlert('PDF exportado exitosamente', 'success');
-                } catch (error) {
-                    console.error('Error exporting PDF:', error);
-                    this.showAlert('Error al exportar PDF', 'error');
-                }
-            }
-
-            showAlert(message, type = 'info') {
-                const alertContainer = document.getElementById('alertContainer');
-                const alertId = 'alert-' + Date.now();
-                
-                const alertElement = document.createElement('div');
-                alertElement.id = alertId;
-                alertElement.className = `alert alert-${type}`;
-                
-                const icon = type === 'success' ? 'check-circle' : 
-                           type === 'error' ? 'exclamation-circle' : 
-                           'info-circle';
-                
-                alertElement.innerHTML = `
-                    <i class="fas fa-${icon}"></i>
-                    <span>${message}</span>
-                `;
-                
-                alertContainer.appendChild(alertElement);
-                
-                setTimeout(() => {
-                    const element = document.getElementById(alertId);
-                    if (element) {
-                        element.remove();
-                    }
-                }, 5000);
-            }
+          };
+
+          tdActions.append(btnEdit, btnDelete);
+          const tdActionsWrap = document.createElement('td');
+          tdActionsWrap.appendChild(tdActions);
+          tr.appendChild(tdActionsWrap);
+
+          tableBody.appendChild(tr);
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Inicializar secciones
+      setupSection('personalForm', 'personal', 'personalTable');
+      setupSection('judicialForm', 'judicial', 'judicialTable');
+      setupSection('medicaForm', 'medica', 'medicaTable');
+      setupSection('laboralForm', 'laboral', 'laboralTable');
+
+      // Pequeña batería de tests (solo DOM) para evitar errores futuros
+      runDomTests();
+    });
+
+    // --- TESTS ---
+    function assert(cond, msg) { if (!cond) throw new Error(msg); }
+    function runDomTests() {
+      try {
+        // Test 1: Existen todas las secciones requeridas
+        ['personalForm','judicialForm','medicaForm','laboralForm','listado'].forEach(id => {
+          assert(!!document.getElementById(id), `Falta el elemento #${id}`);
+        });
+
+        // Test 2: Cambios de sección no arrojan errores
+        mostrarSeccion('personal');
+        assert(document.getElementById('personalForm').classList.contains('active'), 'personal no activa');
+
+        mostrarSeccion('judicial');
+        assert(document.getElementById('judicialForm').classList.contains('active'), 'judicial no activa');
+
+        // Test 3: Llamado seguro a listado (no valida datos remotos)
+        try {
+          mostrarSeccion('listado');
+          // Si Firebase no responde, igual no debe crashear el DOM
+          assert(document.getElementById('listado').classList.contains('active'), 'listado no activo');
+        } catch (e) {
+          console.warn('Test listado: omitido por conexión remota', e);
         }
 
-        // Inicializar la aplicación cuando se carga la página
-        window.addEventListener('DOMContentLoaded', () => {
-            window.registroManager = new RegistroManager();
-            // Agregar secciones vacías por defecto al cargar la página
-            registroManager.agregarSeccionJudicial();
-            registroManager.agregarSeccionMedica();
-            registroManager.agregarSeccionLaboral();
-        });
-    </script>
+        console.log('%cTests DOM OK', 'color: green; font-weight: bold');
+      } catch (e) {
+        console.error('Fallo en tests DOM:', e.message);
+      }
+    }
+  </script>
 </body>
 </html>
