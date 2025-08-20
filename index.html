@@ -1,238 +1,988 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Datos - Defensoría Civil y Comercial 6</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --primary-color: #2563eb;
-      --bg-color: #f8f9fa;
-      --text-color: #111827;
-      --muted-text: #6b7280;
-      --border-color: #e5e7eb;
-      --white: #ffffff;
-    }
-    * { box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; }
-    .topbar { background: var(--white); border-bottom: 1px solid var(--border-color); padding: 12px 20px; display: flex; justify-content: center; gap: 10px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
-    .btn { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white); color: var(--text-color); font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
-    .btn i { margin-right: 6px; }
-    .btn-primary { background: var(--primary-color); border: 1px solid var(--primary-color); color: var(--white); }
-    .btn-danger { background: #dc2626; border: 1px solid #dc2626; color: var(--white); }
-    .btn-warning { background: #f59e0b; border: 1px solid #f59e0b; color: var(--white); }
-    .btn:hover { filter: brightness(0.96); }
-    .main-container { max-width: 1100px; margin: 22px auto; padding: 0 20px; }
-    .form-section { background: var(--white); padding: 20px; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; display: none; }
-    .form-section.active { display: block; }
-    .section-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-    .form-section h2 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--primary-color); font-weight: 600; }
-    .form-section p { margin: 0; color: var(--muted-text); font-size: 0.9rem; }
-    .form-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 0.85em; font-weight: 600; color: #374151; }
-    .form-group input, .form-group select, .form-group textarea { padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: #fcfcfd; font-size: 0.92em; }
-    .form-group textarea { min-height: 72px; resize: vertical; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08); }
-    .table-container { overflow-x: auto; margin-top: 14px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.92em; min-width: 600px; }
-    table th, table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
-    table th { background: #f3f4f6; font-weight: 600; }
-    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-    .toggle-container { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 12px 0; flex-wrap: wrap; gap: 10px; }
-    .search-box input { padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9em; width: 240px; max-width: 100%; }
-    .muted { color: var(--muted-text); font-size: 0.85rem; }
-    @media (max-width: 768px) {
-      .topbar { justify-content: flex-start; }
-      .btn { flex: 1 1 45%; text-align: center; }
-      .section-header { flex-direction: column; align-items: flex-start; }
-      .toggle-container { flex-direction: column; align-items: stretch; }
-      .search-box input { width: 100%; }
-    }
-    @media (max-width: 480px) {
-      .btn { flex: 1 1 100%; }
-      table { font-size: 0.8em; min-width: 480px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Datos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            color: #3b82f6;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-warning {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d97706;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .view-toggle button {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .data-table th {
+            background-color: #f8fafc;
+            color: #3b82f6;
+            font-weight: 600;
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .data-table th:hover {
+            background-color: #f1f5f9;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .data-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .record-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .record-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .record-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .record-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .record-actions button {
+            padding: 6px 12px;
+            font-size: 0.875rem;
+        }
+
+        .record-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .record-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .record-field-label {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 4px;
+        }
+
+        .record-field-value {
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #374151;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .modal-title {
+            color: #3b82f6;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close {
+            color: #6b7280;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #374151;
+        }
+
+        .sort-indicator {
+            margin-left: 8px;
+            font-size: 0.8rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: #10b981;
+        }
+
+        .notification.error {
+            background-color: #ef4444;
+        }
+
+        .notification.info {
+            background-color: #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                min-width: auto;
+            }
+
+            .btn-group {
+                justify-content: center;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 20px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
-  <div class="topbar">
-    <button class="btn" onclick="mostrarSeccion('personal')"><i class="fas fa-user"></i>Datos Personales</button>
-    <button class="btn" onclick="mostrarSeccion('judicial')"><i class="fas fa-gavel"></i>Judicial</button>
-    <button class="btn" onclick="mostrarSeccion('medica')"><i class="fas fa-stethoscope"></i>Médica</button>
-    <button class="btn" onclick="mostrarSeccion('laboral')"><i class="fas fa-briefcase"></i>Laboral</button>
-    <button class="btn" onclick="mostrarSeccion('listado')"><i class="fas fa-list"></i>Listado</button>
-  </div>
-
-  <div class="main-container">
-    <!-- PERSONAL -->
-    <form id="personalForm" class="form-section active">
-      <div class="section-header"><h2>Datos Personales</h2></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Apellido</label><input name="apellido" type="text" /></div>
-        <div class="form-group"><label>Nombre</label><input name="nombre" type="text" /></div>
-        <div class="form-group"><label>DNI</label><input name="dni" type="text" /></div>
-        <div class="form-group"><label>Edad</label><input name="edad" type="number" /></div>
-        <div class="form-group"><label>Domicilio</label><input name="domicilio" type="text" /></div>
-        <div class="form-group"><label>Teléfono</label><input name="telefono" type="text" /></div>
-        <div class="form-group"><label>Email</label><input name="email" type="email" /></div>
-        <div class="form-group"><label>Estado Civil</label><input name="estadoCivil" type="text" /></div>
-        <div class="form-group"><label>Nacionalidad</label><input name="nacionalidad" type="text" /></div>
-      </div>
-      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
-        <button type="button" class="btn" onclick="resetForm('personalForm')">Limpiar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Apellido</th><th>Nombre</th><th>DNI</th><th>Edad</th><th>Domicilio</th><th>Teléfono</th><th>Email</th><th>Estado Civil</th><th>Nacionalidad</th><th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="personalTable"></tbody>
-        </table>
-      </div>
-    </form>
-
-    <!-- JUDICIAL -->
-    <form id="judicialForm" class="form-section">
-      <div class="section-header"><h2>Datos Judiciales</h2></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Número de Causa</label><input name="numCausa" type="text" /></div>
-        <div class="form-group"><label>Juzgado</label><input name="juzgado" type="text" /></div>
-        <div class="form-group"><label>Jurisdicción</label><input name="jurisdiccion" type="text" /></div>
-        <div class="form-group"><label>Secretaría</label><input name="secretaria" type="text" /></div>
-        <div class="form-group"><label>Carátula</label><input name="caratula" type="text" /></div>
-        <div class="form-group"><label>Situación</label><textarea name="situacion"></textarea></div>
-      </div>
-      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
-        <button type="button" class="btn" onclick="resetForm('judicialForm')">Limpiar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>N° Causa</th><th>Juzgado</th><th>Jurisdicción</th><th>Secretaría</th><th>Carátula</th><th>Situación</th><th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="judicialTable"></tbody>
-        </table>
-      </div>
-    </form>
-
-    <!-- MÉDICA -->
-    <form id="medicaForm" class="form-section">
-      <div class="section-header"><h2>Datos Médicos</h2></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Diagnóstico</label><textarea name="diagnostico"></textarea></div>
-        <div class="form-group"><label>Tratamiento</label><textarea name="tratamiento"></textarea></div>
-        <div class="form-group"><label>Médico</label><input name="medico" type="text" /></div>
-        <div class="form-group"><label>Centro Médico</label><input name="centroMedico" type="text" /></div>
-        <div class="form-group"><label>Obra Social</label><input name="obraSocial" type="text" /></div>
-      </div>
-      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
-        <button type="button" class="btn" onclick="resetForm('medicaForm')">Limpiar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Diagnóstico</th><th>Tratamiento</th><th>Médico</th><th>Centro Médico</th><th>Obra Social</th><th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="medicaTable"></tbody>
-        </table>
-      </div>
-    </form>
-
-    <!-- LABORAL -->
-    <form id="laboralForm" class="form-section">
-      <div class="section-header"><h2>Datos Laborales</h2></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Empresa</label><input name="empresa" type="text" /></div>
-        <div class="form-group"><label>Puesto</label><input name="puesto" type="text" /></div>
-        <div class="form-group"><label>Antigüedad</label><input name="antiguedad" type="text" /></div>
-        <div class="form-group"><label>Dirección</label><input name="direccion" type="text" /></div>
-        <div class="form-group"><label>Teléfono Empresa</label><input name="telefonoEmpresa" type="text" /></div>
-      </div>
-      <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
-        <button type="button" class="btn" onclick="resetForm('laboralForm')">Limpiar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Empresa</th><th>Puesto</th><th>Antigüedad</th><th>Dirección</th><th>Teléfono Empresa</th><th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="laboralTable"></tbody>
-        </table>
-      </div>
-    </form>
-
-    <!-- LISTADO GLOBAL -->
-    <div id="listado" class="form-section">
-      <div class="section-header"><h2>Listado de Registros</h2></div>
-      <div class="toggle-container">
-        <div class="search-box">
-          <input id="searchInput" type="text" placeholder="Buscar por DNI, Nombre o Apellido..." oninput="filterListado()" />
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <p>Registro de datos de partes en procesos judiciales</p>
         </div>
-        <div>
-          <button class="btn" type="button" onclick="toggleListado('completo')">Listado Completo</button>
-          <button class="btn" type="button" onclick="toggleListado('compacto')">Listado Compacto</button>
+
+        <!-- Formulario de Registro -->
+        <div class="card">
+            <h2 class="card-title">Nuevo Registro</h2>
+            <form id="registroForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="apellido">Apellido *</label>
+                        <input type="text" id="apellido" name="apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dni">DNI *</label>
+                        <input type="text" id="dni" name="dni" required pattern="[0-9]{7,8}">
+                    </div>
+                    <div class="form-group">
+                        <label for="domicilio">Domicilio</label>
+                        <input type="text" id="domicilio" name="domicilio">
+                    </div>
+                    <div class="form-group">
+                        <label for="ciudad">Ciudad</label>
+                        <input type="text" id="ciudad" name="ciudad">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" id="telefono" name="telefono">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="datosAntecedentes">Datos Judiciales Antecedentes</label>
+                        <textarea id="datosAntecedentes" name="datosAntecedentes" placeholder="Describa los datos judiciales previos..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="situacionMedica">Situación Médica</label>
+                        <textarea id="situacionMedica" name="situacionMedica" placeholder="Describa la situación médica relevante..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="situacionLaboral">Situación Laboral</label>
+                        <textarea id="situacionLaboral" name="situacionLaboral" placeholder="Describa la situación laboral actual..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="observaciones">Otras Observaciones</label>
+                        <textarea id="observaciones" name="observaciones" placeholder="Observaciones adicionales..."></textarea>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">
+                        <span>💾</span> Guardar Registro
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">
+                        <span>🗑️</span> Limpiar Formulario
+                    </button>
+                </div>
+            </form>
         </div>
-      </div>
-      <div id="listadoContainer" class="table-container"></div>
+
+        <!-- Panel de Control -->
+        <div class="card">
+            <h2 class="card-title">Gestión de Registros</h2>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar en todos los campos...">
+                <button class="btn btn-primary" onclick="buscarRegistros()">
+                    <span>🔍</span> Buscar
+                </button>
+                <div class="view-toggle">
+                    <button id="viewCompact" class="active" onclick="cambiarVista('compact')">Vista Compacta</button>
+                    <button id="viewComplete" onclick="cambiarVista('complete')">Vista Completa</button>
+                </div>
+                <button class="btn btn-success" onclick="cargarTodosLosRegistros()">
+                    <span>🔄</span> Actualizar
+                </button>
+            </div>
+
+            <!-- Vista de Tabla (Compacta) -->
+            <div id="tableView" class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th onclick="ordenarPor('apellido')">Apellido <span class="sort-indicator" id="sort-apellido"></span></th>
+                            <th onclick="ordenarPor('nombre')">Nombre <span class="sort-indicator" id="sort-nombre"></span></th>
+                            <th onclick="ordenarPor('dni')">DNI <span class="sort-indicator" id="sort-dni"></span></th>
+                            <th onclick="ordenarPor('ciudad')">Ciudad <span class="sort-indicator" id="sort-ciudad"></span></th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="5" class="loading">Cargando registros...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Vista de Tarjetas (Completa) -->
+            <div id="cardView" class="hidden">
+                <div id="cardContainer">
+                    <div class="loading">Cargando registros...</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getDatabase, ref, push, set, get, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+    <!-- Modal para Ver/Editar -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Detalle del Registro</h2>
+                <span class="close" onclick="cerrarModal()">&times;</span>
+            </div>
+            <div id="modalContent">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
-      authDomain: "datos-partes.firebaseapp.com",
-      databaseURL: "https://datos-partes-default-rtdb.firebaseio.com",
-      projectId: "datos-partes",
-      storageBucket: "datos-partes.firebasestorage.app",
-      messagingSenderId: "277413385546",
-      appId: "1:277413385546:web:9863aaa081727a84479db3"
-    };
+    <!-- Notificaciones -->
+    <div id="notification" class="notification"></div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
-    window.db=db;window.dbRef=ref;window.dbPush=push;window.dbSet=set;window.dbGet=get;window.dbOn=onValue;window.dbRemove=remove;window.dbUpdate=update;
-  </script>
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
+            authDomain: "datos-partes.firebaseapp.com",
+            databaseURL: "https://datos-partes-default-rtdb.firebaseio.com",
+            projectId: "datos-partes",
+            storageBucket: "datos-partes.firebasestorage.app",
+            messagingSenderId: "277413385546",
+            appId: "1:277413385546:web:9863aaa081727a84479db3"
+        };
 
-  <!-- Lógica -->
-  <script>
-    let listadoData={},listadoTipo='completo';
-    const etiquetas={apellido:"Apellido",nombre:"Nombre",dni:"DNI",edad:"Edad",domicilio:"Domicilio",telefono:"Teléfono",email:"Email",estadoCivil:"Estado Civil",nacionalidad:"Nacionalidad",empresa:"Empresa",puesto:"Puesto",antiguedad:"Antigüedad",direccion:"Dirección",telefonoEmpresa:"Teléfono Empresa",numCausa:"N° Causa",juzgado:"Juzgado",jurisdiccion:"Jurisdicción",secretaria:"Secretaría",caratula:"Carátula",situacion:"Situación",diagnostico:"Diagnóstico",tratamiento:"Tratamiento",medico:"Médico",centroMedico:"Centro Médico",obraSocial:"Obra Social"};
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-    // Orden de campos por sección
-    const ordenCampos={
-      personal:["apellido","nombre","dni","edad","domicilio","telefono","email","estadoCivil","nacionalidad"],
-      judicial:["numCausa","juzgado","jurisdiccion","secretaria","caratula","situacion"],
-      medica:["diagnostico","tratamiento","medico","centroMedico","obraSocial"],
-      laboral:["empresa","puesto","antiguedad","direccion","telefonoEmpresa"]
-    };
+        // Variables globales
+        let registros = [];
+        let registroEditando = null;
+        let vistaActual = 'compact';
+        let ordenActual = { campo: 'apellido', direccion: 'asc' };
 
-    function mostrarSeccion(id){document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));if(id==='listado'){renderListado(listadoTipo);}const target=document.getElementById(id==='listado'?'listado':id+'Form');if(target)target.classList.add('active');}
-    function resetForm(id){const f=document.getElementById(id);if(f){f.reset();delete f.dataset.editId;}}
-    function toggleListado(t){listadoTipo=t;renderListado(t);}
-    async function renderListado(tipo){const cont=document.getElementById('listadoContainer');cont.innerHTML='';const secciones=['personal','judicial','medica','laboral'];listadoData={};for(const path of secciones){const snap=await window.dbGet(window.dbRef(window.db,path));if(snap.exists()){const data=snap.val();listadoData[path]=data;const table=document.createElement('table'),thead=document.createElement('thead'),tbody=document.createElement('tbody');const keys=ordenCampos[path];const header=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(tipo==='completo'||(tipo==='compacto'&&showCompact)){const th=document.createElement('th');th.textContent=etiquetas[k]||k;header.appendChild(th);}});thead.appendChild(header);Object.values(data).forEach(item=>{const tr=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(tipo==='completo'||(tipo==='compacto'&&showCompact)){const td=document.createElement('td');td.textContent=item[k]||'';tr.appendChild(td);}});tbody.appendChild(tr);});table.append(thead,tbody);const h3=document.createElement('h3');h3.textContent='Sección '+path;cont.append(h3,table);}}}
-    function filterListado(){const val=(document.getElementById('searchInput')?.value||'').toLowerCase();const cont=document.getElementById('listadoContainer');cont.innerHTML='';Object.keys(listadoData).forEach(path=>{const data=listadoData[path];const keys=ordenCampos[path];const filtered=Object.values(data).filter(i=>(i.dni||'').toLowerCase().includes(val)||(i.nombre||'').toLowerCase().includes(val)||(i.apellido||'').toLowerCase().includes(val));if(filtered.length){const table=document.createElement('table'),thead=document.createElement('thead'),tbody=document.createElement('tbody');const header=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(listadoTipo==='completo'||(listadoTipo==='compacto'&&showCompact)){const th=document.createElement('th');th.textContent=etiquetas[k]||k;header.appendChild(th);}});thead.appendChild(header);filtered.forEach(i=>{const tr=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(listadoTipo==='completo'||(listadoTipo==='compacto'&&showCompact)){const td=document.createElement('td');td.textContent=i[k]||'';tr.appendChild(td);}});tbody.appendChild(tr);});table.append(thead,tbody);const h3=document.createElement('h3');h3.textContent='Sección '+path;cont.append(h3,table);}});}
-    function setupSection(formId,path,tableId){const f=document.getElementById(formId),tb=document.getElementById(tableId);if(!f||!tb)return;f.addEventListener('submit',async e=>{e.preventDefault();const payload={};new FormData(f).forEach((v,k)=>payload[k]=v);if(f.dataset.editId){await window.dbUpdate(window.dbRef(window.db,`${path}/${f.dataset.editId}`),payload);}else{await window.dbSet(window.dbPush(window.dbRef(window.db,path)),payload);}resetForm(formId);});window.dbOn(window.dbRef(window.db,path),snap=>{tb.innerHTML='';if(!snap.exists())return;const data=snap.val();Object.entries(data).forEach(([id,item])=>{const tr=document.createElement('tr');ordenCampos[path].forEach(k=>{const td=document.createElement('td');td.textContent=item[k]||'';tr.appendChild(td);});const tdAct=document.createElement('td');tdAct.className='actions';const bE=document.createElement('button');bE.className='btn btn-warning';bE.textContent='Editar';bE.onclick=()=>{Object.entries(item).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v;});f.dataset.editId=id;mostrarSeccion(path);};const bD=document.createElement('button');bD.className='btn btn-danger';bD.textContent='Eliminar';bD.onclick=async()=>{if(confirm('¿Eliminar?'))await window.dbRemove(window.dbRef(window.db,`${path}/${id}`));};tdAct.append(bE,bD);tr.appendChild(tdAct);tb.appendChild(tr);});});}
-    document.addEventListener('DOMContentLoaded',()=>{setupSection('personalForm','personal','personalTable');setupSection('judicialForm','judicial','judicialTable');setupSection('medicaForm','medica','medicaTable');setupSection('laboralForm','laboral','laboralTable');});
-  </script>
+        // Inicializar aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarTodosLosRegistros();
+            
+            // Event listener para el formulario
+            document.getElementById('registroForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                guardarRegistro();
+            });
+
+            // Event listener para búsqueda en tiempo real
+            document.getElementById('searchInput').addEventListener('input', function() {
+                buscarRegistros();
+            });
+        });
+
+        // Función para guardar registro
+        function guardarRegistro() {
+            const formData = new FormData(document.getElementById('registroForm'));
+            const registro = {};
+            
+            for (let [key, value] of formData.entries()) {
+                registro[key] = value.trim();
+            }
+
+            // Validaciones básicas
+            if (!registro.apellido || !registro.nombre || !registro.dni) {
+                mostrarNotificacion('Por favor complete los campos obligatorios', 'error');
+                return;
+            }
+
+            // Agregar timestamp
+            registro.fechaCreacion = new Date().toISOString();
+            registro.fechaModificacion = new Date().toISOString();
+
+            if (registroEditando) {
+                // Actualizar registro existente
+                database.ref('registros/' + registroEditando).update(registro)
+                    .then(() => {
+                        mostrarNotificacion('Registro actualizado exitosamente', 'success');
+                        limpiarFormulario();
+                        cerrarModal();
+                        cargarTodosLosRegistros();
+                        registroEditando = null;
+                    })
+                    .catch((error) => {
+                        mostrarNotificacion('Error al actualizar: ' + error.message, 'error');
+                    });
+            } else {
+                // Crear nuevo registro
+                database.ref('registros').push(registro)
+                    .then(() => {
+                        mostrarNotificacion('Registro guardado exitosamente', 'success');
+                        limpiarFormulario();
+                        cargarTodosLosRegistros();
+                    })
+                    .catch((error) => {
+                        mostrarNotificacion('Error al guardar: ' + error.message, 'error');
+                    });
+            }
+        }
+
+        // Función para cargar todos los registros
+        function cargarTodosLosRegistros() {
+            database.ref('registros').once('value')
+                .then((snapshot) => {
+                    registros = [];
+                    snapshot.forEach((childSnapshot) => {
+                        const registro = childSnapshot.val();
+                        registro.id = childSnapshot.key;
+                        registros.push(registro);
+                    });
+                    
+                    ordenarRegistros();
+                    mostrarRegistros();
+                })
+                .catch((error) => {
+                    mostrarNotificacion('Error al cargar registros: ' + error.message, 'error');
+                });
+        }
+
+        // Función para mostrar registros según la vista actual
+        function mostrarRegistros() {
+            if (vistaActual === 'compact') {
+                mostrarVistaTabla();
+            } else {
+                mostrarVistaTarjetas();
+            }
+        }
+
+        // Función para mostrar vista de tabla
+        function mostrarVistaTabla() {
+            const tbody = document.getElementById('tableBody');
+            
+            if (registros.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><h3>No hay registros</h3><p>Agregue el primer registro usando el formulario superior</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = registros.map(registro => `
+                <tr>
+                    <td>${registro.apellido || '-'}</td>
+                    <td>${registro.nombre || '-'}</td>
+                    <td>${registro.dni || '-'}</td>
+                    <td>${registro.ciudad || '-'}</td>
+                    <td>
+                        <div class="record-actions">
+                            <button class="btn btn-primary" onclick="verRegistro('${registro.id}')" title="Ver">👁️</button>
+                            <button class="btn btn-warning" onclick="editarRegistro('${registro.id}')" title="Editar">✏️</button>
+                            <button class="btn btn-danger" onclick="eliminarRegistro('${registro.id}')" title="Eliminar">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Función para mostrar vista de tarjetas
+        function mostrarVistaTarjetas() {
+            const container = document.getElementById('cardContainer');
+            
+            if (registros.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No hay registros</h3><p>Agregue el primer registro usando el formulario superior</p></div>';
+                return;
+            }
+
+            container.innerHTML = registros.map(registro => `
+                <div class="record-card">
+                    <div class="record-header">
+                        <div class="record-name">${registro.apellido || ''} ${registro.nombre || ''}</div>
+                        <div class="record-actions">
+                            <button class="btn btn-primary" onclick="verRegistro('${registro.id}')" title="Ver">👁️</button>
+                            <button class="btn btn-warning" onclick="editarRegistro('${registro.id}')" title="Editar">✏️</button>
+                            <button class="btn btn-danger" onclick="eliminarRegistro('${registro.id}')" title="Eliminar">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="record-details">
+                        <div class="record-field">
+                            <div class="record-field-label">DNI</div>
+                            <div class="record-field-value">${registro.dni || '-'}</div>
+                        </div>
+                        <div class="record-field">
+                            <div class="record-field-label">Domicilio</div>
+                            <div class="record-field-value">${registro.domicilio || '-'}</div>
+                        </div>
+                        <div class="record-field">
+                            <div class="record-field-label">Ciudad</div>
+                            <div class="record-field-value">${registro.ciudad || '-'}</div>
+                        </div>
+                        <div class="record-field">
+                            <div class="record-field-label">Teléfono</div>
+                            <div class="record-field-value">${registro.telefono || '-'}</div>
+                        </div>
+                        <div class="record-field">
+                            <div class="record-field-label">Email</div>
+                            <div class="record-field-value">${registro.email || '-'}</div>
+                        </div>
+                        <div class="record-field">
+                            <div class="record-field-label">Situación Laboral</div>
+                            <div class="record-field-value">${registro.situacionLaboral ? (registro.situacionLaboral.length > 50 ? registro.situacionLaboral.substring(0, 50) + '...' : registro.situacionLaboral) : '-'}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Función para cambiar vista
+        function cambiarVista(vista) {
+            vistaActual = vista;
+            
+            // Actualizar botones
+            document.getElementById('viewCompact').classList.toggle('active', vista === 'compact');
+            document.getElementById('viewComplete').classList.toggle('active', vista === 'complete');
+            
+            // Mostrar/ocultar vistas
+            document.getElementById('tableView').classList.toggle('hidden', vista !== 'compact');
+            document.getElementById('cardView').classList.toggle('hidden', vista !== 'complete');
+            
+            mostrarRegistros();
+        }
+
+        // Función para buscar registros
+        function buscarRegistros() {
+            const termino = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!termino) {
+                cargarTodosLosRegistros();
+                return;
+            }
+
+            const registrosFiltrados = registros.filter(registro => {
+                return Object.values(registro).some(valor => 
+                    valor && valor.toString().toLowerCase().includes(termino)
+                );
+            });
+
+            const registrosOriginales = registros;
+            registros = registrosFiltrados;
+            mostrarRegistros();
+            registros = registrosOriginales;
+        }
+
+        // Función para ordenar registros
+        function ordenarPor(campo) {
+            if (ordenActual.campo === campo) {
+                ordenActual.direccion = ordenActual.direccion === 'asc' ? 'desc' : 'asc';
+            } else {
+                ordenActual.campo = campo;
+                ordenActual.direccion = 'asc';
+            }
+            
+            ordenarRegistros();
+            mostrarRegistros();
+            actualizarIndicadoresOrden();
+        }
+
+        function ordenarRegistros() {
+            registros.sort((a, b) => {
+                const valorA = (a[ordenActual.campo] || '').toString().toLowerCase();
+                const valorB = (b[ordenActual.campo] || '').toString().toLowerCase();
+                
+                if (ordenActual.direccion === 'asc') {
+                    return valorA.localeCompare(valorB);
+                } else {
+                    return valorB.localeCompare(valorA);
+                }
+            });
+        }
+
+        function actualizarIndicadoresOrden() {
+            // Limpiar todos los indicadores
+            document.querySelectorAll('.sort-indicator').forEach(el => el.textContent = '');
+            
+            // Mostrar indicador actual
+            const indicador = document.getElementById('sort-' + ordenActual.campo);
+            if (indicador) {
+                indicador.textContent = ordenActual.direccion === 'asc' ? '↑' : '↓';
+            }
+        }
+
+        // Función para ver registro
+        function verRegistro(id) {
+            const registro = registros.find(r => r.id === id);
+            if (!registro) return;
+
+            document.getElementById('modalTitle').textContent = 'Detalle del Registro';
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Apellido</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">${registro.apellido || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">${registro.nombre || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>DNI</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">${registro.dni || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Domicilio</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">${registro.domicilio || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ciudad</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">${registro.ciudad || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">${registro.telefono || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">${registro.email || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Datos Judiciales Antecedentes</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px; min-height: 60px;">${registro.datosAntecedentes || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Situación Médica</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px; min-height: 60px;">${registro.situacionMedica || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Situación Laboral</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px; min-height: 60px;">${registro.situacionLaboral || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Otras Observaciones</label>
+                        <div style="padding: 12px; background: #f8fafc; border-radius: 8px; min-height: 60px;">${registro.observaciones || '-'}</div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-warning" onclick="editarRegistro('${id}')">✏️ Editar</button>
+                    <button class="btn btn-danger" onclick="eliminarRegistro('${id}')">🗑️ Eliminar</button>
+                    <button class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                </div>
+            `;
+            
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        // Función para editar registro
+        function editarRegistro(id) {
+            const registro = registros.find(r => r.id === id);
+            if (!registro) return;
+
+            // Llenar el formulario con los datos del registro
+            Object.keys(registro).forEach(key => {
+                const campo = document.getElementById(key);
+                if (campo && key !== 'id') {
+                    campo.value = registro[key] || '';
+                }
+            });
+
+            registroEditando = id;
+            cerrarModal();
+            
+            // Scroll al formulario
+            document.querySelector('.card').scrollIntoView({ behavior: 'smooth' });
+            mostrarNotificacion('Modo edición activado. Modifique los campos y guarde los cambios.', 'info');
+        }
+
+        // Función para eliminar registro
+        function eliminarRegistro(id) {
+            if (!confirm('¿Está seguro de que desea eliminar este registro? Esta acción no se puede deshacer.')) {
+                return;
+            }
+
+            database.ref('registros/' + id).remove()
+                .then(() => {
+                    mostrarNotificacion('Registro eliminado exitosamente', 'success');
+                    cargarTodosLosRegistros();
+                    cerrarModal();
+                })
+                .catch((error) => {
+                    mostrarNotificacion('Error al eliminar: ' + error.message, 'error');
+                });
+        }
+
+        // Función para limpiar formulario
+        function limpiarFormulario() {
+            document.getElementById('registroForm').reset();
+            registroEditando = null;
+        }
+
+        // Función para cerrar modal
+        function cerrarModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Función para mostrar notificaciones
+        function mostrarNotificacion(mensaje, tipo = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = mensaje;
+            notification.className = `notification ${tipo}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        }
+
+        // Inicializar indicadores de orden
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarIndicadoresOrden();
+        });
+    </script>
 </body>
 </html>
