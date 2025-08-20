@@ -6,36 +6,6 @@
   <title>Registro de Datos - Defensoría Civil y Comercial 6</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Firebase (módulo) -->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getDatabase, ref, push, set, get, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
-      authDomain: "datos-partes.firebaseapp.com",
-      databaseURL: "https://datos-partes-default-rtdb.firebaseio.com",
-      projectId: "datos-partes",
-      storageBucket: "datos-partes.firebasestorage.app",
-      messagingSenderId: "277413385546",
-      appId: "1:277413385546:web:9863aaa081727a84479db3",
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // Exponer utilidades a window para el script no-módulo
-    window.db = db;
-    window.dbRef = ref;
-    window.dbPush = push;
-    window.dbSet = set;
-    window.dbGet = get;
-    window.dbOn = onValue;
-    window.dbRemove = remove;
-    window.dbUpdate = update;
-  </script>
-
   <style>
     :root {
       --primary-color: #2563eb;
@@ -45,92 +15,35 @@
       --border-color: #e5e7eb;
       --white: #ffffff;
     }
-
     * { box-sizing: border-box; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-    }
-
-    .topbar {
-      background: var(--white);
-      border-bottom: 1px solid var(--border-color);
-      padding: 12px 20px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 8px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background: var(--white);
-      color: var(--text-color);
-      font-size: 0.9em;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; }
+    .topbar { background: var(--white); border-bottom: 1px solid var(--border-color); padding: 12px 20px; display: flex; justify-content: center; gap: 10px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white); color: var(--text-color); font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
     .btn i { margin-right: 6px; }
-
     .btn-primary { background: var(--primary-color); border: 1px solid var(--primary-color); color: var(--white); }
     .btn-danger { background: #dc2626; border: 1px solid #dc2626; color: var(--white); }
     .btn-warning { background: #f59e0b; border: 1px solid #f59e0b; color: var(--white); }
-
     .btn:hover { filter: brightness(0.96); }
-
     .main-container { max-width: 1100px; margin: 22px auto; padding: 0 20px; }
-
-    .form-section {
-      background: var(--white);
-      padding: 20px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      margin-bottom: 20px;
-      display: none;
-    }
+    .form-section { background: var(--white); padding: 20px; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; display: none; }
     .form-section.active { display: block; }
     .section-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
     .form-section h2 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--primary-color); font-weight: 600; }
     .form-section p { margin: 0; color: var(--muted-text); font-size: 0.9rem; }
-
     .form-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 0.85em; font-weight: 600; color: #374151; }
-    .form-group input, .form-group select, .form-group textarea {
-      padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: #fcfcfd; font-size: 0.92em;
-    }
+    .form-group input, .form-group select, .form-group textarea { padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: #fcfcfd; font-size: 0.92em; }
     .form-group textarea { min-height: 72px; resize: vertical; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08); }
-
     .table-container { overflow-x: auto; margin-top: 14px; }
     table { width: 100%; border-collapse: collapse; font-size: 0.92em; min-width: 600px; }
     table th, table td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; }
     table th { background: #f3f4f6; font-weight: 600; }
-
     .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
     .toggle-container { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 12px 0; flex-wrap: wrap; gap: 10px; }
-    .search-box input {
-      padding: 8px 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 0.9em;
-      width: 240px;
-      max-width: 100%;
-    }
-
+    .search-box input { padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9em; width: 240px; max-width: 100%; }
     .muted { color: var(--muted-text); font-size: 0.85rem; }
-
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .topbar { justify-content: flex-start; }
       .btn { flex: 1 1 45%; text-align: center; }
@@ -138,12 +51,10 @@
       .toggle-container { flex-direction: column; align-items: stretch; }
       .search-box input { width: 100%; }
     }
-
     @media (max-width: 480px) {
       .btn { flex: 1 1 100%; }
       table { font-size: 0.8em; min-width: 480px; }
     }
-
   </style>
 </head>
 <body>
@@ -158,10 +69,7 @@
   <div class="main-container">
     <!-- PERSONAL -->
     <form id="personalForm" class="form-section active">
-      <div class="section-header">
-        <h2>Datos Personales</h2>
-        <p class="muted">Cargue múltiples registros. Seleccione una fila para editar.</p>
-      </div>
+      <div class="section-header"><h2>Datos Personales</h2></div>
       <div class="form-grid">
         <div class="form-group"><label>Apellido</label><input name="apellido" type="text" /></div>
         <div class="form-group"><label>Nombre</label><input name="nombre" type="text" /></div>
@@ -177,7 +85,6 @@
         <button type="button" class="btn" onclick="resetForm('personalForm')">Limpiar</button>
         <button type="submit" class="btn btn-primary">Guardar</button>
       </div>
-
       <div class="table-container">
         <table>
           <thead>
@@ -192,10 +99,7 @@
 
     <!-- JUDICIAL -->
     <form id="judicialForm" class="form-section">
-      <div class="section-header">
-        <h2>Datos Judiciales</h2>
-        <p class="muted">Puede cargar más de un registro por persona.</p>
-      </div>
+      <div class="section-header"><h2>Datos Judiciales</h2></div>
       <div class="form-grid">
         <div class="form-group"><label>Número de Causa</label><input name="numCausa" type="text" /></div>
         <div class="form-group"><label>Juzgado</label><input name="juzgado" type="text" /></div>
@@ -222,10 +126,7 @@
 
     <!-- MÉDICA -->
     <form id="medicaForm" class="form-section">
-      <div class="section-header">
-        <h2>Datos Médicos</h2>
-        <p class="muted">Registre historial y tratamientos.</p>
-      </div>
+      <div class="section-header"><h2>Datos Médicos</h2></div>
       <div class="form-grid">
         <div class="form-group"><label>Diagnóstico</label><textarea name="diagnostico"></textarea></div>
         <div class="form-group"><label>Tratamiento</label><textarea name="tratamiento"></textarea></div>
@@ -251,10 +152,7 @@
 
     <!-- LABORAL -->
     <form id="laboralForm" class="form-section">
-      <div class="section-header">
-        <h2>Datos Laborales</h2>
-        <p class="muted">Soporta múltiples antecedentes laborales.</p>
-      </div>
+      <div class="section-header"><h2>Datos Laborales</h2></div>
       <div class="form-grid">
         <div class="form-group"><label>Empresa</label><input name="empresa" type="text" /></div>
         <div class="form-group"><label>Puesto</label><input name="puesto" type="text" /></div>
@@ -280,10 +178,7 @@
 
     <!-- LISTADO GLOBAL -->
     <div id="listado" class="form-section">
-      <div class="section-header">
-        <h2>Listado de Registros</h2>
-        <p class="muted">Cambie entre vista completa o compacta y filtre por DNI/Nombre/Apellido.</p>
-      </div>
+      <div class="section-header"><h2>Listado de Registros</h2></div>
       <div class="toggle-container">
         <div class="search-box">
           <input id="searchInput" type="text" placeholder="Buscar por DNI, Nombre o Apellido..." oninput="filterListado()" />
@@ -297,275 +192,47 @@
     </div>
   </div>
 
-  <!-- Lógica principal (no-módulo) -->
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getDatabase, ref, push, set, get, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC871IwG89d3yd-BUY9tj2q0_gmBV3AMfM",
+      authDomain: "datos-partes.firebaseapp.com",
+      databaseURL: "https://datos-partes-default-rtdb.firebaseio.com",
+      projectId: "datos-partes",
+      storageBucket: "datos-partes.firebasestorage.app",
+      messagingSenderId: "277413385546",
+      appId: "1:277413385546:web:9863aaa081727a84479db3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.db=db;window.dbRef=ref;window.dbPush=push;window.dbSet=set;window.dbGet=get;window.dbOn=onValue;window.dbRemove=remove;window.dbUpdate=update;
+  </script>
+
+  <!-- Lógica -->
   <script>
-    let listadoData = {};
-    let listadoTipo = 'completo';
+    let listadoData={},listadoTipo='completo';
+    const etiquetas={apellido:"Apellido",nombre:"Nombre",dni:"DNI",edad:"Edad",domicilio:"Domicilio",telefono:"Teléfono",email:"Email",estadoCivil:"Estado Civil",nacionalidad:"Nacionalidad",empresa:"Empresa",puesto:"Puesto",antiguedad:"Antigüedad",direccion:"Dirección",telefonoEmpresa:"Teléfono Empresa",numCausa:"N° Causa",juzgado:"Juzgado",jurisdiccion:"Jurisdicción",secretaria:"Secretaría",caratula:"Carátula",situacion:"Situación",diagnostico:"Diagnóstico",tratamiento:"Tratamiento",medico:"Médico",centroMedico:"Centro Médico",obraSocial:"Obra Social"};
 
-    function mostrarSeccion(id) {
-      // Ocultar todas
-      document.querySelectorAll('.form-section').forEach((s) => s.classList.remove('active'));
+    // Orden de campos por sección
+    const ordenCampos={
+      personal:["apellido","nombre","dni","edad","domicilio","telefono","email","estadoCivil","nacionalidad"],
+      judicial:["numCausa","juzgado","jurisdiccion","secretaria","caratula","situacion"],
+      medica:["diagnostico","tratamiento","medico","centroMedico","obraSocial"],
+      laboral:["empresa","puesto","antiguedad","direccion","telefonoEmpresa"]
+    };
 
-      // Render de listado si corresponde
-      if (id === 'listado') {
-        renderListado(listadoTipo);
-      }
-
-      // Resolver destino de forma segura (evita TypeError si no existe)
-      const targetId = id === 'listado' ? 'listado' : id + 'Form';
-      const target = document.getElementById(targetId);
-      if (target) {
-        target.classList.add('active');
-      } else {
-        console.warn('Sección no encontrada:', targetId);
-      }
-    }
-
-    function resetForm(formId) {
-      const form = document.getElementById(formId);
-      if (!form) return;
-      form.reset();
-      delete form.dataset.editId;
-      delete form.dataset.path;
-    }
-
-    function toggleListado(tipo) {
-      listadoTipo = tipo;
-      renderListado(tipo);
-    }
-
-    async function renderListado(tipo) {
-      const container = document.getElementById('listadoContainer');
-      if (!container) return;
-      container.innerHTML = '';
-      const sections = ['personal', 'judicial', 'medica', 'laboral'];
-      listadoData = {};
-
-      for (const path of sections) {
-        const sectionRef = window.dbRef(window.db, path);
-        const snapshot = await window.dbGet(sectionRef);
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          listadoData[path] = data;
-
-          const table = document.createElement('table');
-          const thead = document.createElement('thead');
-          const tbody = document.createElement('tbody');
-
-          const firstItem = Object.values(data)[0] || {};
-          const keys = Object.keys(firstItem);
-
-          const headerRow = document.createElement('tr');
-          keys.forEach((k) => {
-            const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
-            if (tipo === 'completo' || (tipo === 'compacto' && showCompact)) {
-              const th = document.createElement('th');
-              th.textContent = k;
-              headerRow.appendChild(th);
-            }
-          });
-          thead.appendChild(headerRow);
-
-          Object.values(data).forEach((item) => {
-            const row = document.createElement('tr');
-            keys.forEach((k) => {
-              const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
-              if (tipo === 'completo' || (tipo === 'compacto' && showCompact)) {
-                const td = document.createElement('td');
-                td.textContent = item[k] ?? '';
-                row.appendChild(td);
-              }
-            });
-            tbody.appendChild(row);
-          });
-
-          table.appendChild(thead);
-          table.appendChild(tbody);
-          const h3 = document.createElement('h3');
-          h3.textContent = `Sección ${path}`;
-          container.appendChild(h3);
-          container.appendChild(table);
-        }
-      }
-    }
-
-    function filterListado() {
-      const searchValue = (document.getElementById('searchInput')?.value || '').toLowerCase();
-      const container = document.getElementById('listadoContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      Object.keys(listadoData).forEach((path) => {
-        const data = listadoData[path];
-        const firstItem = Object.values(data)[0] || {};
-        const keys = Object.keys(firstItem);
-
-        const filtered = Object.values(data).filter((item) => {
-          const a = (item['dni'] || '').toLowerCase();
-          const b = (item['nombre'] || '').toLowerCase();
-          const c = (item['apellido'] || '').toLowerCase();
-          return a.includes(searchValue) || b.includes(searchValue) || c.includes(searchValue);
-        });
-
-        if (filtered.length > 0) {
-          const table = document.createElement('table');
-          const thead = document.createElement('thead');
-          const tbody = document.createElement('tbody');
-
-          const headerRow = document.createElement('tr');
-          keys.forEach((k) => {
-            const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
-            if (listadoTipo === 'completo' || (listadoTipo === 'compacto' && showCompact)) {
-              const th = document.createElement('th');
-              th.textContent = k;
-              headerRow.appendChild(th);
-            }
-          });
-          thead.appendChild(headerRow);
-
-          filtered.forEach((item) => {
-            const row = document.createElement('tr');
-            keys.forEach((k) => {
-              const showCompact = ['apellido', 'nombre', 'dni', 'empresa', 'numCausa', 'diagnostico'].includes(k);
-              if (listadoTipo === 'completo' || (listadoTipo === 'compacto' && showCompact)) {
-                const td = document.createElement('td');
-                td.textContent = item[k] ?? '';
-                row.appendChild(td);
-              }
-            });
-            tbody.appendChild(row);
-          });
-
-          table.appendChild(thead);
-          table.appendChild(tbody);
-          const h3 = document.createElement('h3');
-          h3.textContent = `Sección ${path}`;
-          container.appendChild(h3);
-          container.appendChild(table);
-        }
-      });
-    }
-
-    // --- Utilidades de CRUD para formularios/tablitas ---
-    function setupSection(formId, path, tableId) {
-      const form = document.getElementById(formId);
-      const tableBody = document.getElementById(tableId);
-      if (!form || !tableBody) return;
-
-      // Crear/Actualizar (si hay data-edit-id se actualiza)
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const payload = {};
-        new FormData(form).forEach((v, k) => (payload[k] = v));
-
-        if (form.dataset.editId) {
-          const itemRef = window.dbRef(window.db, `${path}/${form.dataset.editId}`);
-          await window.dbUpdate(itemRef, payload);
-        } else {
-          const sectionRef = window.dbRef(window.db, path);
-          await window.dbSet(window.dbPush(sectionRef), payload);
-        }
-        resetForm(formId);
-      });
-
-      // Pintar tabla en vivo
-      const sectionRef = window.dbRef(window.db, path);
-      window.dbOn(sectionRef, (snapshot) => {
-        tableBody.innerHTML = '';
-        if (!snapshot.exists()) return;
-        const data = snapshot.val();
-
-        Object.entries(data).forEach(([id, item]) => {
-          const tr = document.createElement('tr');
-
-          // Celdas de datos (orden según las keys del primer objeto)
-          const keys = Object.keys(item);
-          keys.forEach((k) => {
-            const td = document.createElement('td');
-            td.textContent = item[k] ?? '';
-            tr.appendChild(td);
-          });
-
-          // Acciones
-          const tdActions = document.createElement('td');
-          tdActions.className = 'actions';
-
-          const btnEdit = document.createElement('button');
-          btnEdit.className = 'btn btn-warning';
-          btnEdit.type = 'button';
-          btnEdit.textContent = 'Editar';
-          btnEdit.onclick = () => {
-            // Cargar datos en formulario
-            Object.entries(item).forEach(([k, v]) => {
-              if (form.elements[k]) form.elements[k].value = v;
-            });
-            form.dataset.editId = id;
-            form.dataset.path = path;
-            mostrarSeccion(path); // enfoca la sección actual
-          };
-
-          const btnDelete = document.createElement('button');
-          btnDelete.className = 'btn btn-danger';
-          btnDelete.type = 'button';
-          btnDelete.textContent = 'Eliminar';
-          btnDelete.onclick = async () => {
-            if (confirm('¿Seguro que deseas eliminar este registro?')) {
-              const itemRef = window.dbRef(window.db, `${path}/${id}`);
-              await window.dbRemove(itemRef);
-            }
-          };
-
-          tdActions.append(btnEdit, btnDelete);
-          const tdActionsWrap = document.createElement('td');
-          tdActionsWrap.appendChild(tdActions);
-          tr.appendChild(tdActionsWrap);
-
-          tableBody.appendChild(tr);
-        });
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // Inicializar secciones
-      setupSection('personalForm', 'personal', 'personalTable');
-      setupSection('judicialForm', 'judicial', 'judicialTable');
-      setupSection('medicaForm', 'medica', 'medicaTable');
-      setupSection('laboralForm', 'laboral', 'laboralTable');
-
-      // Pequeña batería de tests (solo DOM) para evitar errores futuros
-      runDomTests();
-    });
-
-    // --- TESTS ---
-    function assert(cond, msg) { if (!cond) throw new Error(msg); }
-    function runDomTests() {
-      try {
-        // Test 1: Existen todas las secciones requeridas
-        ['personalForm','judicialForm','medicaForm','laboralForm','listado'].forEach(id => {
-          assert(!!document.getElementById(id), `Falta el elemento #${id}`);
-        });
-
-        // Test 2: Cambios de sección no arrojan errores
-        mostrarSeccion('personal');
-        assert(document.getElementById('personalForm').classList.contains('active'), 'personal no activa');
-
-        mostrarSeccion('judicial');
-        assert(document.getElementById('judicialForm').classList.contains('active'), 'judicial no activa');
-
-        // Test 3: Llamado seguro a listado (no valida datos remotos)
-        try {
-          mostrarSeccion('listado');
-          // Si Firebase no responde, igual no debe crashear el DOM
-          assert(document.getElementById('listado').classList.contains('active'), 'listado no activo');
-        } catch (e) {
-          console.warn('Test listado: omitido por conexión remota', e);
-        }
-
-        console.log('%cTests DOM OK', 'color: green; font-weight: bold');
-      } catch (e) {
-        console.error('Fallo en tests DOM:', e.message);
-      }
-    }
+    function mostrarSeccion(id){document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));if(id==='listado'){renderListado(listadoTipo);}const target=document.getElementById(id==='listado'?'listado':id+'Form');if(target)target.classList.add('active');}
+    function resetForm(id){const f=document.getElementById(id);if(f){f.reset();delete f.dataset.editId;}}
+    function toggleListado(t){listadoTipo=t;renderListado(t);}
+    async function renderListado(tipo){const cont=document.getElementById('listadoContainer');cont.innerHTML='';const secciones=['personal','judicial','medica','laboral'];listadoData={};for(const path of secciones){const snap=await window.dbGet(window.dbRef(window.db,path));if(snap.exists()){const data=snap.val();listadoData[path]=data;const table=document.createElement('table'),thead=document.createElement('thead'),tbody=document.createElement('tbody');const keys=ordenCampos[path];const header=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(tipo==='completo'||(tipo==='compacto'&&showCompact)){const th=document.createElement('th');th.textContent=etiquetas[k]||k;header.appendChild(th);}});thead.appendChild(header);Object.values(data).forEach(item=>{const tr=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(tipo==='completo'||(tipo==='compacto'&&showCompact)){const td=document.createElement('td');td.textContent=item[k]||'';tr.appendChild(td);}});tbody.appendChild(tr);});table.append(thead,tbody);const h3=document.createElement('h3');h3.textContent='Sección '+path;cont.append(h3,table);}}}
+    function filterListado(){const val=(document.getElementById('searchInput')?.value||'').toLowerCase();const cont=document.getElementById('listadoContainer');cont.innerHTML='';Object.keys(listadoData).forEach(path=>{const data=listadoData[path];const keys=ordenCampos[path];const filtered=Object.values(data).filter(i=>(i.dni||'').toLowerCase().includes(val)||(i.nombre||'').toLowerCase().includes(val)||(i.apellido||'').toLowerCase().includes(val));if(filtered.length){const table=document.createElement('table'),thead=document.createElement('thead'),tbody=document.createElement('tbody');const header=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(listadoTipo==='completo'||(listadoTipo==='compacto'&&showCompact)){const th=document.createElement('th');th.textContent=etiquetas[k]||k;header.appendChild(th);}});thead.appendChild(header);filtered.forEach(i=>{const tr=document.createElement('tr');keys.forEach(k=>{const showCompact=['apellido','nombre','dni','empresa','numCausa','diagnostico'].includes(k);if(listadoTipo==='completo'||(listadoTipo==='compacto'&&showCompact)){const td=document.createElement('td');td.textContent=i[k]||'';tr.appendChild(td);}});tbody.appendChild(tr);});table.append(thead,tbody);const h3=document.createElement('h3');h3.textContent='Sección '+path;cont.append(h3,table);}});}
+    function setupSection(formId,path,tableId){const f=document.getElementById(formId),tb=document.getElementById(tableId);if(!f||!tb)return;f.addEventListener('submit',async e=>{e.preventDefault();const payload={};new FormData(f).forEach((v,k)=>payload[k]=v);if(f.dataset.editId){await window.dbUpdate(window.dbRef(window.db,`${path}/${f.dataset.editId}`),payload);}else{await window.dbSet(window.dbPush(window.dbRef(window.db,path)),payload);}resetForm(formId);});window.dbOn(window.dbRef(window.db,path),snap=>{tb.innerHTML='';if(!snap.exists())return;const data=snap.val();Object.entries(data).forEach(([id,item])=>{const tr=document.createElement('tr');ordenCampos[path].forEach(k=>{const td=document.createElement('td');td.textContent=item[k]||'';tr.appendChild(td);});const tdAct=document.createElement('td');tdAct.className='actions';const bE=document.createElement('button');bE.className='btn btn-warning';bE.textContent='Editar';bE.onclick=()=>{Object.entries(item).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v;});f.dataset.editId=id;mostrarSeccion(path);};const bD=document.createElement('button');bD.className='btn btn-danger';bD.textContent='Eliminar';bD.onclick=async()=>{if(confirm('¿Eliminar?'))await window.dbRemove(window.dbRef(window.db,`${path}/${id}`));};tdAct.append(bE,bD);tr.appendChild(tdAct);tb.appendChild(tr);});});}
+    document.addEventListener('DOMContentLoaded',()=>{setupSection('personalForm','personal','personalTable');setupSection('judicialForm','judicial','judicialTable');setupSection('medicaForm','medica','medicaTable');setupSection('laboralForm','laboral','laboralTable');});
   </script>
 </body>
 </html>
